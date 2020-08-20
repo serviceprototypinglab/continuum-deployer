@@ -1,13 +1,6 @@
-from helm import Helm
+from continuum_deployer.helm import Helm
 
 def main():
-
-    # document = """
-    # a: 1
-    # b:
-    #     c: 3
-    #     d: 4
-    # """
 
     stream = open('./charts/redis/redis.yaml', 'r')
 

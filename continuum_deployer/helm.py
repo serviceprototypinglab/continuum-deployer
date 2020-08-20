@@ -1,6 +1,6 @@
 import yaml, json
 
-from deployment import Deployment
+from continuum_deployer.deployment import Deployment
 
 class Helm:
 
@@ -32,4 +32,7 @@ class Helm:
 
     def printDeploymetsJson(self):
         for deployment in self.deployments:
-            print(json.dumps(deployment.__dict__))
+            print(deployment)
+
+    def getDeployments(self):
+        return self.deployments

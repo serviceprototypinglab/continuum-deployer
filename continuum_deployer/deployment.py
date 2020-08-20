@@ -1,5 +1,9 @@
-class Deployment:
+from dataclasses import dataclass, field
 
-    name = ""
-    resources_requests = ""
-    resources_limits = ""
+@dataclass
+class Deployment:
+    """Data Class that hold extracted values for deployments."""
+
+    name: str = field(default=None)
+    resources_requests: dict = field(default=None)
+    resources_limits: dict = field(default=None)
