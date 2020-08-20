@@ -1,5 +1,6 @@
 from continuum_deployer.deployment import Deployment
 
+
 class Extractor:
     """Interface that defines interaction with several DSL specific extractor implementations."""
 
