@@ -1,14 +1,14 @@
 import pytest
-from continuum_deployer.helm import Helm
+from continuum_deployer.extractors.helm import Helm
 
 def test_resource_extract():
     stream = open('./tests/yaml/resources.yaml', 'r')
 
     helm = Helm()
     helm.parse(stream)
-    deployments = helm.getDeployments()
+    modules = helm.get_app_modules()
 
-    assert deployments[0].resources_requests == \
+    assert modules[0].resources_requests == \
         {"cpu": "100m", "memory": "256Mi"}
-    assert deployments[0].resources_limits == \
+    assert modules[0].resources_limits == \
         {"cpu": "200m", "memory": "512Mi"}

@@ -1,21 +1,17 @@
 import yaml, json
 
+from continuum_deployer.extractors.extractor import Extractor
 from continuum_deployer.deployment import Deployment
 
-class Helm:
+class Helm(Extractor):
 
     K8S_OBJECTS = ['StatefulSet', 'Deployment']
-    
-    deployments = []
-    
-    def __init__(self):
-        pass
 
-    def parse(self, document):
+    def parse(self, dsl_input):
 
         # see default loader deprication
         # https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation
-        docs = yaml.load_all(document, Loader=yaml.SafeLoader)
+        docs = yaml.load_all(dsl_input, Loader=yaml.SafeLoader)
 
         for doc in docs:
             if doc['kind'] in self.K8S_OBJECTS:
@@ -28,11 +24,4 @@ class Helm:
                         deployment.resources_requests = container['resources'].get('requests', None)
                         deployment.resources_limits = container['resources'].get('limits', None)
                 
-                self.deployments.append(deployment)
-
-    def printDeploymetsJson(self):
-        for deployment in self.deployments:
-            print(deployment)
-
-    def getDeployments(self):
-        return self.deployments
+                self._app_modules.append(deployment)

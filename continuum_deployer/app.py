@@ -1,4 +1,4 @@
-from continuum_deployer.helm import Helm
+from continuum_deployer.extractors.helm import Helm
 
 def main():
 
@@ -6,7 +6,7 @@ def main():
 
     helm = Helm()
     helm.parse(stream)
-    helm.printDeploymetsJson()
+    helm.print_app_modules()
 
 if __name__ == "__main__":
     # execute only if run as a script
