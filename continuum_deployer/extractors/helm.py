@@ -12,6 +12,45 @@ class Helm(Extractor):
     K8S_OBJECTS = ['Deployment', 'ReplicaSet',
                    'StatefulSet', 'DaemonSet', 'Jobs', 'CronJob']
 
+    @staticmethod
+    def parse_k8s_cpu_value(cpu_value):
+        # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+        # TODO check CPU calculation based on docs
+        if type(cpu_value) is str:
+            if 'm' in cpu_value:
+                cpu_value = cpu_value.strip('m')
+                cpu_value = 10/int(cpu_value)
+
+        return cpu_value
+
+    @staticmethod
+    def parse_k8s_memory_value(memory_value):
+        # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+        _K8S_MEMORY_SUFFIXES_FIXED = ['E', 'P', 'T', 'G', 'M', 'K']
+        _K8S_MEMORY_SUFFIXES_POWER = ['Ei', 'Pi', 'Ti', 'Gi', 'Mi', 'Ki']
+        _K8S_MEMORY_SUFFIXES = \
+            ['e'], _K8S_MEMORY_SUFFIXES_FIXED, _K8S_MEMORY_SUFFIXES_POWER
+
+        if type(memory_value) is str:
+            # exponential notation e.g. 3e2 = 300
+            if 'e' in memory_value:
+                memory_value = float(memory_value)
+            # check if power-of-two notiation is used
+            # it is important to check power-of-two first as fixed-point comparison would also match
+            elif [e for e in _K8S_MEMORY_SUFFIXES_POWER if(e in memory_value)]:
+                raise NotImplementedError
+            # check if fixed-point integer notiation is used
+            elif [e for e in _K8S_MEMORY_SUFFIXES_FIXED if(e in memory_value)]:
+                if 'M' in memory_value:
+                    return memory_value.strip('M')
+                else:
+                    raise NotImplementedError
+        # direct definition in bytes - convert to MB
+        else:
+            memory_value = memory_value/float('1e+6')
+
+        return memory_value
+
     def parse(self, dsl_input):
 
         # see default loader deprication
@@ -37,16 +76,25 @@ class Helm(Extractor):
                         _request = container.get(
                             'resources', None).get('requests', None)
                         if _request != None:
-                            deployment.resources_requests = container['resources'].get(
-                                'requests', None)
+                            deployment.memory = Helm.parse_k8s_memory_value(
+                                _request.get('memory'))
+                            deployment.cpu = Helm.parse_k8s_cpu_value(
+                                _request.get('cpu'))
                         else:
                             click.echo(click.style(
                                 ('[Warning] Module {} resource request provided. This can result '
                                  'in suboptimal deployment placement.').format(_name), fg='yellow'))
-                        deployment.resources_requests = container['resources'].get(
-                            'requests', None)
-                        deployment.resources_limits = container['resources'].get(
-                            'limits', None)
+
+                        _limits = container.get(
+                            'resources', None).get('limits', None)
+                        if _limits != None:
+                            deployment.memory_limit = Helm.parse_k8s_memory_value(
+                                _limits.get('memory'))
+                            deployment.cpu_limit = Helm.parse_k8s_cpu_value(
+                                _limits.get('cpu'))
+                        else:
+                            # as this is not an hard error just pass
+                            pass
                     else:
                         click.echo(click.style(
                             ('[Warning] Module {} resource request provided. This can result '

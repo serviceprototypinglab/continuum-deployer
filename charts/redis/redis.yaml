@@ -223,7 +223,6 @@ spec:
         checksum/configmap: 56cfc1d923c62ce5c559fb1e8ea3fbfeca1dbb38bc09c77ce25fc6581a51bb7b
         checksum/secret: 3d3bc0b8454b1fb948d8f43d88a6c7d802f8dd21874aaeed950a6d9b3151294c
     spec:
-      
       securityContext:
         fsGroup: 1001
       serviceAccountName: default
@@ -293,13 +292,16 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 256M
+            limits:
+              cpu: 0.5
+              memory: 512M
           volumeMounts:
             - name: health
               mountPath: /health
             - name: redis-data
               mountPath: /data
-              subPath: 
+              subPath:
             - name: config
               mountPath: /opt/bitnami/redis/mounted-etc
             - name: redis-tmp-conf
@@ -328,7 +330,7 @@ spec:
         resources:
           requests:
             storage: "8Gi"
-        
+
         selector:
   updateStrategy:
     type: RollingUpdate
@@ -364,7 +366,6 @@ spec:
         checksum/configmap: 56cfc1d923c62ce5c559fb1e8ea3fbfeca1dbb38bc09c77ce25fc6581a51bb7b
         checksum/secret: 44274da2846492c248fec4bef0b96ac9e7ae9c4d9c221918465bd82915edb508
     spec:
-      
       securityContext:
         fsGroup: 1001
       serviceAccountName: default
@@ -445,8 +446,7 @@ spec:
                 - sh
                 - -c
                 - /health/ping_readiness_local_and_master.sh 5
-          resources:
-            null
+          resources: null
           volumeMounts:
             - name: health
               mountPath: /health
@@ -482,7 +482,7 @@ spec:
         resources:
           requests:
             storage: "8Gi"
-        
+
         selector:
   updateStrategy:
     type: RollingUpdate
