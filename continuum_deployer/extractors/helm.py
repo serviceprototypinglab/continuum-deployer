@@ -7,7 +7,9 @@ from continuum_deployer.deployment import Deployment
 
 class Helm(Extractor):
 
-    K8S_OBJECTS = ['StatefulSet', 'Deployment']
+    # TODO add support for plain Pods - requires change in parse()
+    K8S_OBJECTS = ['Deployment', 'ReplicaSet',
+                   'StatefulSet', 'DaemonSet', 'Jobs', 'CronJob']
 
     def parse(self, dsl_input):
 
