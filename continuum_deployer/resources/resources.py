@@ -1,13 +1,15 @@
 import yaml
 import click
 
+from continuum_deployer.resources.resource_entity import ResourceEntity
+
 
 class Resources:
 
     MANDATORY_FIELDS = ['name', 'cpu', 'memory']
 
     def __init__(self):
-        pass
+        self.resources = list()
 
     def check_mandatory_fields(self, node):
         for field in self.MANDATORY_FIELDS:
@@ -24,7 +26,18 @@ class Resources:
 
         for node in nodes:
             self.check_mandatory_fields(node)
-            click.echo("NAME: {}".format(node.get('name')))
-            click.echo("CPU: {}".format(node.get('cpu')))
-            click.echo("MEMORY: {}".format(node.get('memory')))
+            _resource = ResourceEntity()
+            _resource.name = node.get('name')
+            _resource.memory = node.get('memory')
+            _resource.cpu = node.get('cpu')
+            self.resources.append(_resource)
+
+    def print_resources(self):
+        for entity in self.resources:
+            click.echo("NAME: {}".format(entity.name))
+            click.echo("CPU: {}".format(entity.cpu))
+            click.echo("MEMORY: {}".format(entity.memory))
             click.echo("---")
+
+    def get_resources(self):
+        return self.resources

@@ -31,6 +31,7 @@ def parse_resources(file):
     stream = open(file, 'r')
     resources = Resources()
     resources.parse(stream)
+    resources.print_resources()
 
 
 if __name__ == "__main__":
