@@ -5,10 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run CLI",
+            "name": "Run CLI print-resources",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "print-resources",
+                "--file",
+                "./charts/redis/redis.yaml"
+            ],
             "console": "integratedTerminal"
         },
         {
