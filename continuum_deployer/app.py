@@ -1,6 +1,7 @@
 import click
 
 from continuum_deployer.extractors.helm import Helm
+from continuum_deployer.resources.resources import Resources
 
 
 @click.group()
@@ -21,6 +22,15 @@ def print_resources(file, type):
         helm.print_app_modules()
     else:
         raise NotImplementedError
+
+
+@cli.command()
+@click.option('-f', '--file', required=True, help='Path to resources file')
+def parse_resources(file):
+
+    stream = open(file, 'r')
+    resources = Resources()
+    resources.parse(stream)
 
 
 if __name__ == "__main__":

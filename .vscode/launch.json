@@ -17,6 +17,18 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Run CLI parse-resources",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "parse-resources",
+                "--file",
+                "./resources/default.yaml"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Run Tests",
             "type": "python",
             "request": "launch",
