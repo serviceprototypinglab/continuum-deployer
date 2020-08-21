@@ -98,10 +98,10 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 256M
             limits:
               cpu: 200m
-              memory: 512Mi
+              memory: 512M
           volumeMounts:
             - name: health
               mountPath: /health
@@ -167,10 +167,10 @@ spec:
           image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
           resources:
             limits:
-              memory: 200Mi
+              memory: 200M
             requests:
               cpu: 100m
-              memory: 200Mi
+              memory: 200M
           volumeMounts:
             - name: varlog
               mountPath: /var/log

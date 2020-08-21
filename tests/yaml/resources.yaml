@@ -28,7 +28,6 @@ spec:
         checksum/configmap: 56cfc1d923c62ce5c559fb1e8ea3fbfeca1dbb38bc09c77ce25fc6581a51bb7b
         checksum/secret: 3d3bc0b8454b1fb948d8f43d88a6c7d802f8dd21874aaeed950a6d9b3151294c
     spec:
-      
       securityContext:
         fsGroup: 1001
       serviceAccountName: default
@@ -98,16 +97,16 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 256M
             limits:
               cpu: 200m
-              memory: 512Mi
+              memory: 512M
           volumeMounts:
             - name: health
               mountPath: /health
             - name: redis-data
               mountPath: /data
-              subPath: 
+              subPath:
             - name: config
               mountPath: /opt/bitnami/redis/mounted-etc
             - name: redis-tmp-conf
@@ -136,7 +135,7 @@ spec:
         resources:
           requests:
             storage: "8Gi"
-        
+
         selector:
   updateStrategy:
     type: RollingUpdate

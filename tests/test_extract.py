@@ -13,10 +13,10 @@ def test_resource_extract(extractor):
     extractor.parse(stream)
     modules = extractor.get_app_modules()
 
-    assert modules[0].resources_requests == \
-        {"cpu": "100m", "memory": "256Mi"}
-    assert modules[0].resources_limits == \
-        {"cpu": "200m", "memory": "512Mi"}
+    assert modules[0].cpu == 0.1
+    assert modules[0].memory == 256
+    assert modules[0].cpu_limit == 0.05
+    assert modules[0].memory_limit == 512
 
 
 def test_multi_component_extract(extractor):

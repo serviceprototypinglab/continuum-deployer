@@ -446,7 +446,10 @@ spec:
                 - sh
                 - -c
                 - /health/ping_readiness_local_and_master.sh 5
-          resources: null
+          resources:
+            requests:
+              cpu: 1
+              memory: 256M
           volumeMounts:
             - name: health
               mountPath: /health

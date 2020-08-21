@@ -14,6 +14,10 @@ class Helm(Extractor):
 
     @staticmethod
     def parse_k8s_cpu_value(cpu_value):
+
+        if cpu_value is None:
+            return None
+
         # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
         # TODO check CPU calculation based on docs
         if type(cpu_value) is str:
@@ -21,7 +25,7 @@ class Helm(Extractor):
                 cpu_value = cpu_value.strip('m')
                 cpu_value = 10/int(cpu_value)
 
-        return cpu_value
+        return float(cpu_value)
 
     @staticmethod
     def parse_k8s_memory_value(memory_value):
@@ -42,14 +46,14 @@ class Helm(Extractor):
             # check if fixed-point integer notiation is used
             elif [e for e in _K8S_MEMORY_SUFFIXES_FIXED if(e in memory_value)]:
                 if 'M' in memory_value:
-                    return memory_value.strip('M')
+                    memory_value = memory_value.strip('M')
                 else:
                     raise NotImplementedError
         # direct definition in bytes - convert to MB
         else:
             memory_value = memory_value/float('1e+6')
 
-        return memory_value
+        return int(memory_value)
 
     def parse(self, dsl_input):
 
@@ -100,4 +104,4 @@ class Helm(Extractor):
                             ('[Warning] Module {} resource request provided. This can result '
                              'in suboptimal deployment placement.').format(_name), fg='yellow'))
 
-                self._app_modules.append(deployment)
+                self.app_modules.append(deployment)

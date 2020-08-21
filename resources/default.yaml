@@ -4,11 +4,11 @@
 
 resources:
   - name: node-1
-    cpu: 2
-    memory: 2048
+    cpu: 0.5
+    memory: 1000
   - name: node-2
-    cpu: 4
-    memory: 4096
+    cpu: 0.5
+    memory: 1000
   - name: node-3
     cpu: 0.5
-    memory: 512
+    memory: 1000
