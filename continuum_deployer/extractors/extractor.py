@@ -4,10 +4,8 @@ from continuum_deployer.deployment import Deployment
 class Extractor:
     """Interface that defines interaction with several DSL specific extractor implementations."""
 
-    _app_modules = []
-
     def __init__(self):
-        pass
+        self._app_modules = []
 
     def parse(self, dsl_input):
         """Handles actual parsing of DSL to internal data structures. Needs to be implemented by child."""
