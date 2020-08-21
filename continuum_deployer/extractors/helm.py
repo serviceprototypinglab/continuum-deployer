@@ -27,6 +27,7 @@ class Helm(Extractor):
                 if _name != None:
                     deployment.name = _name
                 else:
+                    # https://kubernetes.io/docs/concepts/overview/working-with-objects/names/
                     click.echo(click.style(
                         '[Error] No name provided in object metadata', fg='red'), err=True)
                     exit(1)
