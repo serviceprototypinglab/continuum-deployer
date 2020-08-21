@@ -1,6 +1,6 @@
 import click
 
-from continuum_deployer.deployment import Deployment
+from continuum_deployer.deployment import DeploymentEntity
 
 
 class Extractor:

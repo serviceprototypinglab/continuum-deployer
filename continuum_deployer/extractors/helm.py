@@ -3,7 +3,7 @@ import json
 import click
 
 from continuum_deployer.extractors.extractor import Extractor
-from continuum_deployer.deployment import Deployment
+from continuum_deployer.deployment import DeploymentEntity
 
 
 class Helm(Extractor):
@@ -22,7 +22,7 @@ class Helm(Extractor):
             if doc['kind'] in self.K8S_OBJECTS:
 
                 # TODO add support for >1 scaled deployments
-                deployment = Deployment()
+                deployment = DeploymentEntity()
                 _name = doc.get('metadata', None).get('name', None)
                 if _name != None:
                     deployment.name = _name
