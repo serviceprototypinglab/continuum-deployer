@@ -17,3 +17,7 @@ Build python package
 ```shell
 python setup.py bdist_wheel
 ```
+
+## Authors
+
+- @danielhass - Daniel Haß
