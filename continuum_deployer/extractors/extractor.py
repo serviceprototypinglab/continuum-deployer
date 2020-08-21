@@ -1,3 +1,5 @@
+import click
+
 from continuum_deployer.deployment import Deployment
 
 
@@ -17,5 +19,6 @@ class Extractor:
 
     def print_app_modules(self):
         """Convenience helper that prints object representation of application modules"""
+        click.echo(click.style("List of Deployments extracted:", fg='blue'))
         for module in self._app_modules:
-            print(module)
+            click.echo(str(module))

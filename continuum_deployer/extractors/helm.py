@@ -1,5 +1,6 @@
 import yaml
 import json
+import click
 
 from continuum_deployer.extractors.extractor import Extractor
 from continuum_deployer.deployment import Deployment
@@ -22,7 +23,13 @@ class Helm(Extractor):
 
                 # TODO add support for >1 scaled deployments
                 deployment = Deployment()
-                deployment.name = doc['metadata']['name']
+                _name = doc.get('metadata', None).get('name', None)
+                if _name != None:
+                    deployment.name = _name
+                else:
+                    click.echo(click.style(
+                        '[Error] No name provided in object metadata', fg='red'), err=True)
+                    exit(1)
 
                 for container in doc['spec']['template']['spec']['containers']:
                     if container['resources']:
