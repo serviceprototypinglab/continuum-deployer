@@ -1,4 +1,4 @@
-# continuum deployer
+# Continuum Deployer
 
 ## Setup
 Install dependencies
@@ -6,12 +6,14 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
+## Runs tests
+```shell
+pytest
+```
+
+## Release
 Build python package 
 
 ```shell
 python setup.py bdist_wheel
-```
-## Test
-```shell
-pytest
 ```
