@@ -20,4 +20,4 @@ python setup.py bdist_wheel
 
 ## Authors
 
-- @danielhass - Daniel Haß
+- @hassdan1 - Daniel Haß
