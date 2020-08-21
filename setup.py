@@ -5,8 +5,12 @@ except ImportError:
 
 links = []
 requires = []
+requires_dev = []
 
 with open('requirements.txt') as f:
+    requires = f.read().splitlines()
+
+with open('requirements-dev.txt') as f:
     requires = f.read().splitlines()
 
 version = {}
@@ -26,5 +30,8 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=requires,
+    extras_require={
+        'dev': requires_dev
+    },
     dependency_links=links
 )
