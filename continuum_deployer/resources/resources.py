@@ -4,7 +4,7 @@ import click
 
 class Resources:
 
-    MANDATORY_FIELDS = ['name', 'cpu', 'ram']
+    MANDATORY_FIELDS = ['name', 'cpu', 'memory']
 
     def __init__(self):
         pass
@@ -26,4 +26,5 @@ class Resources:
             self.check_mandatory_fields(node)
             click.echo("NAME: {}".format(node.get('name')))
             click.echo("CPU: {}".format(node.get('cpu')))
-            click.echo("RAM: {}".format(node.get('ram')))
+            click.echo("MEMORY: {}".format(node.get('memory')))
+            click.echo("---")

@@ -1,10 +1,10 @@
 resources:
   - name: node-1
     cpu: 2
-    ram: 2048
+    memory: 2048
   - name: node-2
     cpu: 4
-    ram: 4096
+    memory: 4096
   - name: node-3
     cpu: 0.5
-    ram: 512
+    memory: 512
