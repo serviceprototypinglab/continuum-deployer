@@ -20,6 +20,7 @@ class Helm(Extractor):
         for doc in docs:
             if doc['kind'] in self.K8S_OBJECTS:
 
+                # TODO add support for >1 scaled deployments
                 deployment = Deployment()
                 deployment.name = doc['metadata']['name']
 
