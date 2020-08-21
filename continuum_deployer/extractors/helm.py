@@ -34,9 +34,22 @@ class Helm(Extractor):
 
                 for container in doc['spec']['template']['spec']['containers']:
                     if container['resources']:
+                        _request = container.get(
+                            'resources', None).get('requests', None)
+                        if _request != None:
+                            deployment.resources_requests = container['resources'].get(
+                                'requests', None)
+                        else:
+                            click.echo(click.style(
+                                ('[Warning] Module {} resource request provided. This can result '
+                                 'in suboptimal deployment placement.').format(_name), fg='yellow'))
                         deployment.resources_requests = container['resources'].get(
                             'requests', None)
                         deployment.resources_limits = container['resources'].get(
                             'limits', None)
+                    else:
+                        click.echo(click.style(
+                            ('[Warning] Module {} resource request provided. This can result '
+                             'in suboptimal deployment placement.').format(_name), fg='yellow'))
 
                 self._app_modules.append(deployment)
