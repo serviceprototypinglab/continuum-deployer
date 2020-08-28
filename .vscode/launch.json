@@ -33,6 +33,26 @@
             "type": "python",
             "request": "launch",
             "module": "pytest"
+        },
+        {
+            "name": "Run CLI match",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "match",
+                "-r",
+                "./resources/default.yaml",
+                "-d",
+                "./charts/sample_multi.yaml"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Run Tests",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest"
         }
     ]
 }

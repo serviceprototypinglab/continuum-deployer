@@ -50,6 +50,35 @@ class Matcher():
                 fg='red'), err=True)
             raise Exception
 
+    @staticmethod
+    def sort_by_attr(items, attr):
+        return sorted(items, key=lambda x: getattr(x, attr), reverse=True)
+
+    @staticmethod
+    def deploy_iterate(entity, resources):
+        for resource in resources:
+            if resource.add_deployment(entity):
+                return True
+        return False
+
+    def greedy_attr(self, entities, resources, attr):
+        entities_sorted = Matcher.sort_by_attr(entities, attr)
+        resources_sorted = Matcher.sort_by_attr(resources, attr)
+
+        for entity in entities_sorted:
+            if not Matcher.deploy_iterate(entity, resources_sorted):
+                click.echo(click.style(
+                    '[Error] Deployment entity ({}) '
+                    'not scheduable with greedy algorithm.'.format(
+                        entity),
+                    fg='red'), err=True)
+
     def match(self):
         """Main matcher method"""
         self.check_upper_bound(self.deployment_entities, self.resources)
+        click.echo(self.sort_by_attr(self.deployment_entities, 'cpu'))
+        click.echo(self.sort_by_attr(self.deployment_entities, 'memory'))
+
+        self.greedy_attr(self.deployment_entities, self.resources, 'cpu')
+        for resource in self.resources:
+            resource.print()

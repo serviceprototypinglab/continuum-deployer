@@ -37,6 +37,7 @@ class Resources:
             click.echo("NAME: {}".format(entity.name))
             click.echo("CPU: {}".format(entity.cpu))
             click.echo("MEMORY: {}".format(entity.memory))
+            click.echo("DEPLOYMENTS: {}".format(entity.deployments))
             click.echo("---")
 
     def get_resources(self):
