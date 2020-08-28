@@ -14,6 +14,7 @@ class Matcher():
         self.resources = resources = resources
 
     def check_upper_bound(self, entities, resources):
+        # find max of resource requests on deployment entities
         _max_memory_request = 0
         _max_cpu_request = 0
         for entity in entities:
@@ -22,6 +23,7 @@ class Matcher():
             if entity.cpu > _max_cpu_request:
                 _max_cpu_request = entity.cpu
 
+        # find max of available resources on deployment targets
         _max_memory_offer = 0
         _max_cpu_offer = 0
         for resource in resources:
@@ -30,6 +32,7 @@ class Matcher():
             if resource.cpu > _max_cpu_offer:
                 _max_cpu_offer = resource.cpu
 
+        # check if max memory entity fits available resources
         if _max_memory_offer < _max_memory_request:
             click.echo(click.style(
                 '[Error] Smallest deployable unit memory request ({}) '
@@ -38,6 +41,7 @@ class Matcher():
                 fg='red'), err=True)
             raise Exception
 
+        # check if max cpu fits available resources
         if _max_cpu_offer < _max_cpu_request:
             click.echo(click.style(
                 '[Error] Smallest deployable unit cpu request ({}) '
