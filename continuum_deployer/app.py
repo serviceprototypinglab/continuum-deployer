@@ -3,6 +3,7 @@ import click
 from continuum_deployer.extractors.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.matching.matcher import Matcher
+from continuum_deployer.matching.greedy import Greddy
 
 
 @click.group()
@@ -55,7 +56,7 @@ def match(resources, deployment, type):
     resources = Resources()
     resources.parse(_resources_file)
 
-    matcher = Matcher(deployment_entities, resources.get_resources())
+    matcher = Greddy(deployment_entities, resources.get_resources())
     matcher.match()
 
 
