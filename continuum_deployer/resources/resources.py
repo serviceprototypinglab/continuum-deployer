@@ -34,11 +34,7 @@ class Resources:
 
     def print_resources(self):
         for entity in self.resources:
-            click.echo("NAME: {}".format(entity.name))
-            click.echo("CPU: {}".format(entity.cpu))
-            click.echo("MEMORY: {}".format(entity.memory))
-            click.echo("DEPLOYMENTS: {}".format(entity.deployments))
-            click.echo("---")
+            entity.print()
 
     def get_resources(self):
         return self.resources

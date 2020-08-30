@@ -58,6 +58,7 @@ def match(resources, deployment, type):
 
     matcher = Greddy(deployment_entities, resources.get_resources())
     matcher.match()
+    matcher.printResources()
 
 
 if __name__ == "__main__":

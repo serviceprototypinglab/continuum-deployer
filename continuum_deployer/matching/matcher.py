@@ -53,3 +53,7 @@ class Matcher():
     def match(self):
         """Main matcher method"""
         self.check_upper_bound(self.deployment_entities, self.resources)
+
+    def printResources(self):
+        for res in self.resources:
+            res.print()
