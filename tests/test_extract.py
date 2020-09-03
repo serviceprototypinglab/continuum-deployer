@@ -7,8 +7,8 @@ def extractor():
     return Helm()
 
 
-def test_resource_extract(extractor):
-    stream = open('./tests/yaml/resources.yaml', 'r')
+def test_deployment_extract(extractor):
+    stream = open('./tests/yaml/deployments.yaml', 'r')
 
     extractor.parse(stream)
     modules = extractor.get_app_modules()
