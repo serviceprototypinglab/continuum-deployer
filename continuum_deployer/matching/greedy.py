@@ -31,7 +31,4 @@ class Greedy(Matcher):
 
     def match(self):
         super(Greedy, self).match()
-
         self.greedy_attr(self.deployment_entities, self.resources, 'cpu')
-        for resource in self.resources:
-            resource.print()
