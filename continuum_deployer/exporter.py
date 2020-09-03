@@ -19,8 +19,8 @@ class Exporter():
         deployment.yaml = result
         return deployment
 
-    def export(self, matchedResources):
-        for resource in matchedResources:
+    def export(self, matched_resources):
+        for resource in matched_resources:
             for deployment in resource.get_deployments():
                 deployment = self._add_hostname_label(
                     resource.name, deployment)

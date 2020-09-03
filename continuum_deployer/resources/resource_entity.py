@@ -38,11 +38,11 @@ class ResourceEntity:
     def print(self):
         click.echo("NAME: {}".format(self.name))
         click.echo("CPU: {}".format(self.cpu))
-        UI.printPercentBar('CPU', (sum(d.cpu for d in self.deployments)/self.cpu) * 100
-                           if len(self.deployments) != 0 else 0)
+        UI.print_percent_bar('CPU', (sum(d.cpu for d in self.deployments)/self.cpu) * 100
+                             if len(self.deployments) != 0 else 0)
         click.echo("MEMORY: {}".format(self.memory))
-        UI.printPercentBar('RAM', (sum(d.memory for d in self.deployments)/self.memory) * 100
-                           if len(self.deployments) != 0 else 0)
+        UI.print_percent_bar('RAM', (sum(d.memory for d in self.deployments)/self.memory) * 100
+                             if len(self.deployments) != 0 else 0)
         click.echo("DEPLOYMENTS: {}".format(self.deployments))
         click.echo("---")
 

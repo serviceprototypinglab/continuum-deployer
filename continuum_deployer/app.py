@@ -11,6 +11,7 @@ from continuum_deployer.exporter import Exporter
 
 @click.group()
 def cli():
+    """Stub for click implementation"""
     pass
 
 
@@ -65,7 +66,7 @@ def match(resources, deployment, type, solver):
     elif solver == 'greedy':
         matcher = Greedy(deployment_entities, resources.get_resources())
     matcher.match()
-    matcher.printResources()
+    matcher.print_resources()
 
     resources_matched = matcher.get_resources()
     exporter = Exporter(stdout=True)

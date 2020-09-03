@@ -11,7 +11,7 @@ class Matcher():
                  deployment_entities: DeploymentEntity,
                  resources: Resources):
         self.deployment_entities = deployment_entities
-        self.resources = resources = resources
+        self.resources = resources
 
     def check_upper_bound(self, entities, resources):
         # find max of resource requests on deployment entities
@@ -54,7 +54,7 @@ class Matcher():
         """Main matcher method"""
         self.check_upper_bound(self.deployment_entities, self.resources)
 
-    def printResources(self):
+    def print_resources(self):
         for res in self.resources:
             res.print()
 
