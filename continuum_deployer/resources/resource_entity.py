@@ -45,3 +45,6 @@ class ResourceEntity:
                            if len(self.deployments) != 0 else 0)
         click.echo("DEPLOYMENTS: {}".format(self.deployments))
         click.echo("---")
+
+    def get_deployments(self):
+        return self.deployments

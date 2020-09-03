@@ -57,3 +57,9 @@ class Matcher():
     def printResources(self):
         for res in self.resources:
             res.print()
+
+    def get_resources(self):
+        return self.resources
+
+    def get_deployment_entities(self):
+        return self.deployment_entities
