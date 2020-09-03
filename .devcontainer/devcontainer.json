@@ -31,7 +31,8 @@
 	"extensions": [
 		"ms-python.python",
 		"redhat.vscode-yaml",
-		"fabiospampinato.vscode-todo-plus"
+		"fabiospampinato.vscode-todo-plus",
+		"sonarsource.sonarlint-vscode"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],

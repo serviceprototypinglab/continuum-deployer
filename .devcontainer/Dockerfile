@@ -17,10 +17,12 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 
 # [Optional] Uncomment this section to install additional packages.
 #
-# RUN apt-get update \
-#     && export DEBIAN_FRONTEND=noninteractive \
-#    && apt-get -y install --no-install-recommends <your-package-list-here>
+RUN apt-get update \
+    && export DEBIAN_FRONTEND=noninteractive \
+    # install JRE for SonarLint
+    && apt-get -y install --no-install-recommends default-jre
 
+# install helm for helm templating
 RUN wget https://get.helm.sh/helm-v3.3.0-linux-amd64.tar.gz -O /tmp/helm \
     && tar -zxvf /tmp/helm \
     && mv linux-amd64/helm /usr/local/bin/helm \
