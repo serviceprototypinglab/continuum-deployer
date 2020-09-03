@@ -14,6 +14,7 @@ class ResourceEntity:
     memory: float = field(default=None)
     cpu: float = field(default=None)
     deployments: List[DeploymentEntity] = field(default_factory=list)
+    labels: dict = field(default=None)
 
     def check_resources_fit(self, entity):
         avaiable_cpu = self.cpu
@@ -44,6 +45,7 @@ class ResourceEntity:
         UI.print_percent_bar('RAM', (sum(d.memory for d in self.deployments)/self.memory) * 100
                              if len(self.deployments) != 0 else 0)
         click.echo("DEPLOYMENTS: {}".format(self.deployments))
+        click.echo("LABEL: {}".format(self.labels))
         click.echo("---")
 
     def get_deployments(self):

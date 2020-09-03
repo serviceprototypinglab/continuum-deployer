@@ -6,6 +6,8 @@ resources:
   - name: node-1
     cpu: 2
     memory: 8000
+    labels:
+      cloud: public
   - name: node-2
     cpu: 3
     memory: 3000

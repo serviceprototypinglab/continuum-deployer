@@ -30,6 +30,7 @@ class Resources:
             _resource.name = node.get('name')
             _resource.memory = node.get('memory')
             _resource.cpu = node.get('cpu')
+            _resource.labels = node.get('labels', None)
             self.resources.append(_resource)
 
     def print_resources(self):
