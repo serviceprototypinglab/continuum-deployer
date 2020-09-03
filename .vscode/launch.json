@@ -58,6 +58,24 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Run CLI match SAT with file output",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "match",
+                "-r",
+                "./resources/default.yaml",
+                "-d",
+                "./charts/sample_multi.yaml",
+                "-s",
+                "sat",
+                "-o",
+                "./output_local/output.yaml"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Run CLI match Greedy",
             "type": "python",
             "request": "launch",

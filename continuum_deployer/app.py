@@ -9,10 +9,11 @@ from continuum_deployer.matching.sat import SAT
 from continuum_deployer.exporter import Exporter
 
 
-_HELPTEXT_TYPE = 'Deployment DSL type (default: helm)'
+_HELPTEXT_TYPE = 'Deployment DSL type'
 _HELPTEXT_DSL = 'Path to DSL file'
 _HELPTEXT_RESOURCES = 'Path to resources file'
 _HELPTEXT_SOLVER = 'Solver to match deployments to resources'
+_HELPTEXT_OUTPUT = 'Path to output file'
 
 
 @click.group()
@@ -49,9 +50,10 @@ def parse_resources(file):
 @cli.command()
 @click.option('-r', '--resources', required=True, help=_HELPTEXT_RESOURCES)
 @click.option('-d', '--deployment', required=True, help=_HELPTEXT_DSL)
-@click.option('-t', '--type', type=click.Choice(['helm']), default='helm', help=_HELPTEXT_TYPE)
-@click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat', help=_HELPTEXT_SOLVER)
-def match(resources, deployment, type, solver):
+@click.option('-t', '--type', type=click.Choice(['helm']), default='helm', show_default=True, help=_HELPTEXT_TYPE)
+@click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat', show_default=True, help=_HELPTEXT_SOLVER)
+@click.option('-o', '--output', 'output_path', type=str, help=_HELPTEXT_OUTPUT)
+def match(resources, deployment, type, solver, output_path):
 
     _deployment_file = open(deployment, 'r')
 
@@ -75,8 +77,18 @@ def match(resources, deployment, type, solver):
     matcher.print_resources()
 
     resources_matched = matcher.get_resources()
-    exporter = Exporter(stdout=True)
+
+    file = None
+
+    if output_path is None:
+        exporter = Exporter(stdout=True)
+    else:
+        file = open(output_path, "w")
+        exporter = Exporter(output_stream=file)
     exporter.export(resources_matched)
+
+    if file is not None:
+        file.close()
 
 
 if __name__ == "__main__":

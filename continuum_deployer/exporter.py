@@ -3,13 +3,18 @@ import yaml
 
 class Exporter():
 
-    def __init__(self, stdout=False):
+    def __init__(self, stdout=False, output_stream=None):
         self.stdout = stdout
+        self.output_stream = output_stream
 
     def _output(self, content):
         if self.stdout:
             print('---')
             print(content)
+
+        if self.output_stream is not None:
+            self.output_stream.write('---\n')
+            self.output_stream.write(content)
 
     def _add_hostname_label(self, hostname, deployment):
         KUBE_HOSTNAME_LABEL_KEY = 'kubernetes.io/hostname'
