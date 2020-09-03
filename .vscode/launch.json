@@ -42,7 +42,7 @@
             "module": "pytest"
         },
         {
-            "name": "Run CLI match",
+            "name": "Run CLI match SAT",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/continuum_deployer/app.py",
@@ -51,7 +51,25 @@
                 "-r",
                 "./resources/default.yaml",
                 "-d",
-                "./charts/sample_multi.yaml"
+                "./charts/sample_multi.yaml",
+                "-s",
+                "sat"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Run CLI match Greedy",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "match",
+                "-r",
+                "./resources/default.yaml",
+                "-d",
+                "./charts/sample_multi.yaml",
+                "-s",
+                "greedy"
             ],
             "console": "integratedTerminal"
         },

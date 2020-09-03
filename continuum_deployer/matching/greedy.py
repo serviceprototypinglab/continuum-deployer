@@ -4,7 +4,7 @@ from continuum_deployer.resources.resource_entity import ResourceEntity
 from continuum_deployer.matching.matcher import Matcher
 
 
-class Greddy(Matcher):
+class Greedy(Matcher):
 
     @staticmethod
     def sort_by_attr(items, attr):
@@ -18,11 +18,11 @@ class Greddy(Matcher):
         return False
 
     def greedy_attr(self, entities, resources, attr):
-        entities_sorted = Greddy.sort_by_attr(entities, attr)
-        resources_sorted = Greddy.sort_by_attr(resources, attr)
+        entities_sorted = Greedy.sort_by_attr(entities, attr)
+        resources_sorted = Greedy.sort_by_attr(resources, attr)
 
         for entity in entities_sorted:
-            if not Greddy.deploy_iterate(entity, resources_sorted):
+            if not Greedy.deploy_iterate(entity, resources_sorted):
                 click.echo(click.style(
                     '[Error] Deployment entity ({}) '
                     'not scheduable with greedy algorithm.'.format(
@@ -30,7 +30,7 @@ class Greddy(Matcher):
                     fg='red'), err=True)
 
     def match(self):
-        super(Greddy, self).match()
+        super(Greedy, self).match()
 
         self.greedy_attr(self.deployment_entities, self.resources, 'cpu')
         for resource in self.resources:

@@ -3,7 +3,8 @@ import click
 from continuum_deployer.extractors.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.matching.matcher import Matcher
-from continuum_deployer.matching.greedy import Greddy
+from continuum_deployer.matching.greedy import Greedy
+from continuum_deployer.matching.sat import SAT
 
 
 @click.group()
@@ -40,7 +41,8 @@ def parse_resources(file):
 @click.option('-r', '--resources', required=True, help='Path to resources file')
 @click.option('-d', '--deployment', required=True, help='Path to deployment DSL file')
 @click.option('-t', '--type', type=click.Choice(['helm']), default='helm')
-def match(resources, deployment, type):
+@click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat')
+def match(resources, deployment, type, solver):
 
     _deployment_file = open(deployment, 'r')
 
@@ -56,7 +58,10 @@ def match(resources, deployment, type):
     resources = Resources()
     resources.parse(_resources_file)
 
-    matcher = Greddy(deployment_entities, resources.get_resources())
+    if solver == 'sat':
+        matcher = SAT(deployment_entities, resources.get_resources())
+    elif solver == 'greedy':
+        matcher = Greedy(deployment_entities, resources.get_resources())
     matcher.match()
     matcher.printResources()
 
