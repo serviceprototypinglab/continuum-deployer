@@ -1,10 +1,12 @@
 import click
+import yaml
 
 from continuum_deployer.extractors.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.matching.matcher import Matcher
 from continuum_deployer.matching.greedy import Greedy
 from continuum_deployer.matching.sat import SAT
+from continuum_deployer.exporter import Exporter
 
 
 @click.group()
@@ -64,6 +66,10 @@ def match(resources, deployment, type, solver):
         matcher = Greedy(deployment_entities, resources.get_resources())
     matcher.match()
     matcher.printResources()
+
+    resources_matched = matcher.get_resources()
+    exporter = Exporter(stdout=True)
+    exporter.export(resources_matched)
 
 
 if __name__ == "__main__":

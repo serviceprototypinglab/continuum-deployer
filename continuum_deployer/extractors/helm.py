@@ -66,6 +66,8 @@ class Helm(Extractor):
 
                 # TODO add support for >1 scaled deployments
                 deployment = DeploymentEntity()
+                # save YAML doc repesentation
+                deployment.yaml = doc
                 _name = doc.get('metadata', None).get('name', None)
                 if _name != None:
                     deployment.name = _name

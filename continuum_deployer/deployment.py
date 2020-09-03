@@ -10,3 +10,4 @@ class DeploymentEntity:
     memory_limit: float = field(default=None)
     cpu: float = field(default=None)
     cpu_limit: float = field(default=None)
+    yaml: dict = field(default=None)
