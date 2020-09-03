@@ -9,15 +9,21 @@ from continuum_deployer.matching.sat import SAT
 from continuum_deployer.exporter import Exporter
 
 
+_HELPTEXT_TYPE = 'Deployment DSL type (default: helm)'
+_HELPTEXT_DSL = 'Path to DSL file'
+_HELPTEXT_RESOURCES = 'Path to resources file'
+_HELPTEXT_SOLVER = 'Solver to match deployments to resources'
+
+
 @click.group()
 def cli():
-    """Stub for click implementation"""
+    """Prototypical Continuum Computing Deployer"""
     pass
 
 
 @cli.command()
-@click.option('-f', '--file', required=True, help='Path to DSL file')
-@click.option('-t', '--type', type=click.Choice(['helm']), default='helm')
+@click.option('-f', '--file', required=True, help=_HELPTEXT_DSL)
+@click.option('-t', '--type', type=click.Choice(['helm']), default='helm', help=_HELPTEXT_TYPE)
 def print_resources(file, type):
 
     stream = open(file, 'r')
@@ -31,7 +37,7 @@ def print_resources(file, type):
 
 
 @cli.command()
-@click.option('-f', '--file', required=True, help='Path to resources file')
+@click.option('-f', '--file', required=True, help=_HELPTEXT_RESOURCES)
 def parse_resources(file):
 
     stream = open(file, 'r')
@@ -41,10 +47,10 @@ def parse_resources(file):
 
 
 @cli.command()
-@click.option('-r', '--resources', required=True, help='Path to resources file')
-@click.option('-d', '--deployment', required=True, help='Path to deployment DSL file')
-@click.option('-t', '--type', type=click.Choice(['helm']), default='helm')
-@click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat')
+@click.option('-r', '--resources', required=True, help=_HELPTEXT_RESOURCES)
+@click.option('-d', '--deployment', required=True, help=_HELPTEXT_DSL)
+@click.option('-t', '--type', type=click.Choice(['helm']), default='helm', help=_HELPTEXT_TYPE)
+@click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat', help=_HELPTEXT_SOLVER)
 def match(resources, deployment, type, solver):
 
     _deployment_file = open(deployment, 'r')
