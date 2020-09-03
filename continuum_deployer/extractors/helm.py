@@ -19,11 +19,11 @@ class Helm(Extractor):
             return None
 
         # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-        # TODO check CPU calculation based on docs
+        # CPU calculation based on: https://medium.com/@betz.mark/understanding-resource-limits-in-kubernetes-cpu-time-9eff74d3161b
         if type(cpu_value) is str:
             if 'm' in cpu_value:
                 cpu_value = cpu_value.strip('m')
-                cpu_value = 10/int(cpu_value)
+                cpu_value = int(cpu_value)/1000
 
         return float(cpu_value)
 

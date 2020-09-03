@@ -15,7 +15,7 @@ def test_resource_extract(extractor):
 
     assert modules[0].cpu == 0.1
     assert modules[0].memory == 256
-    assert modules[0].cpu_limit == 0.05
+    assert modules[0].cpu_limit == 0.2
     assert modules[0].memory_limit == 512
 
 

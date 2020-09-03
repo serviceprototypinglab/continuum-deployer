@@ -17,7 +17,7 @@ spec:
             - containerPort: 80
           resources:
             requests:
-              cpu: 1000m
+              cpu: 400m
               memory: 512M
 ---
 apiVersion: apps/v1
@@ -39,4 +39,46 @@ spec:
           resources:
             requests:
               cpu: 4
+              memory: 512M
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-3
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 2
+              memory: 1024M
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-4
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 2
               memory: 512M
