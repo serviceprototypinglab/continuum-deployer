@@ -11,3 +11,4 @@ class DeploymentEntity:
     cpu: float = field(default=None)
     cpu_limit: float = field(default=None)
     yaml: dict = field(default=None)
+    labels: dict = field(default=None)

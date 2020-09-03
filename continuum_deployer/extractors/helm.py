@@ -76,6 +76,10 @@ class Helm(Extractor):
                         '[Error] No name provided in object metadata', fg='red'), err=True)
                     exit(1)
 
+                _labels = doc.get('metadata', None).get('labels', None)
+                if _labels is not None:
+                    deployment.labels = _labels
+
                 for container in doc['spec']['template']['spec']['containers']:
                     if container['resources']:
                         _request = container.get(
