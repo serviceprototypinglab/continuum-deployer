@@ -29,6 +29,14 @@ class Greedy(Matcher):
                         entity),
                     fg='red'), err=True)
 
+    def do_matching(self, deployment_entities, resources):
+        """
+        Does actual deployment to resource matching
+
+        :return matched resources with assigned deployments
+        """
+
+        self.greedy_attr(deployment_entities, resources, 'cpu')
+
     def match(self):
         super(Greedy, self).match()
-        self.greedy_attr(self.deployment_entities, self.resources, 'cpu')

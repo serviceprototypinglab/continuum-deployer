@@ -11,6 +11,8 @@ from continuum_deployer.resources.resources import Resources, ResourceEntity
 
 class SAT(Matcher):
 
+    CPU_SCALE_FACTOR = 10e2
+
     def __init__(self,
                  deployment_entities: DeploymentEntity,
                  resources: Resources):
@@ -18,16 +20,27 @@ class SAT(Matcher):
         self.model = cp_model.CpModel()
 
     @staticmethod
-    def scale_cpu_values(deployment_entities):
+    def scale_cpu_values(entities, idle=False):
         result = list()
-        for deployment in deployment_entities:
-            result.append(int(deployment.cpu*10e2))
+        for entity in entities:
+            if idle:
+                result.append(
+                    int(entity.get_idle_cpu()*SAT.CPU_SCALE_FACTOR))
+            else:
+                result.append(int(entity.cpu*SAT.CPU_SCALE_FACTOR))
         return result
 
-    def setup_model(self):
+    @staticmethod
+    def get_deployment_names(deployments):
+        _result = []
+        for deployment in deployments:
+            _result.append(deployment.name)
+        return _result
 
-        _res_scaled_cpu = SAT.scale_cpu_values(self.resources)
-        _dep_scaled_cpu = SAT.scale_cpu_values(self.deployment_entities)
+    def do_matching(self, deployment_entities, resources):
+
+        _res_scaled_cpu = SAT.scale_cpu_values(resources, idle=True)
+        _dep_scaled_cpu = SAT.scale_cpu_values(deployment_entities)
 
         iter_resources = range(len(_res_scaled_cpu))
         iter_deployment = range(len(_dep_scaled_cpu))
@@ -51,17 +64,17 @@ class SAT(Matcher):
             self.model.Add(sum(_dep_scaled_cpu[j] * x[i][j]
                                for j in iter_deployment) <= _res_scaled_cpu[i])
             self.model.Add(sum(ent.memory * x[i][j]
-                               for j, ent in enumerate(self.deployment_entities)) <= self.resources[i].memory)
+                               for j, ent in enumerate(deployment_entities)) <= resources[i].get_idle_memory())
 
         # Objective: overall idle resources
         idle_cpu = self.model.NewIntVar(
             0, sum(_res_scaled_cpu[i] for i in iter_resources), 'idle_cpu')
         idle_ram = self.model.NewIntVar(
-            0, sum(res.memory for i, res in enumerate(self.resources)), 'idle_ram')
+            0, sum(res.get_idle_memory() for i, res in enumerate(resources)), 'idle_ram')
         self.model.Add(idle_cpu == sum(_res_scaled_cpu[i] for i in iter_resources) - sum(
             x[i][j] * _dep_scaled_cpu[j] for j in iter_deployment for i in iter_resources))
-        self.model.Add(idle_ram == sum(res.memory for i, res in enumerate(self.resources)) - sum(
-            x[i][j] * dep.memory for j, dep in enumerate(self.deployment_entities) for i in iter_resources))
+        self.model.Add(idle_ram == sum(res.get_idle_memory() for i, res in enumerate(resources)) - sum(
+            x[i][j] * dep.memory for j, dep in enumerate(deployment_entities) for i in iter_resources))
 
         self.model.Maximize(idle_cpu)
         self.model.Maximize(idle_ram)
@@ -72,13 +85,18 @@ class SAT(Matcher):
         if status == cp_model.OPTIMAL:
             print('Total idle resources = %i' % solver.ObjectiveValue())
 
-            for i, res in enumerate(self.resources):
-                for j, dep in enumerate(self.deployment_entities):
+            for i, res in enumerate(resources):
+                for j, dep in enumerate(deployment_entities):
                     if solver.Value(x[i][j]) == 1:
                         res.add_deployment(dep)
+        elif status == cp_model.INFEASIBLE:
+            _names = SAT.get_deployment_names(deployment_entities)
+            click.echo(click.style(
+                '[Error] Deployments entity ({}) '
+                'not scheduable with SAT solver in '
+                'resource group due to infeasibility.'.format(_names), fg='red'), err=True)
 
         print(solver.ResponseStats())
 
     def match(self):
         super(SAT, self).match()
-        self.setup_model()

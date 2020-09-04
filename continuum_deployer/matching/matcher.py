@@ -7,11 +7,15 @@ from continuum_deployer.resources.resources import Resources, ResourceEntity
 
 class Matcher():
 
+    UNLABELED_TOKEN = 'unlabeled'
+
     def __init__(self,
                  deployment_entities: DeploymentEntity,
                  resources: Resources):
         self.deployment_entities = deployment_entities
         self.resources = resources
+        self.grouped_deployments = None
+        self.grouped_resources = None
 
     def check_upper_bound(self, entities, resources):
         # find max of resource requests on deployment entities
@@ -50,9 +54,63 @@ class Matcher():
                 fg='red'), err=True)
             raise Exception
 
+    @staticmethod
+    def _tokenize_label(label: dict):
+        _first_key = list(label)[0]
+        return '{}-{}'.format(_first_key, label.get(_first_key))
+
+    @staticmethod
+    def _token_exists_or_create(data, token):
+        if token not in data:
+            data[token] = []
+        return data
+
+    def group(self, entities):
+        _grouping = dict()
+
+        for entity in entities:
+            if entity.labels is None:
+                # entity is unlabeled
+                _grouping = Matcher._token_exists_or_create(
+                    _grouping, self.UNLABELED_TOKEN)
+                _grouping[self.UNLABELED_TOKEN].append(entity)
+            else:
+                # entity is labeled
+                _first_key = list(entity.labels)[0]
+                _token = Matcher._tokenize_label(
+                    {_first_key: entity.labels[_first_key]})
+                _grouping = Matcher._token_exists_or_create(_grouping, _token)
+                _grouping[_token].append(entity)
+        return _grouping
+
+    def do_matching(self, deployment_entities, resources):
+        """
+        Does actual deployment to resource matching
+        """
+        raise NotImplementedError
+
     def match(self):
         """Main matcher method"""
         self.check_upper_bound(self.deployment_entities, self.resources)
+        self.match_labeled()
+
+    def match_labeled(self):
+        self.grouped_deployments = self.group(self.deployment_entities)
+        self.grouped_resources = self.group(self.resources)
+
+        # TODO: check if all deployment labels exist in on resources side
+
+        _unlabeled_deployments = self.grouped_deployments.pop(
+            self.UNLABELED_TOKEN)
+        _leftover_resources = self.grouped_resources.pop(self.UNLABELED_TOKEN)
+
+        for token in sorted(self.grouped_deployments.keys()):
+            self.do_matching(
+                self.grouped_deployments[token], self.grouped_resources[token])
+            _leftover_resources.extend(self.grouped_resources[token])
+
+        self.do_matching(
+            _unlabeled_deployments, _leftover_resources)
 
     def print_resources(self):
         for res in self.resources:

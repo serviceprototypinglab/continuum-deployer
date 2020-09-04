@@ -3,6 +3,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment-1
+  labels:
+    cloud: public
 spec:
   replicas: 1
   template:

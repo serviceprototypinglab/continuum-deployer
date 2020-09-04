@@ -50,3 +50,9 @@ class ResourceEntity:
 
     def get_deployments(self):
         return self.deployments
+
+    def get_idle_cpu(self):
+        return self.cpu - sum(d.cpu for d in self.deployments)
+
+    def get_idle_memory(self):
+        return self.memory - sum(d.memory for d in self.deployments)
