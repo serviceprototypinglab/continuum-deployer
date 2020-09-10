@@ -37,16 +37,23 @@ class ResourceEntity:
             return False
 
     def print(self):
-        click.echo("NAME: {}".format(self.name))
-        click.echo("CPU: {}".format(self.cpu))
+        click.echo(click.style("Name: {}".format(self.name), fg='bright_blue'))
+        click.echo(click.style("CPU: {} \t MEMORY: {} MB".format(
+            self.cpu, self.memory
+        ), fg=None))
         UI.print_percent_bar('CPU', (sum(d.cpu for d in self.deployments)/self.cpu) * 100
                              if len(self.deployments) != 0 else 0)
-        click.echo("MEMORY: {}".format(self.memory))
         UI.print_percent_bar('RAM', (sum(d.memory for d in self.deployments)/self.memory) * 100
                              if len(self.deployments) != 0 else 0)
-        click.echo("DEPLOYMENTS: {}".format(self.deployments))
-        click.echo("LABEL: {}".format(self.labels))
-        click.echo("---")
+        _printed_deployments = "\n"
+        for deployment in self.deployments:
+            _printed_deployments += "\t {}, cpu={}, memory={}, label=[{}] \n".format(
+                deployment.name, deployment.cpu, deployment.memory, UI.pretty_label_string(
+                    deployment.labels)
+            )
+        click.echo("DEPLOYMENTS: {}".format(_printed_deployments.rstrip("\n")))
+        click.echo("LABEL: {}".format(UI.pretty_label_string(self.labels)))
+        click.echo("-----------------------------------------------------------")
 
     def get_deployments(self):
         return self.deployments
