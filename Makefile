@@ -18,3 +18,7 @@ install:
 
 uninstall:
 	pip uninstall ${PKGNAME}
+
+install-req:
+	pip3 install --user -r requirements.txt
+	pip3 install --user -r requirements-dev.txt
