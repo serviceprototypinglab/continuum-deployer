@@ -30,6 +30,7 @@ class Helm(Extractor):
     @staticmethod
     def parse_k8s_memory_value(memory_value):
         # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+        # https://medium.com/@betz.mark/understanding-resource-limits-in-kubernetes-memory-6b41e9a955f9
         _K8S_MEMORY_SUFFIXES_FIXED = ['E', 'P', 'T', 'G', 'M', 'K']
         _K8S_MEMORY_SUFFIXES_POWER = ['Ei', 'Pi', 'Ti', 'Gi', 'Mi', 'Ki']
         _K8S_MEMORY_SUFFIXES = \

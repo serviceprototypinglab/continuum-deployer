@@ -4,6 +4,8 @@
 Install dependencies
 ```shell
 pip install -r requirements.txt
+# or
+make install-req
 ```
 
 ## Runs tests
@@ -16,6 +18,16 @@ Build python package
 
 ```shell
 python setup.py bdist_wheel
+# or
+make dist
+```
+
+## Clean workspace
+Remove compiled python files and remove build resources.
+
+```shell
+make clean-pyc
+make clean-build
 ```
 
 ## Usage
