@@ -33,5 +33,10 @@ setup(
     extras_require={
         'dev': requires_dev
     },
-    dependency_links=links
+    dependency_links=links,
+    entry_points={
+        "console_scripts": [
+            "continuum-deployer = continuum_deployer.app:cli"
+        ]
+    }
 )
