@@ -17,14 +17,14 @@ class ResourceEntity:
     labels: dict = field(default=None)
 
     def check_resources_fit(self, entity):
-        avaiable_cpu = self.cpu
-        avaiable_memory = self.memory
+        available_cpu = self.cpu
+        available_memory = self.memory
         deployments_proposal = self.deployments + [entity]
         for deployment in deployments_proposal:
-            avaiable_cpu -= deployment.cpu
-            avaiable_memory -= deployment.memory
+            available_cpu -= deployment.cpu
+            available_memory -= deployment.memory
 
-        if avaiable_memory >= 0 and avaiable_cpu >= 0:
+        if available_memory >= 0 and available_cpu >= 0:
             return True
         else:
             return False

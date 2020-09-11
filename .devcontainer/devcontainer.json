@@ -33,7 +33,8 @@
 		"redhat.vscode-yaml",
 		"fabiospampinato.vscode-todo-plus",
 		"sonarsource.sonarlint-vscode",
-		"njpwerner.autodocstring"
+		"njpwerner.autodocstring",
+		"streetsidesoftware.code-spell-checker"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],

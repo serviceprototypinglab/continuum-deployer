@@ -39,7 +39,7 @@ class Helm(Extractor):
             # exponential notation e.g. 3e2 = 300
             if 'e' in memory_value:
                 memory_value = float(memory_value)
-            # check if power-of-two notiation is used
+            # check if power-of-two notation is used
             # it is important to check power-of-two first as fixed-point comparison would also match
             elif [e for e in _K8S_MEMORY_SUFFIXES_POWER if(e in memory_value)]:
                 if 'Ki' in memory_value:
@@ -63,7 +63,7 @@ class Helm(Extractor):
                 else:
                     raise NotImplementedError(
                         'Memory value unit of {} not implemented'.format(memory_value))
-            # check if fixed-point integer notiation is used
+            # check if fixed-point integer notation is used
             elif [e for e in _K8S_MEMORY_SUFFIXES_FIXED if(e in memory_value)]:
                 if 'M' in memory_value:
                     memory_value = memory_value.strip('M')
@@ -93,7 +93,7 @@ class Helm(Extractor):
 
     def parse(self, dsl_input):
 
-        # see default loader deprication
+        # see default loader deprecation
         # https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation
         docs = yaml.load_all(dsl_input, Loader=yaml.SafeLoader)
 
@@ -104,7 +104,7 @@ class Helm(Extractor):
 
                 # TODO add support for >1 scaled deployments
                 deployment = DeploymentEntity()
-                # save YAML doc repesentation
+                # save YAML doc representation
                 deployment.yaml = doc
                 _name = doc.get('metadata', None).get('name', None)
                 if _name != None:

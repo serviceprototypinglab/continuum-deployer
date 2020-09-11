@@ -19,10 +19,10 @@ class Resources:
                     'required field {}.'.format(field), fg='red'), err=True)
                 exit(1)
 
-    def parse(self, definiton):
-        # see default loader deprication
+    def parse(self, definition):
+        # see default loader deprecation
         # https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation
-        nodes = yaml.load(definiton, Loader=yaml.SafeLoader)['resources']
+        nodes = yaml.load(definition, Loader=yaml.SafeLoader)['resources']
 
         for node in nodes:
             self.check_mandatory_fields(node)

@@ -24,7 +24,7 @@ class Exporter():
 
     @staticmethod
     def _add_hostname_label(hostname, deployment):
-        """Adds Kubernetes hostname label to depoyments
+        """Adds Kubernetes hostname label to deployments
 
         Args:
             hostname (str): node hostname, label content

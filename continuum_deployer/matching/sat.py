@@ -93,7 +93,7 @@ class SAT(Matcher):
             _names = SAT.get_deployment_names(deployment_entities)
             click.echo(click.style(
                 '[Error] Deployments entity ({}) '
-                'not scheduable with SAT solver in '
+                'not schedulable with SAT solver in '
                 'resource group due to infeasibility.'.format(_names), fg='red'), err=True)
 
         print(solver.ResponseStats())
