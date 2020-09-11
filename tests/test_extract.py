@@ -1,5 +1,5 @@
 import pytest
-from continuum_deployer.extractors.helm import Helm
+from continuum_deployer.dsl.importer.helm import Helm
 
 
 @pytest.fixture(scope="function")

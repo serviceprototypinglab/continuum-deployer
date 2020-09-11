@@ -1,12 +1,12 @@
 import click
 import yaml
 
-from continuum_deployer.extractors.helm import Helm
+from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.matching.matcher import Matcher
 from continuum_deployer.matching.greedy import Greedy
 from continuum_deployer.matching.sat import SAT
-from continuum_deployer.exporter import Exporter
+from continuum_deployer.dsl.exporter.exporter import Exporter
 
 
 _HELPTEXT_TYPE = 'Deployment DSL type'

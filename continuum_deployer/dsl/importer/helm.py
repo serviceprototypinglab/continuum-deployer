@@ -4,11 +4,11 @@ import click
 from bitmath import KiB, MiB, GiB, TiB, PiB, EiB, kB, MB, GB, TB, PB, EB
 from progress.spinner import Spinner
 
-from continuum_deployer.extractors.extractor import Extractor
+from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.resources.deployment import DeploymentEntity
 
 
-class Helm(Extractor):
+class Helm(Importer):
 
     # TODO add support for plain Pods - requires change in parse()
     K8S_OBJECTS = ['Deployment', 'ReplicaSet',

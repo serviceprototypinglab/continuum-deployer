@@ -3,7 +3,7 @@ import click
 from continuum_deployer.resources.deployment import DeploymentEntity
 
 
-class Extractor:
+class Importer:
     """Interface that defines interaction with several DSL specific extractor implementations."""
 
     def __init__(self):
