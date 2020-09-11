@@ -1,7 +1,7 @@
 import pytest
 from continuum_deployer.matching.matcher import Matcher
 from continuum_deployer.matching.greedy import Greedy
-from continuum_deployer.deployment import DeploymentEntity
+from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resource_entity import ResourceEntity
 
 

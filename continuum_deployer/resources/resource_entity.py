@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import List
 import click
 
-from continuum_deployer.deployment import DeploymentEntity
+from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.utils.ui import UI
 
 

@@ -5,7 +5,7 @@ from ortools.sat.python import cp_model
 
 
 from continuum_deployer.matching.matcher import Matcher
-from continuum_deployer.deployment import DeploymentEntity
+from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
 
 

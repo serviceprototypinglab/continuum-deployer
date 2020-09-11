@@ -1,7 +1,7 @@
 import click
 import sys
 
-from continuum_deployer.deployment import DeploymentEntity
+from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
 
 
