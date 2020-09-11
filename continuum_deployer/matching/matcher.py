@@ -100,9 +100,12 @@ class Matcher():
 
         # TODO: check if all deployment labels exist in on resources side
 
-        _unlabeled_deployments = self.grouped_deployments.pop(
-            self.UNLABELED_TOKEN)
-        _leftover_resources = self.grouped_resources.pop(self.UNLABELED_TOKEN)
+        if self.UNLABELED_TOKEN in self.grouped_deployments:
+            _unlabeled_deployments = self.grouped_deployments.pop(
+                self.UNLABELED_TOKEN)
+        if self.UNLABELED_TOKEN in self.grouped_resources:
+            _leftover_resources = self.grouped_resources.pop(
+                self.UNLABELED_TOKEN)
 
         for token in sorted(self.grouped_deployments.keys()):
             self.do_matching(
