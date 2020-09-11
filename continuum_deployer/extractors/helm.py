@@ -1,6 +1,7 @@
 import yaml
 import json
 import click
+from bitmath import *
 
 from continuum_deployer.extractors.extractor import Extractor
 from continuum_deployer.deployment import DeploymentEntity
@@ -41,18 +42,54 @@ class Helm(Extractor):
             # check if power-of-two notiation is used
             # it is important to check power-of-two first as fixed-point comparison would also match
             elif [e for e in _K8S_MEMORY_SUFFIXES_POWER if(e in memory_value)]:
-                raise NotImplementedError
+                if 'Ki' in memory_value:
+                    memory_value = memory_value.strip('Ki')
+                    memory_value = KiB(float(memory_value)).to_MB().value
+                elif 'Mi' in memory_value:
+                    memory_value = memory_value.strip('Mi')
+                    memory_value = MiB(float(memory_value)).to_MB().value
+                elif 'Gi' in memory_value:
+                    memory_value = memory_value.strip('Gi')
+                    memory_value = GiB(float(memory_value)).to_MB().value
+                elif 'Ti' in memory_value:
+                    memory_value = memory_value.strip('Ti')
+                    memory_value = TiB(float(memory_value)).to_MB().value
+                elif 'Pi' in memory_value:
+                    memory_value = memory_value.strip('Ki')
+                    memory_value = PiB(float(memory_value)).to_MB().value
+                elif 'Ei' in memory_value:
+                    memory_value = memory_value.strip('Ei')
+                    memory_value = EiB(float(memory_value)).to_MB().value
+                else:
+                    raise NotImplementedError(
+                        'Memory value unit of {} not implemented'.format(memory_value))
             # check if fixed-point integer notiation is used
             elif [e for e in _K8S_MEMORY_SUFFIXES_FIXED if(e in memory_value)]:
                 if 'M' in memory_value:
                     memory_value = memory_value.strip('M')
+                elif 'K' in memory_value:
+                    memory_value = memory_value.strip('K')
+                    memory_value = kB(float(memory_value)).to_MB().value
+                elif 'G' in memory_value:
+                    memory_value = memory_value.strip('G')
+                    memory_value = GB(float(memory_value)).to_MB().value
+                elif 'T' in memory_value:
+                    memory_value = memory_value.strip('T')
+                    memory_value = TB(float(memory_value)).to_MB().value
+                elif 'P' in memory_value:
+                    memory_value = memory_value.strip('P')
+                    memory_value = PB(float(memory_value)).to_MB().value
+                elif 'E' in memory_value:
+                    memory_value = memory_value.strip('E')
+                    memory_value = EB(float(memory_value)).to_MB().value
                 else:
-                    raise NotImplementedError
+                    raise NotImplementedError(
+                        'Memory value unit of {} not implemented'.format(memory_value))
         # direct definition in bytes - convert to MB
         else:
             memory_value = memory_value/float('1e+6')
 
-        return int(memory_value)
+        return float(memory_value)
 
     def parse(self, dsl_input):
 
@@ -61,6 +98,8 @@ class Helm(Extractor):
         docs = yaml.load_all(dsl_input, Loader=yaml.SafeLoader)
 
         for doc in docs:
+            if doc is None:
+                continue
             if doc['kind'] in self.K8S_OBJECTS:
 
                 # TODO add support for >1 scaled deployments
@@ -81,32 +120,33 @@ class Helm(Extractor):
                     deployment.labels = _labels
 
                 for container in doc['spec']['template']['spec']['containers']:
-                    if container['resources']:
-                        _request = container.get(
-                            'resources', None).get('requests', None)
-                        if _request != None:
-                            deployment.memory = Helm.parse_k8s_memory_value(
-                                _request.get('memory'))
-                            deployment.cpu = Helm.parse_k8s_cpu_value(
-                                _request.get('cpu'))
-                        else:
-                            click.echo(click.style(
-                                ('[Warning] Module {} resource request provided. This can result '
-                                 'in suboptimal deployment placement.').format(_name), fg='yellow'))
+                    if 'resources' in container:
+                        if container['resources'] is not None:
+                            _request = container.get(
+                                'resources', None).get('requests', None)
+                            if _request != None:
+                                deployment.memory = Helm.parse_k8s_memory_value(
+                                    _request.get('memory'))
+                                deployment.cpu = Helm.parse_k8s_cpu_value(
+                                    _request.get('cpu'))
+                            else:
+                                click.echo(click.style(
+                                    ('[Warning] No resource request provided for module {}. This can result '
+                                     'in suboptimal deployment placement.').format(_name), fg='yellow'))
 
-                        _limits = container.get(
-                            'resources', None).get('limits', None)
-                        if _limits != None:
-                            deployment.memory_limit = Helm.parse_k8s_memory_value(
-                                _limits.get('memory'))
-                            deployment.cpu_limit = Helm.parse_k8s_cpu_value(
-                                _limits.get('cpu'))
-                        else:
-                            # as this is not an hard error just pass
-                            pass
+                            _limits = container.get(
+                                'resources', None).get('limits', None)
+                            if _limits != None:
+                                deployment.memory_limit = Helm.parse_k8s_memory_value(
+                                    _limits.get('memory'))
+                                deployment.cpu_limit = Helm.parse_k8s_cpu_value(
+                                    _limits.get('cpu'))
+                            else:
+                                # as this is not an hard error just pass
+                                pass
                     else:
                         click.echo(click.style(
-                            ('[Warning] Module {} resource request provided. This can result '
+                            ('[Warning] No resource request provided for module {}. This can result '
                              'in suboptimal deployment placement.').format(_name), fg='yellow'))
 
                 self.app_modules.append(deployment)
