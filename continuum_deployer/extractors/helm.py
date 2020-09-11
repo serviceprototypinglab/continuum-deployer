@@ -2,6 +2,7 @@ import yaml
 import json
 import click
 from bitmath import *
+from progress.spinner import Spinner
 
 from continuum_deployer.extractors.extractor import Extractor
 from continuum_deployer.deployment import DeploymentEntity
@@ -98,7 +99,12 @@ class Helm(Extractor):
         # https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation
         docs = yaml.load_all(dsl_input, Loader=yaml.SafeLoader)
 
+        spinner = Spinner('Parsing DSL ')
+
         for doc in docs:
+
+            spinner.next()
+
             if doc is None:
                 continue
             if doc['kind'] in self.K8S_OBJECTS:
@@ -132,7 +138,7 @@ class Helm(Extractor):
                                     _request.get('cpu'))
                             else:
                                 click.echo(click.style(
-                                    ('[Warning] No resource request provided for module {}. This can result '
+                                    ('\n[Warning] No resource request provided for module {}. This can result '
                                      'in suboptimal deployment placement.').format(_name), fg='yellow'))
 
                             _limits = container.get(
@@ -147,7 +153,7 @@ class Helm(Extractor):
                                 pass
                     else:
                         click.echo(click.style(
-                            ('[Warning] No resource request provided for module {}. This can result '
+                            ('\n[Warning] No resource request provided for module {}. This can result '
                              'in suboptimal deployment placement.').format(_name), fg='yellow'))
 
                 self.app_modules.append(deployment)

@@ -53,7 +53,7 @@ class ResourceEntity:
             )
         click.echo("DEPLOYMENTS: {}".format(_printed_deployments.rstrip("\n")))
         click.echo("LABEL: {}".format(UI.pretty_label_string(self.labels)))
-        click.echo("-----------------------------------------------------------")
+        click.echo("-----------------------------------------")
 
     def get_deployments(self):
         return self.deployments
