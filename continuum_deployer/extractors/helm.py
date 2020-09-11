@@ -1,7 +1,7 @@
 import yaml
 import json
 import click
-from bitmath import *
+from bitmath import KiB, MiB, GiB, TiB, PiB, EiB, kB, MB, GB, TB, PB, EB
 from progress.spinner import Spinner
 
 from continuum_deployer.extractors.extractor import Extractor
