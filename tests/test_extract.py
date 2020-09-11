@@ -28,3 +28,15 @@ def test_multi_component_extract(extractor):
     modules = extractor.get_app_modules()
 
     assert len(modules) == 2
+
+
+def test_k8s_memory_calc(extractor):
+    _memory_values = [
+        ['18M', 18],
+        ['12Ki', 0.012288],
+        ['1.5Gi', 1610.612736],
+        ['1G', 1000],
+    ]
+
+    for memory in _memory_values:
+        assert Helm.parse_k8s_memory_value(memory[0]) == memory[1]
