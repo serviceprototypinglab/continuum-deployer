@@ -40,6 +40,7 @@ def print_resources(file, type):
 @cli.command()
 @click.option('-f', '--file', required=True, help=_HELPTEXT_RESOURCES)
 def parse_resources(file):
+    """Parses the resources YAML and prints all extracted resource entities"""
 
     stream = open(file, 'r')
     resources = Resources()
@@ -54,6 +55,10 @@ def parse_resources(file):
 @click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat', show_default=True, help=_HELPTEXT_SOLVER)
 @click.option('-o', '--output', 'output_path', type=str, help=_HELPTEXT_OUTPUT)
 def match(resources, deployment, type, solver, output_path):
+    """
+        Matches the given deployments with the available resources
+        using the specified solver.
+    """
 
     _deployment_file = open(deployment, 'r')
 
