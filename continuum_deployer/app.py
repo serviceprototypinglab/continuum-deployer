@@ -7,6 +7,7 @@ from continuum_deployer.matching.matcher import Matcher
 from continuum_deployer.matching.greedy import Greedy
 from continuum_deployer.matching.sat import SAT
 from continuum_deployer.dsl.exporter.exporter import Exporter
+from continuum_deployer.utils.match_cli import MatchCli
 
 
 _HELPTEXT_TYPE = 'Deployment DSL type'
@@ -94,6 +95,22 @@ def nonint_match(resources, deployment, type, solver, output_path):
 
     if file is not None:
         file.close()
+
+
+@cli.command()
+@click.option('-r', '--resources', required=False, default=None, help=_HELPTEXT_RESOURCES)
+@click.option('-d', '--deployment', required=False, default=None, help=_HELPTEXT_DSL)
+@click.option('-t', '--type', type=click.Choice(['helm']), default='helm', show_default=True, help=_HELPTEXT_TYPE)
+@click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat', show_default=True, help=_HELPTEXT_SOLVER)
+@click.option('-o', '--output', 'output_path', type=str, help=_HELPTEXT_OUTPUT)
+def match(resources, deployment, type, solver, output_path):
+    """
+    Matches the given deployments with the available resources
+    interactively using the specified solver.
+    """
+
+    match_cli = MatchCli(resources, deployment)
+    match_cli.ask_resources()
 
 
 if __name__ == "__main__":

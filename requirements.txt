@@ -3,3 +3,5 @@ pyyaml
 ortools
 progress
 bitmath
+transitions
+prompt_toolkit

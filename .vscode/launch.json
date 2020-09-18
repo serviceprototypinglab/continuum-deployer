@@ -110,6 +110,16 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Run CLI interactively",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "match"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Run Tests",
             "type": "python",
             "request": "launch",

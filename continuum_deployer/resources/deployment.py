@@ -1,4 +1,7 @@
 from dataclasses import dataclass, field
+import click
+
+from continuum_deployer.utils.ui import UI
 
 
 @dataclass
@@ -22,3 +25,11 @@ class DeploymentEntity:
     yaml: dict = field(default=None)
     # assigned labels
     labels: dict = field(default=None)
+
+    def print(self):
+        click.echo(click.style("Name: {}".format(self.name), fg='bright_blue'))
+        click.echo(click.style("CPU: {} \t MEMORY: {} MB".format(
+            self.cpu, self.memory
+        ), fg=None))
+        click.echo("LABEL: {}".format(UI.pretty_label_string(self.labels)))
+        click.echo("-----------------------------------------")

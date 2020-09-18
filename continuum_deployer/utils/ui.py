@@ -1,3 +1,5 @@
+import click
+import pydoc
 from progress.bar import Bar
 
 
@@ -30,3 +32,11 @@ class UI():
             for key in labels:
                 _result += "{}:{} ".format(key, labels[key])
         return _result.rstrip()
+
+    @staticmethod
+    def prompt_std(text):
+        return click.prompt(click.style(text, fg='blue'), type=str)
+
+    @staticmethod
+    def page(text):
+        pydoc.pager(text)
