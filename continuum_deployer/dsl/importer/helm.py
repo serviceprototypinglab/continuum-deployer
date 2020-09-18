@@ -91,7 +91,7 @@ class Helm(Importer):
         else:
             memory_value = memory_value/float('1e+6')
 
-        return float(memory_value)
+        return int(memory_value)
 
     def parse(self, dsl_input):
 
