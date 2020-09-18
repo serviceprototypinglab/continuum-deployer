@@ -1,3 +1,4 @@
+import copy
 import yaml
 import json
 import click
@@ -13,6 +14,7 @@ class Helm(Importer):
     # TODO add support for plain Pods - requires change in parse()
     K8S_OBJECTS = ['Deployment', 'ReplicaSet',
                    'StatefulSet', 'DaemonSet', 'Jobs', 'CronJob']
+    K8S_SCALE_CONTROLLER = ['Deployment', 'ReplicaSet', 'StatefulSet']
 
     @staticmethod
     def parse_k8s_cpu_value(cpu_value):
@@ -156,4 +158,18 @@ class Helm(Importer):
                             ('\n[Warning] No resource request provided for module {}. This can result '
                              'in suboptimal deployment placement.').format(_name), fg='yellow'))
 
-                self.app_modules.append(deployment)
+                # check if we have a scalable controller
+                if doc['kind'] in Helm.K8S_SCALE_CONTROLLER:
+                    _number_replicas = doc['spec'].get('replicas', 1)
+
+                    # check if we need to scale higher than 1
+                    if _number_replicas == 1:
+                        self.app_modules.append(deployment)
+                    else:
+                        _deployment_name = deployment.name
+                        for i in range(_number_replicas):
+                            # extent deployment name with replica number
+                            deployment.name = '{}-{}'.format(
+                                _deployment_name, i)
+                            # we need deepcopy to create new objects here in order to call append multiple times
+                            self.app_modules.append(copy.deepcopy(deployment))
