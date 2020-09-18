@@ -47,7 +47,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/continuum_deployer/app.py",
             "args": [
-                "match",
+                "nonint-match",
                 "-r",
                 "./resources/default.yaml",
                 "-d",
@@ -63,7 +63,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/continuum_deployer/app.py",
             "args": [
-                "match",
+                "nonint-match",
                 "-r",
                 "./resources/default.yaml",
                 "-d",
@@ -81,7 +81,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/continuum_deployer/app.py",
             "args": [
-                "match",
+                "nonint-match",
                 "-r",
                 "./resources/default.yaml",
                 "-d",
@@ -97,7 +97,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/continuum_deployer/app.py",
             "args": [
-                "match",
+                "nonint-match",
                 "-r",
                 "./resources/default.yaml",
                 "-d",

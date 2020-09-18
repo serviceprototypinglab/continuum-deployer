@@ -54,10 +54,10 @@ def parse_resources(file):
 @click.option('-t', '--type', type=click.Choice(['helm']), default='helm', show_default=True, help=_HELPTEXT_TYPE)
 @click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat', show_default=True, help=_HELPTEXT_SOLVER)
 @click.option('-o', '--output', 'output_path', type=str, help=_HELPTEXT_OUTPUT)
-def match(resources, deployment, type, solver, output_path):
+def nonint_match(resources, deployment, type, solver, output_path):
     """
         Matches the given deployments with the available resources
-        using the specified solver.
+        non-interactively using the specified solver.
     """
 
     _deployment_file = open(deployment, 'r')
