@@ -173,3 +173,5 @@ class Helm(Importer):
                                 _deployment_name, i)
                             # we need deepcopy to create new objects here in order to call append multiple times
                             self.app_modules.append(copy.deepcopy(deployment))
+                else:
+                    self.app_modules.append(deployment)

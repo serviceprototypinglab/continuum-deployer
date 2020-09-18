@@ -30,11 +30,21 @@ def test_multi_component_extract(extractor):
     assert len(modules) == 2
 
 
+def test_replicas_extract(extractor):
+    stream = open('./tests/yaml/replicas.yaml', 'r')
+
+    extractor.parse(stream)
+    modules = extractor.get_app_modules()
+
+    assert len(modules) == 6
+
+
 def test_k8s_memory_calc(extractor):
+    # TODO Do we need support for memory values < 1MB and float memory values
     _memory_values = [
         ['18M', 18],
-        ['12Ki', 0.012288],
-        ['1.5Gi', 1610.612736],
+        ['12Ki', 0],
+        ['1.5Gi', 1610],
         ['1G', 1000],
     ]
 
