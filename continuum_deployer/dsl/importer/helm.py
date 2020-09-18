@@ -111,7 +111,7 @@ class Helm(Importer):
                 continue
             if doc['kind'] in self.K8S_OBJECTS:
 
-                # TODO add support for >1 scaled deployments
+                # TODO Do we need support for DaemonSets?
                 deployment = DeploymentEntity()
                 # save YAML doc representation
                 deployment.yaml = doc
