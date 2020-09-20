@@ -1,3 +1,5 @@
+# pylint: disable=no-member
+
 import sys
 from io import StringIO
 
@@ -24,11 +26,11 @@ class Settings:
 
     # path to the resources file
     resources_path: str = field(default=None)
-    resources_file: object = field(default=None)
+    resources_content: object = field(default=None)
     resources: object = field(default=None)
     # path to the dsl file
     dsl_path: str = field(default=None)
-    dsl_file: object = field(default=None)
+    dsl_content: object = field(default=None)
     dsl_type: str = field(default=None)
     # application resources
     deployment_entities: object = field(default=None)
@@ -107,9 +109,9 @@ class MatchCli:
         self.machine.add_transition(
             trigger='ask_alter', source=['matching'], dest='alter_definitions')
 
-    def _open_file(self, path):
+    def _get_file_content(self, path):
         _file = open(path, "r")
-        return _file
+        return _file.read()
 
     def _edit_file_with_editor(self, path):
         with open(path, 'r+') as file:
@@ -122,19 +124,18 @@ class MatchCli:
                 # write new edited content
                 file.write(_content_edited)
 
-    def _parse_resources(self):
-        _resources = Resources()
-        _resources.parse(self.settings.resources_file)
-        self.settings.resources = _resources.get_resources()
-
     def on_enter_input_resources(self):
 
         click.echo(click.style(self.BANNER, fg='blue'), err=False)
 
-        _path = UI.prompt_std(self._TEXT_ASKRESOURCES)
+        self.settings.resources_path = UI.prompt_std(self._TEXT_ASKRESOURCES)
         try:
-            self.settings.resources_file = self._open_file(_path)
-            self._parse_resources()
+            self.settings.resources_content = self._get_file_content(
+                self.settings.resources_path)
+
+            _resources = Resources()
+            _resources.parse(self.settings.resources_content)
+            self.settings.resources = _resources.get_resources()
 
             # implementation of output via pager - https://stackoverflow.com/a/1218951
             # sys.stdout = _stdout = StringIO()
@@ -169,12 +170,13 @@ class MatchCli:
 
     def on_enter_input_dsl(self):
         click.echo('\n')
-        _path = UI.prompt_std(self._TEXT_ASKDSL)
+        self.settings.dsl_path = UI.prompt_std(self._TEXT_ASKDSL)
         try:
-            self.settings.dsl_file = self._open_file(_path)
+            self.settings.dsl_content = self._get_file_content(
+                self.settings.dsl_path)
             if self.settings.dsl_type == 'helm':
                 helm = Helm()
-                helm.parse(self.settings.dsl_file)
+                helm.parse(self.settings.dsl_content)
                 self.settings.deployment_entities = helm.get_app_modules()
 
                 click.echo('\n')
@@ -234,17 +236,17 @@ class MatchCli:
             click.echo('Bye!')
             quit()
 
-    def on_enter_matching(self):
+    def on_enter_alter_definitions(self):
         click.echo('\n')
 
         _alter_resources = confirm(
             "Do you want to alter your resources definition?")
         if _alter_resources:
             # open editor
-            pass
+            self._edit_file_with_editor(self.settings.resources_path)
 
         _alter_deployments = confirm(
             "Do you want to alter your deployment definition?")
         if _alter_deployments:
             # open editor
-            pass
+            self._edit_file_with_editor(self.settings.dsl_path)
