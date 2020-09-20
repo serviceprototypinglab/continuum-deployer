@@ -88,7 +88,6 @@ class MatchCli:
         self.resources = None
 
         self.settings = Settings()
-        # TODO implement check for cli parameters
         self.settings.resources_path = resources_path
         self.settings.dsl_path = dsl_path
 
@@ -126,9 +125,12 @@ class MatchCli:
 
     def on_enter_input_resources(self):
 
-        click.echo(click.style(self.BANNER, fg='blue'), err=False)
+        if self.settings.resources_path is None:
+            # resources path not already set via CLI param
+            click.echo(click.style(self.BANNER, fg='blue'), err=False)
+            self.settings.resources_path = UI.prompt_std(
+                self._TEXT_ASKRESOURCES)
 
-        self.settings.resources_path = UI.prompt_std(self._TEXT_ASKRESOURCES)
         try:
             self.settings.resources_content = self._get_file_content(
                 self.settings.resources_path)
@@ -170,7 +172,11 @@ class MatchCli:
 
     def on_enter_input_dsl(self):
         click.echo('\n')
-        self.settings.dsl_path = UI.prompt_std(self._TEXT_ASKDSL)
+
+        if self.settings.dsl_path is None:
+            # resources path not already set via CLI param
+            self.settings.dsl_path = UI.prompt_std(self._TEXT_ASKDSL)
+
         try:
             self.settings.dsl_content = self._get_file_content(
                 self.settings.dsl_path)
