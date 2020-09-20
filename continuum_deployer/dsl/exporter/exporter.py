@@ -1,5 +1,7 @@
 import yaml
 
+# TODO create interface and modularize exporter similar to importer
+
 
 class Exporter():
     """Exports a set of matched resources to a deployable YAML"""
