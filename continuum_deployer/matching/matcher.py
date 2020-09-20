@@ -7,6 +7,8 @@ from continuum_deployer.resources.resources import Resources, ResourceEntity
 
 class Matcher():
 
+    # TODO handle placement errors programmaticall - e.g. get_placement_errors()
+
     UNLABELED_TOKEN = 'unlabeled'
 
     def __init__(self,
