@@ -6,13 +6,16 @@ from dataclasses import dataclass, field
 from prompt_toolkit import prompt
 from prompt_toolkit.validation import Validator, ValidationError
 from prompt_toolkit.completion import WordCompleter
-from prompt_toolkit import print_formatted_text
+from prompt_toolkit import print_formatted_text, HTML
+from prompt_toolkit.shortcuts import confirm
 import click
 
 import continuum_deployer
 from continuum_deployer.utils.ui import UI
 from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
+from continuum_deployer.matching.greedy import Greedy
+from continuum_deployer.matching.sat import SAT
 
 
 @dataclass
@@ -22,12 +25,16 @@ class Settings:
     # path to the resources file
     resources_path: str = field(default=None)
     resources_file: object = field(default=None)
+    resources: object = field(default=None)
     # path to the dsl file
     dsl_path: str = field(default=None)
     dsl_file: object = field(default=None)
     dsl_type: str = field(default=None)
     # application resources
     deployment_entities: object = field(default=None)
+    # solver options
+    solver_type: int = field(default=None)
+    solver: object = field(default=None)
 
 
 class DSLValidator(Validator):
@@ -42,6 +49,18 @@ class DSLValidator(Validator):
                 message='DSL type {} not supported, must be one of: {}'.format(text, self.DSL_TYPES))
 
 
+class SolverValidator(Validator):
+
+    SOLVER_TYPES = ['1', '2']
+
+    def validate(self, document):
+        text = document.text
+
+        if text not in self.SOLVER_TYPES:
+            raise ValidationError(
+                message='Solver type {} not supported, must be one of: {}'.format(text, self.SOLVER_TYPES))
+
+
 class MatchCli:
 
     BANNER = """
@@ -54,11 +73,13 @@ class MatchCli:
    {} - Author: Daniel Hass
 """.format(continuum_deployer.__version__)
 
-    STATES = ['startup', 'input_resources', 'input_dsl', 'dsl_type']
+    STATES = ['startup', 'input_resources',
+              'input_dsl', 'dsl_type', 'solver_type', 'matching', 'alter_definitions']
 
     _TEXT_ASKRESOURCES = 'Enter path to resources file'
     _TEXT_ASKDSL = 'Enter path to DSL file'
     _TEXT_ASKDSLTYPE = 'Enter DSL type: '
+    _TEXT_ASKSOLVERTYPE = 'Enter Solver type: '
 
     def __init__(self, resources_path, dsl_path):
 
@@ -76,18 +97,35 @@ class MatchCli:
         self.machine.add_transition(
             trigger='ask_resources', source=['startup', 'input_resources'], dest='input_resources')
         self.machine.add_transition(
+            trigger='ask_dsl_type', source=['input_resources', 'dsl_type'], dest='dsl_type')
+        self.machine.add_transition(
             trigger='ask_dsl', source=['dsl_type', 'input_dsl'], dest='input_dsl')
         self.machine.add_transition(
-            trigger='ask_dsl_type', source=['input_resources', 'dsl_type'], dest='dsl_type')
+            trigger='ask_solver_type', source=['input_dsl', 'solver_type'], dest='solver_type')
+        self.machine.add_transition(
+            trigger='start_matching', source=['solver_type'], dest='matching')
+        self.machine.add_transition(
+            trigger='ask_alter', source=['matching'], dest='alter_definitions')
 
     def _open_file(self, path):
         _file = open(path, "r")
         return _file
 
+    def _edit_file_with_editor(self, path):
+        with open(path, 'r+') as file:
+            _content = file.read()
+            _content_edited = click.edit(_content)
+            if _content_edited is not None:
+                # clear file content
+                file.seek(0)
+                file.truncate()
+                # write new edited content
+                file.write(_content_edited)
+
     def _parse_resources(self):
         _resources = Resources()
         _resources.parse(self.settings.resources_file)
-        self.resources = _resources.get_resources()
+        self.settings.resources = _resources.get_resources()
 
     def on_enter_input_resources(self):
 
@@ -102,7 +140,7 @@ class MatchCli:
             # sys.stdout = _stdout = StringIO()
 
             click.echo('\n')
-            for r in self.resources:
+            for r in self.settings.resources:
                 r.print()
 
             # sys.stdout = sys.__stdout__
@@ -142,7 +180,7 @@ class MatchCli:
                 click.echo('\n')
                 for d in self.settings.deployment_entities:
                     d.print()
-            # self.ask_dsl()
+            self.ask_solver_type()
         except FileNotFoundError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
             self.ask_dsl()
@@ -152,3 +190,61 @@ class MatchCli:
         except Exception as e:
             click.echo(e, err=True)
             exit(1)
+
+    def on_enter_solver_type(self):
+        click.echo('\n')
+
+        # TODO maybe read solvers dynamically
+        print_formatted_text(HTML('''
+<b>Choose a solver for the workload placement:</b>
+\t - <b>Greedy Solver</b> (sorts workloads and fills targets in a greedy fashion) \t[1]
+\t - <b>SAT Solver</b> (offers various options for mathematical optimal placements) \t[2]
+'''))
+
+        html_completer = WordCompleter(['1', '2'])
+        _solver_type = prompt(self._TEXT_ASKSOLVERTYPE,
+                              completer=html_completer, validator=SolverValidator())
+        self.settings.solver_type = _solver_type
+
+        if self.settings.solver_type == '1':
+            self.settings.solver = Greedy(
+                self.settings.deployment_entities, self.settings.resources)
+        elif self.settings.solver_type == '2':
+            self.settings.solver = SAT(
+                self.settings.deployment_entities, self.settings.resources)
+        else:
+            # should never be reached due to SolverValidator
+            raise Exception("Solver type not supported")
+
+        self.start_matching()
+
+    def on_enter_matching(self):
+        click.echo('\n')
+
+        _start_matching = confirm("Do you want to start matching?")
+        if _start_matching:
+            self.settings.solver.match()
+            _matched_resources = self.settings.solver.get_resources()
+            click.echo('\n')
+            for r in _matched_resources:
+                r.print()
+
+            self.ask_alter()
+        else:
+            click.echo('Bye!')
+            quit()
+
+    def on_enter_matching(self):
+        click.echo('\n')
+
+        _alter_resources = confirm(
+            "Do you want to alter your resources definition?")
+        if _alter_resources:
+            # open editor
+            pass
+
+        _alter_deployments = confirm(
+            "Do you want to alter your deployment definition?")
+        if _alter_deployments:
+            # open editor
+            pass
