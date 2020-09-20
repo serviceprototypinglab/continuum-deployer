@@ -1,2 +1,1 @@
-# TODO test package version overwrite
-__version__ = '0.0.0-dev0'
+app_version = "v0.4.0-dev0"

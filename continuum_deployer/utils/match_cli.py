@@ -74,7 +74,7 @@ class MatchCli:
   \____\___/|_| |_|\__|_|_| |_|\__,_|\__,_|_| |_| |_| |____/ \___| .__/|_|\___/ \__, |\___|_|   
                                                                  |_|            |___/           
    {} - Author: Daniel Hass
-""".format(continuum_deployer.__version__)
+""".format(continuum_deployer.app_version)
 
     STATES = ['startup', 'input_resources',
               'input_dsl', 'dsl_type', 'solver_type', 'matching', 'alter_definitions', 'export']
