@@ -18,6 +18,7 @@ from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.matching.greedy import Greedy
 from continuum_deployer.matching.sat import SAT
+from continuum_deployer.dsl.exporter.exporter import Exporter
 
 
 @dataclass
@@ -76,12 +77,13 @@ class MatchCli:
 """.format(continuum_deployer.__version__)
 
     STATES = ['startup', 'input_resources',
-              'input_dsl', 'dsl_type', 'solver_type', 'matching', 'alter_definitions']
+              'input_dsl', 'dsl_type', 'solver_type', 'matching', 'alter_definitions', 'export']
 
     _TEXT_ASKRESOURCES = 'Enter path to resources file'
     _TEXT_ASKDSL = 'Enter path to DSL file'
     _TEXT_ASKDSLTYPE = 'Enter DSL type: '
     _TEXT_ASKSOLVERTYPE = 'Enter Solver type: '
+    _TEXT_ASKEXPORTPATH = 'Enter path to results file: '
 
     def __init__(self, resources_path, dsl_path):
 
@@ -107,6 +109,8 @@ class MatchCli:
             trigger='start_matching', source=['solver_type'], dest='matching')
         self.machine.add_transition(
             trigger='ask_alter', source=['matching'], dest='alter_definitions')
+        self.machine.add_transition(
+            trigger='export', source=['alter_definitions'], dest='export')
 
     def _get_file_content(self, path):
         with open(path, "r") as file:
@@ -256,3 +260,17 @@ class MatchCli:
         if _alter_deployments:
             # open editor
             self._edit_file_with_editor(self.settings.dsl_path)
+
+        self.export()
+
+    def on_enter_export(self):
+        click.echo('\n')
+
+        _export_path = UI.prompt_std(self._TEXT_ASKEXPORTPATH)
+        try:
+            with open(_export_path, 'w') as file:
+                exporter = Exporter(output_stream=file)
+                exporter.export(self.settings.resources)
+        except Exception as e:
+            click.echo(click.style(e.strerror, fg='red'), err=True)
+            self.export()
