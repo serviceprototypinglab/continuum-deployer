@@ -110,8 +110,8 @@ class MatchCli:
             trigger='ask_alter', source=['matching'], dest='alter_definitions')
 
     def _get_file_content(self, path):
-        _file = open(path, "r")
-        return _file.read()
+        with open(path, "r") as file:
+            return file.read()
 
     def _edit_file_with_editor(self, path):
         with open(path, 'r+') as file:
