@@ -2,6 +2,7 @@ import click
 
 from continuum_deployer.resources.resource_entity import ResourceEntity
 from continuum_deployer.matching.matcher import Matcher
+from continuum_deployer.matching.config import MatcherConfig, MatcherSetting, MatcherSettingValue
 
 
 class Greedy(Matcher):
@@ -16,6 +17,16 @@ class Greedy(Matcher):
             if resource.add_deployment(entity):
                 return True
         return False
+
+    def _gen_config(self):
+        return MatcherConfig([
+            MatcherSetting('target', [
+                MatcherSettingValue(
+                    'cpu', description='Sorts resources and workloads by cpu for greedy matching', default=True),
+                MatcherSettingValue(
+                    'memory', 'Sorts resources and workloads by memory for greedy matching'),
+            ])
+        ])
 
     def greedy_attr(self, entities, resources, attr):
         entities_sorted = Greedy.sort_by_attr(entities, attr)
@@ -32,7 +43,11 @@ class Greedy(Matcher):
         :return matched resources with assigned deployments
         """
 
-        self.greedy_attr(deployment_entities, resources, 'cpu')
+        self.greedy_attr(
+            deployment_entities,
+            resources,
+            self.config.get_setting('target').get_value().value
+        )
 
     def match(self):
         super(Greedy, self).match()

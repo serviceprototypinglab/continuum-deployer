@@ -7,6 +7,7 @@ from ortools.sat.python import cp_model
 from continuum_deployer.matching.matcher import Matcher
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
+from continuum_deployer.matching.config import MatcherConfig, MatcherSetting, MatcherSettingValue
 
 
 class SAT(Matcher):
@@ -36,6 +37,20 @@ class SAT(Matcher):
         for deployment in deployments:
             _result.append(deployment.name)
         return _result
+
+    def _gen_config(self):
+        return MatcherConfig([
+            MatcherSetting('target', [
+                MatcherSettingValue(
+                    'max_idle_cpu', description='SAT solver tries to maximize idle cpu resources', default=True),
+                MatcherSettingValue(
+                    'max_idle_memory', description='SAT solver tries to maximize idle memory resources'),
+                MatcherSettingValue(
+                    'min_idle_cpu', description='SAT solver tries to minimize idle cpu resources'),
+                MatcherSettingValue(
+                    'min_idle_memory', description='SAT solver tries to minimize idle memory resources'),
+            ])
+        ])
 
     def do_matching(self, deployment_entities, resources):
 
@@ -76,8 +91,16 @@ class SAT(Matcher):
         self.model.Add(idle_ram == sum(res.get_idle_memory() for i, res in enumerate(resources)) - sum(
             x[i][j] * dep.memory for j, dep in enumerate(deployment_entities) for i in iter_resources))
 
-        self.model.Maximize(idle_cpu)
-        self.model.Maximize(idle_ram)
+        # read config and set optimization target
+        _target = self.config.get_setting('target').get_value().value
+        if _target == 'max_idle_cpu':
+            self.model.Maximize(idle_cpu)
+        elif _target == 'max_idle_memory':
+            self.model.Maximize(idle_ram)
+        elif _target == 'min_idle_cpu':
+            self.model.Minimize(idle_cpu)
+        elif _target == 'min_idle_memory':
+            self.model.Minimize(idle_ram)
 
         solver = cp_model.CpSolver()
         status = solver.Solve(self.model)

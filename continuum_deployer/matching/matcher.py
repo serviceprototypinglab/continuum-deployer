@@ -3,6 +3,7 @@ import sys
 
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
+from continuum_deployer.matching.config import MatcherConfig, MatcherSetting, MatcherSettingValue
 
 
 class Matcher():
@@ -17,6 +18,11 @@ class Matcher():
         self.grouped_deployments = None
         self.grouped_resources = None
         self.placement_errors = []
+
+        self.config = self._gen_config()
+
+    def _gen_config(self):
+        return MatcherConfig([])
 
     def check_upper_bound(self, entities, resources):
         # find max of resource requests on deployment entities
