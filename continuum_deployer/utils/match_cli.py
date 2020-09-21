@@ -67,7 +67,7 @@ class SolverValidator(Validator):
 class MatchCli:
 
     STATES = ['startup', 'input_resources',
-              'input_dsl', 'dsl_type', 'solver_type', 'matching', 'alter_definitions', 'export']
+              'input_dsl', 'dsl_type', 'solver_type', 'matching', 'check_results', 'alter_definitions', 'export']
 
     _TEXT_ASKRESOURCES = 'Enter path to resources file'
     _TEXT_ASKDSL = 'Enter path to DSL file'
@@ -96,11 +96,13 @@ class MatchCli:
         self.machine.add_transition(
             trigger='ask_solver_type', source=['input_dsl', 'solver_type'], dest='solver_type')
         self.machine.add_transition(
-            trigger='start_matching', source=['solver_type'], dest='matching')
+            trigger='start_matching', source=['alter_definitions', 'solver_type'], dest='matching')
         self.machine.add_transition(
-            trigger='ask_alter', source=['matching'], dest='alter_definitions')
+            trigger='ask_alter', source=['check_results'], dest='alter_definitions')
         self.machine.add_transition(
-            trigger='export', source=['alter_definitions'], dest='export')
+            trigger='check_results', source=['matching'], dest='check_results')
+        self.machine.add_transition(
+            trigger='export', source=['check_results'], dest='export')
 
     def _get_file_content(self, path):
         with open(path, "r") as file:
@@ -232,17 +234,28 @@ class MatchCli:
             for r in _matched_resources:
                 r.print()
 
-            click.echo(click.style(
-                '\n[Error] The following workloads could not be scheduled: ', fg='red'), err=True)
             _placement_errors = self.settings.solver.get_placement_errors()
-            for workload in _placement_errors:
-                workload.print()
-                click.echo('\n')
+            if _placement_errors:
+                click.echo(click.style(
+                    '\n[Error] The following workloads could not be scheduled: ', fg='red'), err=True)
+                for workload in _placement_errors:
+                    workload.print()
+                    click.echo('\n')
 
-            self.ask_alter()
+            self.check_results()
         else:
             click.echo('Bye!')
             quit()
+
+    def on_enter_check_results(self):
+        click.echo('\n')
+
+        _placement_ok = confirm(
+            "Is placement satisfying (otherwise you are able to alter the input)?")
+        if _placement_ok:
+            self.export()
+        else:
+            self.ask_alter()
 
     def on_enter_alter_definitions(self):
         click.echo('\n')
@@ -259,7 +272,7 @@ class MatchCli:
             # open editor
             self._edit_file_with_editor(self.settings.dsl_path)
 
-        self.export()
+        self.start_matching()
 
     def on_enter_export(self):
         click.echo('\n')
