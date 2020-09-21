@@ -115,7 +115,11 @@
             "request": "launch",
             "program": "${workspaceFolder}/continuum_deployer/app.py",
             "args": [
-                "match"
+                "match",
+                "-r",
+                "resources/default.yaml",
+                "-d",
+                "charts/sample_multi.yaml"
             ],
             "console": "integratedTerminal"
         },
