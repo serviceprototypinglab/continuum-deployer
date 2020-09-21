@@ -66,16 +66,6 @@ class SolverValidator(Validator):
 
 class MatchCli:
 
-    BANNER = """
-   ____            _   _                               ____             _                       
-  / ___|___  _ __ | |_(_)_ __  _   _ _   _ _ __ ___   |  _ \  ___ _ __ | | ___  _   _  ___ _ __ 
- | |   / _ \| '_ \| __| | '_ \| | | | | | | '_ ` _ \  | | | |/ _ \ '_ \| |/ _ \| | | |/ _ \ '__|
- | |__| (_) | | | | |_| | | | | |_| | |_| | | | | | | | |_| |  __/ |_) | | (_) | |_| |  __/ |   
-  \____\___/|_| |_|\__|_|_| |_|\__,_|\__,_|_| |_| |_| |____/ \___| .__/|_|\___/ \__, |\___|_|   
-                                                                 |_|            |___/           
-   {} - Author: Daniel Hass
-""".format(continuum_deployer.app_version)
-
     STATES = ['startup', 'input_resources',
               'input_dsl', 'dsl_type', 'solver_type', 'matching', 'alter_definitions', 'export']
 
@@ -131,7 +121,8 @@ class MatchCli:
 
         if self.settings.resources_path is None:
             # resources path not already set via CLI param
-            click.echo(click.style(self.BANNER, fg='blue'), err=False)
+            click.echo(click.style(UI.CLI_BANNER.format(
+                continuum_deployer.app_version), fg='blue'), err=False)
             self.settings.resources_path = UI.prompt_std(
                 self._TEXT_ASKRESOURCES)
 

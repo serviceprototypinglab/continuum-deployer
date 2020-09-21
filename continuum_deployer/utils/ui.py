@@ -1,3 +1,5 @@
+# pylint: disable=W1401
+
 import click
 import pydoc
 from progress.bar import Bar
@@ -5,6 +7,16 @@ from progress.bar import Bar
 
 class UI():
     """Helper class that bundels UI related helpers"""
+
+    CLI_BANNER = """
+   ____            _   _                               ____             _                       
+  / ___|___  _ __ | |_(_)_ __  _   _ _   _ _ __ ___   |  _ \  ___ _ __ | | ___  _   _  ___ _ __ 
+ | |   / _ \| '_ \| __| | '_ \| | | | | | | '_ ` _ \  | | | |/ _ \ '_ \| |/ _ \| | | |/ _ \ '__|
+ | |__| (_) | | | | |_| | | | | |_| | |_| | | | | | | | |_| |  __/ |_) | | (_) | |_| |  __/ |   
+  \____\___/|_| |_|\__|_|_| |_|\__,_|\__,_|_| |_| |_| |____/ \___| .__/|_|\___/ \__, |\___|_|   
+                                                                 |_|            |___/           
+   {} - Author: Daniel Hass
+"""
 
     @staticmethod
     def print_percent_bar(prefix: str, percent: int):
