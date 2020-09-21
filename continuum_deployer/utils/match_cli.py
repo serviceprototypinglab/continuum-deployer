@@ -74,6 +74,12 @@ class MatchCli:
     _TEXT_ASKDSLTYPE = 'Enter DSL type: '
     _TEXT_ASKSOLVERTYPE = 'Enter Solver type: '
     _TEXT_ASKEXPORTPATH = 'Enter path to results file: '
+    _TEXT_ASKSTARTMATCHING = 'Do you want to start matching?'
+    _TEXT_ASKPLACEMENTOK = 'Is placement satisfying (otherwise you are able to alter the input)?'
+    _TEXT_ASKALTERRESOURCES = 'Do you want to alter your resources definition?'
+    _TEXT_ASKALTERWORKLOADS = 'Do you want to alter your deployment definition?'
+    _TEXT_ASKSAVERESULTS = 'Do you want to save the results to a file?'
+    _TEXT_ERRORPLACEMENTS = 'The following workloads could not be scheduled'
 
     def __init__(self, resources_path, dsl_path):
 
@@ -83,10 +89,11 @@ class MatchCli:
         self.settings.resources_path = resources_path
         self.settings.dsl_path = dsl_path
 
-        # Initialize the state machine
+        # initialize the state machine
         self.machine = Machine(
             model=self, states=MatchCli.STATES, initial='startup')
 
+        # add transitions
         self.machine.add_transition(
             trigger='ask_resources', source=['startup', 'input_resources'], dest='input_resources')
         self.machine.add_transition(
@@ -158,8 +165,6 @@ class MatchCli:
             exit(1)
 
     def on_enter_dsl_type(self):
-        # _dsl_type = UI.prompt_std(self._TEXT_ASKDSL)
-
         click.echo('\n')
         html_completer = WordCompleter(['helm'])
         _dsl_type = prompt(self._TEXT_ASKDSLTYPE,
@@ -226,7 +231,7 @@ class MatchCli:
     def on_enter_matching(self):
         click.echo('\n')
 
-        _start_matching = confirm("Do you want to start matching?")
+        _start_matching = confirm(self._TEXT_ASKSTARTMATCHING)
         if _start_matching:
             self.settings.solver.match()
             _matched_resources = self.settings.solver.get_resources()
@@ -237,7 +242,7 @@ class MatchCli:
             _placement_errors = self.settings.solver.get_placement_errors()
             if _placement_errors:
                 click.echo(click.style(
-                    '\n[Error] The following workloads could not be scheduled: ', fg='red'), err=True)
+                    '\n[Error] {}: '.format(self._TEXT_ERRORPLACEMENTS), fg='red'), err=True)
                 for workload in _placement_errors:
                     workload.print()
                     click.echo('\n')
@@ -250,8 +255,7 @@ class MatchCli:
     def on_enter_check_results(self):
         click.echo('\n')
 
-        _placement_ok = confirm(
-            "Is placement satisfying (otherwise you are able to alter the input)?")
+        _placement_ok = confirm(self._TEXT_ASKPLACEMENTOK)
         if _placement_ok:
             self.export()
         else:
@@ -260,14 +264,12 @@ class MatchCli:
     def on_enter_alter_definitions(self):
         click.echo('\n')
 
-        _alter_resources = confirm(
-            "Do you want to alter your resources definition?")
+        _alter_resources = confirm(self._TEXT_ASKALTERRESOURCES)
         if _alter_resources:
             # open editor
             self._edit_file_with_editor(self.settings.resources_path)
 
-        _alter_deployments = confirm(
-            "Do you want to alter your deployment definition?")
+        _alter_deployments = confirm(self._TEXT_ASKALTERWORKLOADS)
         if _alter_deployments:
             # open editor
             self._edit_file_with_editor(self.settings.dsl_path)
@@ -277,8 +279,7 @@ class MatchCli:
     def on_enter_export(self):
         click.echo('\n')
 
-        _save_results = confirm(
-            "Do you want to save the results to a file?")
+        _save_results = confirm(self._TEXT_ASKSAVERESULTS)
         if _save_results:
             _export_path = UI.prompt_std(self._TEXT_ASKEXPORTPATH)
             try:
