@@ -232,6 +232,13 @@ class MatchCli:
             for r in _matched_resources:
                 r.print()
 
+            click.echo(click.style(
+                '\n[Error] The following workloads could not be scheduled: ', fg='red'), err=True)
+            _placement_errors = self.settings.solver.get_placement_errors()
+            for workload in _placement_errors:
+                workload.print()
+                click.echo('\n')
+
             self.ask_alter()
         else:
             click.echo('Bye!')

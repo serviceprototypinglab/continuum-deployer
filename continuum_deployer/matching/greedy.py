@@ -23,11 +23,7 @@ class Greedy(Matcher):
 
         for entity in entities_sorted:
             if not Greedy.deploy_iterate(entity, resources_sorted):
-                click.echo(click.style(
-                    '[Error] Deployment entity ({}) '
-                    'not scheduable with greedy algorithm.'.format(
-                        entity),
-                    fg='red'), err=True)
+                self.placement_errors.append(entity)
 
     def do_matching(self, deployment_entities, resources):
         """

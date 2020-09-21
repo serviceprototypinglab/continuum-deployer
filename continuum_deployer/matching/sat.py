@@ -91,10 +91,7 @@ class SAT(Matcher):
                         res.add_deployment(dep)
         elif status == cp_model.INFEASIBLE:
             _names = SAT.get_deployment_names(deployment_entities)
-            click.echo(click.style(
-                '[Error] Deployments entity ({}) '
-                'not schedulable with SAT solver in '
-                'resource group due to infeasibility.'.format(_names), fg='red'), err=True)
+            self.placement_errors = deployment_entities
 
         print(solver.ResponseStats())
 

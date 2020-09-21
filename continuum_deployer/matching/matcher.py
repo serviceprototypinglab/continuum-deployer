@@ -7,8 +7,6 @@ from continuum_deployer.resources.resources import Resources, ResourceEntity
 
 class Matcher():
 
-    # TODO handle placement errors programmaticall - e.g. get_placement_errors()
-
     UNLABELED_TOKEN = 'unlabeled'
 
     def __init__(self,
@@ -18,6 +16,7 @@ class Matcher():
         self.resources = resources
         self.grouped_deployments = None
         self.grouped_resources = None
+        self.placement_errors = []
 
     def check_upper_bound(self, entities, resources):
         # find max of resource requests on deployment entities
@@ -123,6 +122,9 @@ class Matcher():
 
     def get_resources(self):
         return self.resources
+
+    def get_placement_errors(self):
+        return self.placement_errors
 
     def get_deployment_entities(self):
         return self.deployment_entities
