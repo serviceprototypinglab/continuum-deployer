@@ -264,11 +264,14 @@ class MatchCli:
     def on_enter_export(self):
         click.echo('\n')
 
-        _export_path = UI.prompt_std(self._TEXT_ASKEXPORTPATH)
-        try:
-            with open(_export_path, 'w') as file:
-                exporter = Exporter(output_stream=file)
-                exporter.export(self.settings.resources)
-        except Exception as e:
-            click.echo(click.style(e.strerror, fg='red'), err=True)
-            self.export()
+        _save_results = confirm(
+            "Do you want to save the results to a file?")
+        if _save_results:
+            _export_path = UI.prompt_std(self._TEXT_ASKEXPORTPATH)
+            try:
+                with open(_export_path, 'w') as file:
+                    exporter = Exporter(output_stream=file)
+                    exporter.export(self.settings.resources)
+            except Exception as e:
+                click.echo(click.style(e.strerror, fg='red'), err=True)
+                self.export()
