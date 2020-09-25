@@ -49,6 +49,10 @@ class SAT(Matcher):
                     'min_idle_cpu', description='SAT solver tries to minimize idle cpu resources'),
                 MatcherSettingValue(
                     'min_idle_memory', description='SAT solver tries to minimize idle memory resources'),
+                MatcherSettingValue(
+                    'min_idle_resources', description='SAT solver tries to minimize idle resources (cpu+memory)'),
+                MatcherSettingValue(
+                    'max_idle_resources', description='SAT solver tries to maximize idle resources (cpu+memory)'),
             ])
         ])
 
@@ -101,6 +105,12 @@ class SAT(Matcher):
             self.model.Minimize(idle_cpu)
         elif _target == 'min_idle_memory':
             self.model.Minimize(idle_ram)
+        elif _target == 'min_idle_resources':
+            self.model.Minimize(idle_ram)
+            self.model.Minimize(idle_cpu)
+        elif _target == 'max_idle_resources':
+            self.model.Maximize(idle_ram)
+            self.model.Maximize(idle_cpu)
 
         solver = cp_model.CpSolver()
         status = solver.Solve(self.model)
