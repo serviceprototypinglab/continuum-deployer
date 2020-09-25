@@ -49,8 +49,8 @@ class MatcherConfig:
 
     def get_settings(self):
         _settings = []
-        for setting in self.settings:
-            _settings.append(setting)
+        for key in self.settings:
+            _settings.append(self.settings[key])
         return _settings
 
     def get_setting(self, name):

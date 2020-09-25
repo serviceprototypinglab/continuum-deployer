@@ -64,10 +64,30 @@ class SolverValidator(Validator):
                 message='Solver type {} not supported, must be one of: {}'.format(text, self.SOLVER_TYPES))
 
 
+class ListValidator(Validator):
+
+    def __init__(self, list: list):
+        self.validation_target = list
+
+    def validate(self, document):
+        text = document.text
+
+        if text not in self.validation_target:
+            raise ValidationError(
+                message='Input {} not supported, must be one of: {}'.format(text, self.validation_target))
+
+    @staticmethod
+    def list_items_to_str(list):
+        _result = []
+        for item in list:
+            _result.append(str(item))
+        return _result
+
+
 class MatchCli:
 
     STATES = ['startup', 'input_resources',
-              'input_dsl', 'dsl_type', 'solver_type', 'matching', 'check_results', 'alter_definitions', 'export']
+              'input_dsl', 'dsl_type', 'solver_type', 'config_solver', 'matching', 'check_results', 'alter_definitions', 'export']
 
     _TEXT_ASKRESOURCES = 'Enter path to resources file'
     _TEXT_ASKDSL = 'Enter path to DSL file'
@@ -103,7 +123,9 @@ class MatchCli:
         self.machine.add_transition(
             trigger='ask_solver_type', source=['input_dsl', 'solver_type'], dest='solver_type')
         self.machine.add_transition(
-            trigger='start_matching', source=['alter_definitions', 'solver_type'], dest='matching')
+            trigger='configure_solver', source=['solver_type', 'config_solver'], dest='config_solver')
+        self.machine.add_transition(
+            trigger='start_matching', source=['alter_definitions', 'config_solver'], dest='matching')
         self.machine.add_transition(
             trigger='ask_alter', source=['check_results'], dest='alter_definitions')
         self.machine.add_transition(
@@ -216,22 +238,51 @@ class MatchCli:
                               completer=html_completer, validator=SolverValidator())
         self.settings.solver_type = _solver_type
 
+        _solver = None
+
         if self.settings.solver_type == '1':
-            self.settings.solver = Greedy(
-                self.settings.deployment_entities, self.settings.resources)
+            _solver = Greedy
         elif self.settings.solver_type == '2':
-            self.settings.solver = SAT(
-                self.settings.deployment_entities, self.settings.resources)
+            _solver = SAT
         else:
             # should never be reached due to SolverValidator
             raise Exception("Solver type not supported")
+
+        self.settings.solver = _solver(
+            self.settings.deployment_entities, self.settings.resources)
+
+        self.configure_solver()
+
+    def on_enter_config_solver(self):
+        click.echo('\n')
+        click.echo('Configure solver settings:\n')
+
+        _config = self.settings.solver.get_config()
+        for setting in _config.get_settings():
+            click.echo('Configure {}:\n'.format(setting.name))
+            _options = setting.get_options()
+            for key, option in enumerate(_options):
+                click.echo('[{}] {} - {}'.format(key,
+                                                 click.style(
+                                                     option.value, fg='blue'),
+                                                 option.description))
+
+            _list_of_options = list(range(len(_options)))
+            _list_of_options = ListValidator.list_items_to_str(
+                _list_of_options)
+
+            option_completer = WordCompleter(_list_of_options)
+            _option_choice = prompt('\nWhich config option do you choose: ',
+                                    completer=option_completer, validator=ListValidator(_list_of_options))
+
+            setting.set_value(_options[int(_option_choice)])
 
         self.start_matching()
 
     def on_enter_matching(self):
         click.echo('\n')
-
         _start_matching = confirm(self._TEXT_ASKSTARTMATCHING)
+
         if _start_matching:
             self.settings.solver.match()
             _matched_resources = self.settings.solver.get_resources()

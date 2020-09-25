@@ -24,6 +24,12 @@ class Matcher():
     def _gen_config(self):
         return MatcherConfig([])
 
+    def get_config(self):
+        return self.config
+
+    def set_config_value(self, value):
+        self.config.add_setting(value)
+
     def check_upper_bound(self, entities, resources):
         # find max of resource requests on deployment entities
         _max_memory_request = 0
