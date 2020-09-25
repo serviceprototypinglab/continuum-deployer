@@ -7,7 +7,7 @@ from ortools.sat.python import cp_model
 from continuum_deployer.matching.matcher import Matcher
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
-from continuum_deployer.matching.config import MatcherConfig, MatcherSetting, MatcherSettingValue
+from continuum_deployer.utils.config import Config, Setting, SettingValue
 
 
 class SAT(Matcher):
@@ -39,19 +39,19 @@ class SAT(Matcher):
         return _result
 
     def _gen_config(self):
-        return MatcherConfig([
-            MatcherSetting('target', [
-                MatcherSettingValue(
+        return Config([
+            Setting('target', [
+                SettingValue(
                     'max_idle_cpu', description='SAT solver tries to maximize idle cpu resources', default=True),
-                MatcherSettingValue(
+                SettingValue(
                     'max_idle_memory', description='SAT solver tries to maximize idle memory resources'),
-                MatcherSettingValue(
+                SettingValue(
                     'min_idle_cpu', description='SAT solver tries to minimize idle cpu resources'),
-                MatcherSettingValue(
+                SettingValue(
                     'min_idle_memory', description='SAT solver tries to minimize idle memory resources'),
-                MatcherSettingValue(
+                SettingValue(
                     'min_idle_resources', description='SAT solver tries to minimize idle resources (cpu+memory)'),
-                MatcherSettingValue(
+                SettingValue(
                     'max_idle_resources', description='SAT solver tries to maximize idle resources (cpu+memory)'),
             ])
         ])

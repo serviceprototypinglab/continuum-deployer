@@ -3,7 +3,7 @@ import sys
 
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
-from continuum_deployer.matching.config import MatcherConfig, MatcherSetting, MatcherSettingValue
+from continuum_deployer.utils.config import Config, Setting, SettingValue
 
 
 class Matcher():
@@ -22,7 +22,7 @@ class Matcher():
         self.config = self._gen_config()
 
     def _gen_config(self):
-        return MatcherConfig([])
+        return Config([])
 
     def get_config(self):
         return self.config

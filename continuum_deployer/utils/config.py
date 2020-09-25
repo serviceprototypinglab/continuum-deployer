@@ -1,4 +1,4 @@
-class MatcherSettingValue:
+class SettingValue:
 
     def __init__(self, value, description='', default=False):
         self.description = description
@@ -6,7 +6,7 @@ class MatcherSettingValue:
         self.default = default
 
 
-class MatcherSetting:
+class Setting:
 
     def __init__(self, name, options, value=None, description=''):
         self.name = name
@@ -17,7 +17,7 @@ class MatcherSetting:
     def get_options(self):
         return self.options
 
-    def set_value(self, value: MatcherSettingValue):
+    def set_value(self, value: SettingValue):
         self.value = value
 
     def get_value(self):
@@ -32,10 +32,10 @@ class MatcherSetting:
                 return option
 
 
-class MatcherConfig:
+class Config:
 
     def __init__(self, settings):
-        self.settings = MatcherConfig._settings_to_dict(settings)
+        self.settings = Config._settings_to_dict(settings)
 
     @staticmethod
     def _settings_to_dict(settings):
@@ -44,7 +44,7 @@ class MatcherConfig:
             _result[setting.name] = setting
         return _result
 
-    def add_setting(self, setting: MatcherSetting):
+    def add_setting(self, setting: Setting):
         self.settings[setting.name] = setting
 
     def get_settings(self):

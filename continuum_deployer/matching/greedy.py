@@ -2,7 +2,7 @@ import click
 
 from continuum_deployer.resources.resource_entity import ResourceEntity
 from continuum_deployer.matching.matcher import Matcher
-from continuum_deployer.matching.config import MatcherConfig, MatcherSetting, MatcherSettingValue
+from continuum_deployer.utils.config import Config, Setting, SettingValue
 
 
 class Greedy(Matcher):
@@ -19,11 +19,11 @@ class Greedy(Matcher):
         return False
 
     def _gen_config(self):
-        return MatcherConfig([
-            MatcherSetting('target', [
-                MatcherSettingValue(
+        return Config([
+            Setting('target', [
+                SettingValue(
                     'cpu', description='Sorts resources and workloads by cpu for greedy matching', default=True),
-                MatcherSettingValue(
+                SettingValue(
                     'memory', 'Sorts resources and workloads by memory for greedy matching'),
             ])
         ])
