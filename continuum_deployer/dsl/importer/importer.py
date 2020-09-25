@@ -17,6 +17,10 @@ class Importer:
         """Getter method for application modules"""
         return self.app_modules
 
+    def reset_app_modules(self):
+        """Delete already parsed app modules"""
+        self.app_modules = []
+
     def print_app_modules(self):
         """Convenience helper that prints object representation of application modules"""
         click.echo(click.style("List of Deployments extracted:", fg='blue'))

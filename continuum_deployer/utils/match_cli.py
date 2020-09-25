@@ -33,6 +33,7 @@ class Settings:
     dsl_path: str = field(default=None)
     dsl_content: object = field(default=None)
     dsl_type: str = field(default=None)
+    dsl_importer: object = field(default=None)
     # application resources
     deployment_entities: object = field(default=None)
     # solver options
@@ -148,14 +149,7 @@ class MatchCli:
                 # write new edited content
                 file.write(_content_edited)
 
-    def on_enter_input_resources(self):
-
-        if self.settings.resources_path is None:
-            # resources path not already set via CLI param
-            click.echo(click.style(UI.CLI_BANNER.format(
-                continuum_deployer.app_version), fg='blue'), err=False)
-            self.settings.resources_path = UI.prompt_std(
-                self._TEXT_ASKRESOURCES)
+    def _read_resources(self):
 
         try:
             self.settings.resources_content = self._get_file_content(
@@ -165,17 +159,6 @@ class MatchCli:
             _resources.parse(self.settings.resources_content)
             self.settings.resources = _resources.get_resources()
 
-            # implementation of output via pager - https://stackoverflow.com/a/1218951
-            # sys.stdout = _stdout = StringIO()
-
-            click.echo('\n')
-            for r in self.settings.resources:
-                r.print()
-
-            # sys.stdout = sys.__stdout__
-            # click.echo_via_pager(_stdout.getvalue())
-
-            self.ask_dsl_type()
         except FileNotFoundError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
             self.ask_resources()
@@ -185,6 +168,46 @@ class MatchCli:
         except Exception as e:
             click.echo(e, err=True)
             exit(1)
+
+    def _read_dsl(self):
+        try:
+            self.settings.dsl_content = self._get_file_content(
+                self.settings.dsl_path)
+            self.settings.dsl_importer.parse(self.settings.dsl_content)
+            self.settings.deployment_entities = self.settings.dsl_importer.get_app_modules()
+
+        except FileNotFoundError as e:
+            click.echo(click.style(e.strerror, fg='red'), err=True)
+            self.ask_dsl()
+        except IsADirectoryError as e:
+            click.echo(click.style(e.strerror, fg='red'), err=True)
+            self.ask_dsl()
+        except Exception as e:
+            click.echo(e, err=True)
+            exit(1)
+
+    def on_enter_input_resources(self):
+
+        if self.settings.resources_path is None:
+            # resources path not already set via CLI param
+            click.echo(click.style(UI.CLI_BANNER.format(
+                continuum_deployer.app_version), fg='blue'), err=False)
+            self.settings.resources_path = UI.prompt_std(
+                self._TEXT_ASKRESOURCES)
+
+        self._read_resources()
+
+        # implementation of output via pager - https://stackoverflow.com/a/1218951
+        # sys.stdout = _stdout = StringIO()
+
+        click.echo('\n')
+        for r in self.settings.resources:
+            r.print()
+
+        # sys.stdout = sys.__stdout__
+        # click.echo_via_pager(_stdout.getvalue())
+
+        self.ask_dsl_type()
 
     def on_enter_dsl_type(self):
         click.echo('\n')
@@ -201,27 +224,18 @@ class MatchCli:
             # resources path not already set via CLI param
             self.settings.dsl_path = UI.prompt_std(self._TEXT_ASKDSL)
 
-        try:
-            self.settings.dsl_content = self._get_file_content(
-                self.settings.dsl_path)
-            if self.settings.dsl_type == 'helm':
-                helm = Helm()
-                helm.parse(self.settings.dsl_content)
-                self.settings.deployment_entities = helm.get_app_modules()
+        if self.settings.dsl_type == 'helm':
+            self.settings.dsl_importer = Helm()
+        else:
+            raise NotImplementedError
 
-                click.echo('\n')
-                for d in self.settings.deployment_entities:
-                    d.print()
-            self.ask_solver_type()
-        except FileNotFoundError as e:
-            click.echo(click.style(e.strerror, fg='red'), err=True)
-            self.ask_dsl()
-        except IsADirectoryError as e:
-            click.echo(click.style(e.strerror, fg='red'), err=True)
-            self.ask_dsl()
-        except Exception as e:
-            click.echo(e, err=True)
-            exit(1)
+        self._read_dsl()
+
+        click.echo('\n')
+        for d in self.settings.deployment_entities:
+            d.print()
+
+        self.ask_solver_type()
 
     def on_enter_solver_type(self):
         click.echo('\n')
@@ -283,6 +297,9 @@ class MatchCli:
         click.echo('\n')
         _start_matching = confirm(self._TEXT_ASKSTARTMATCHING)
 
+        # clear already matched resources (necessary for rerun)
+        self.settings.solver.reset_matching()
+
         if _start_matching:
             self.settings.solver.match()
             _matched_resources = self.settings.solver.get_resources()
@@ -319,11 +336,17 @@ class MatchCli:
         if _alter_resources:
             # open editor
             self._edit_file_with_editor(self.settings.resources_path)
+            self._read_resources()
+            self.settings.solver.set_resources(self.settings.resources)
 
         _alter_deployments = confirm(self._TEXT_ASKALTERWORKLOADS)
         if _alter_deployments:
             # open editor
             self._edit_file_with_editor(self.settings.dsl_path)
+            self.settings.dsl_importer.reset_app_modules()
+            self._read_dsl()
+            self.settings.solver.set_deployment_entities(
+                self.settings.deployment_entities)
 
         self.start_matching()
 

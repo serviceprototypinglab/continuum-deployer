@@ -128,6 +128,17 @@ class Matcher():
         self.do_matching(
             _unlabeled_deployments, _leftover_resources)
 
+    def reset_matching(self):
+        """Reset matching state of matcher
+        """
+
+        for resource in self.resources:
+            resource.clear_deployments()
+
+        self.grouped_deployments = None
+        self.grouped_resources = None
+        self.placement_errors = []
+
     def print_resources(self):
         for res in self.resources:
             res.print()
@@ -135,8 +146,14 @@ class Matcher():
     def get_resources(self):
         return self.resources
 
+    def set_resources(self, resources):
+        self.resources = resources
+
     def get_placement_errors(self):
         return self.placement_errors
 
     def get_deployment_entities(self):
         return self.deployment_entities
+
+    def set_deployment_entities(self, deployments):
+        self.deployment_entities = deployments

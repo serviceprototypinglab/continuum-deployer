@@ -63,3 +63,9 @@ class ResourceEntity:
 
     def get_idle_memory(self):
         return self.memory - sum(d.memory for d in self.deployments)
+
+    def clear_deployments(self):
+        """ Removes all placed deployments
+        """
+
+        self.deployments = []
