@@ -1,6 +1,7 @@
 # pylint: disable=no-member
 
 import sys
+import time
 from io import StringIO
 
 from transitions import Machine
@@ -101,6 +102,8 @@ class MatchCli:
     _TEXT_ASKALTERWORKLOADS = 'Do you want to alter your deployment definition?'
     _TEXT_ASKSAVERESULTS = 'Do you want to save the results to a file?'
     _TEXT_ERRORPLACEMENTS = 'The following workloads could not be scheduled'
+
+    INTERACTIVE_TIMEOUT = 1.5
 
     def __init__(self, resources_path, dsl_path):
 
@@ -306,6 +309,7 @@ class MatchCli:
             click.echo('\n')
             for r in _matched_resources:
                 r.print()
+                time.sleep(self.INTERACTIVE_TIMEOUT)
 
             _placement_errors = self.settings.solver.get_placement_errors()
             if _placement_errors:
