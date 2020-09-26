@@ -152,6 +152,7 @@ class MatchCli:
         with open(path, 'r+') as file:
             _content = file.read()
             _content_edited = click.edit(_content)
+            # check if user closed editor without saving
             if _content_edited is not None:
                 # clear file content
                 file.seek(0)
@@ -159,15 +160,19 @@ class MatchCli:
                 # write new edited content
                 file.write(_content_edited)
 
-    def _read_resources(self):
+    def _edit_content_with_editor(self, content):
+        _content = content
+        _content_edited = click.edit(_content)
+        # check if user closed editor without saving
+        if _content_edited is not None:
+            return _content_edited
 
+        return _content
+
+    def _read_resources_file(self):
         try:
             self.settings.resources_content = self._get_file_content(
                 self.settings.resources_path)
-
-            _resources = Resources()
-            _resources.parse(self.settings.resources_content)
-            self.settings.resources = _resources.get_resources()
 
         except FileNotFoundError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
@@ -177,16 +182,16 @@ class MatchCli:
             click.echo(click.style(e.strerror, fg='red'), err=True)
             self.settings.resources_path = None
             self.ask_resources()
-        except Exception as e:
-            click.echo(e, err=True)
-            exit(1)
+
+    def _parse_resources(self):
+        _resources = Resources()
+        _resources.parse(self.settings.resources_content)
+        self.settings.resources = _resources.get_resources()
 
     def _read_dsl(self):
         try:
             self.settings.dsl_content = self.settings.dsl_importer.get_dsl_content(
                 self.settings.dsl_path)
-            self.settings.dsl_importer.parse(self.settings.dsl_content)
-            self.settings.deployment_entities = self.settings.dsl_importer.get_app_modules()
 
         except FileNotFoundError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
@@ -196,9 +201,10 @@ class MatchCli:
             click.echo(click.style(e.strerror, fg='red'), err=True)
             self.settings.dsl_path = None
             self.ask_dsl()
-        # except Exception as e:
-        #     click.echo(e, err=True)
-        #     exit(1)
+
+    def _parse_dsl(self):
+        self.settings.dsl_importer.parse(self.settings.dsl_content)
+        self.settings.deployment_entities = self.settings.dsl_importer.get_app_modules()
 
     def _ask_setting_options(self, config):
 
@@ -235,7 +241,8 @@ class MatchCli:
             self.settings.resources_path = UI.prompt_std(
                 self._TEXT_ASKRESOURCES)
 
-        self._read_resources()
+        self._read_resources_file()
+        self._parse_resources()
 
         # implementation of output via pager - https://stackoverflow.com/a/1218951
         # sys.stdout = _stdout = StringIO()
@@ -272,6 +279,7 @@ class MatchCli:
             self.settings.dsl_path = UI.prompt_std(self._TEXT_ASKDSL)
 
         self._read_dsl()
+        self._parse_dsl()
 
         click.echo('\n')
         for d in self.settings.deployment_entities:
@@ -379,15 +387,17 @@ class MatchCli:
         if _alter_resources:
             # open editor
             self._edit_file_with_editor(self.settings.resources_path)
-            self._read_resources()
+            self._read_resources_file()
+            self._parse_resources()
             self.settings.solver.set_resources(self.settings.resources)
 
         _alter_deployments = confirm(self._TEXT_ASKALTERWORKLOADS)
         if _alter_deployments:
             # open editor
-            self._edit_file_with_editor(self.settings.dsl_path)
+            self.settings.dsl_content = self._edit_content_with_editor(
+                self.settings.dsl_content)
             self.settings.dsl_importer.reset_app_modules()
-            self._read_dsl()
+            self._parse_dsl()
             self.settings.solver.set_deployment_entities(
                 self.settings.deployment_entities)
 
