@@ -10,7 +10,12 @@ class Importer:
     def __init__(self):
         self.app_modules = []
 
+        self._check_requirements()
+
         self.config = self._gen_config()
+
+    def _check_requirements(self):
+        raise NotImplementedError
 
     def _gen_config(self):
         return Config([])

@@ -15,6 +15,7 @@ import click
 
 import continuum_deployer
 from continuum_deployer.utils.ui import UI
+from continuum_deployer.utils.exceptions import RequirementsError
 from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.matching.greedy import Greedy
@@ -267,8 +268,13 @@ class MatchCli:
                            completer=html_completer, validator=DSLValidator())
         self.settings.dsl_type = _dsl_type
 
-        if self.settings.dsl_type == 'helm':
-            self.settings.dsl_importer = Helm()
+        try:
+            if self.settings.dsl_type == 'helm':
+                self.settings.dsl_importer = Helm()
+        except RequirementsError as e:
+            click.echo(click.style(
+                '\n[Error] {} '.format(e.message), fg='red'), err=True)
+            exit(1)
 
         click.echo('\n')
         _config = self.settings.dsl_importer.get_config()

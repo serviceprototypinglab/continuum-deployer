@@ -12,6 +12,7 @@ from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.utils.config import Config, Setting, SettingValue
 from continuum_deployer.utils.file_handling import FileHandling
+from continuum_deployer.utils.exceptions import RequirementsError
 
 
 class Helm(Importer):
@@ -99,6 +100,13 @@ class Helm(Importer):
             memory_value = memory_value/float('1e+6')
 
         return int(memory_value)
+
+    def _check_requirements(self):
+
+        _helm = shutil.which("helm")
+        if _helm is None:
+            # helm is not available in $PATH
+            raise RequirementsError("Helm executable not available in $PATH")
 
     def _gen_config(self):
         return Config([
