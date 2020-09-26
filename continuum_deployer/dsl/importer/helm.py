@@ -205,7 +205,8 @@ class Helm(Importer):
                     _number_replicas = doc['spec'].get('replicas', 1)
 
                     # check if we need to scale higher than 1
-                    if _number_replicas == 1:
+                    # case 'is None': empty replicas field in yaml
+                    if _number_replicas == 1 or _number_replicas is None:
                         self.app_modules.append(deployment)
                     else:
                         _deployment_name = deployment.name
