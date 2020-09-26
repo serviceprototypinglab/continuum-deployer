@@ -166,7 +166,8 @@ class Helm(Importer):
                         '[Error] No name provided in object metadata', fg='red'), err=True)
                     exit(1)
 
-                _labels = doc.get('metadata', None).get('labels', None)
+                _labels = doc['spec']['template']['spec'].get(
+                    'nodeSelector', None)
                 if _labels is not None:
                     deployment.labels = _labels
 
