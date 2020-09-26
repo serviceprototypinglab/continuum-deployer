@@ -2,11 +2,16 @@ import copy
 import yaml
 import json
 import click
+import tempfile
+import shutil
+import subprocess
 from bitmath import KiB, MiB, GiB, TiB, PiB, EiB, kB, MB, GB, TB, PB, EB
 from progress.spinner import Spinner
 
 from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.resources.deployment import DeploymentEntity
+from continuum_deployer.utils.config import Config, Setting, SettingValue
+from continuum_deployer.utils.file_handling import FileHandling
 
 
 class Helm(Importer):
@@ -95,6 +100,43 @@ class Helm(Importer):
 
         return int(memory_value)
 
+    def _gen_config(self):
+        return Config([
+            Setting('chart_origin', [
+                SettingValue(
+                    'archive', description='Takes a local helm chart archive as input'),
+                SettingValue(
+                    'yaml', 'Reads an already templated YAML file', default=True),
+            ])
+        ])
+
+    def template_chart_archive(self, archive_path):
+
+        _helm = shutil.which("helm")
+        if _helm == '':
+            # handle helm not installed
+            pass
+        _command = [
+            _helm,
+            'template',
+            archive_path
+        ]
+        _templated_yaml = subprocess.run(
+            _command, capture_output=True, text=True)
+
+        return _templated_yaml.stdout
+
+    def get_dsl_content(self, dsl_path):
+
+        _chart_origin = self.config.get_setting(
+            'chart_origin').get_value().value
+        if _chart_origin == 'yaml':
+            return FileHandling.get_file_content(dsl_path)
+        elif _chart_origin == 'archive':
+            return self.template_chart_archive(dsl_path)
+        else:
+            raise NotImplementedError
+
     def parse(self, dsl_input):
 
         # see default loader deprecation
@@ -145,7 +187,7 @@ class Helm(Importer):
 
                             _limits = container.get(
                                 'resources', None).get('limits', None)
-                            if _limits != None:
+                            if _limits != None and _limits != {}:
                                 deployment.memory_limit = Helm.parse_k8s_memory_value(
                                     _limits.get('memory'))
                                 deployment.cpu_limit = Helm.parse_k8s_cpu_value(

@@ -88,8 +88,11 @@ class ListValidator(Validator):
 
 class MatchCli:
 
-    STATES = ['startup', 'input_resources',
-              'input_dsl', 'dsl_type', 'solver_type', 'config_solver', 'matching', 'check_results', 'alter_definitions', 'export']
+    STATES = [
+        'startup', 'input_resources', 'input_dsl', 'dsl_type', 'config_dsl',
+        'solver_type', 'config_solver', 'matching', 'check_results', 'alter_definitions',
+        'export'
+    ]
 
     _TEXT_ASKRESOURCES = 'Enter path to resources file'
     _TEXT_ASKDSL = 'Enter path to DSL file'
@@ -123,7 +126,9 @@ class MatchCli:
         self.machine.add_transition(
             trigger='ask_dsl_type', source=['input_resources', 'dsl_type'], dest='dsl_type')
         self.machine.add_transition(
-            trigger='ask_dsl', source=['dsl_type', 'input_dsl'], dest='input_dsl')
+            trigger='configure_dsl', source=['input_resources', 'config_dsl'], dest='config_dsl')
+        self.machine.add_transition(
+            trigger='ask_dsl', source=['config_dsl', 'input_dsl'], dest='input_dsl')
         self.machine.add_transition(
             trigger='ask_solver_type', source=['input_dsl', 'solver_type'], dest='solver_type')
         self.machine.add_transition(
@@ -174,7 +179,7 @@ class MatchCli:
 
     def _read_dsl(self):
         try:
-            self.settings.dsl_content = self._get_file_content(
+            self.settings.dsl_content = self.settings.dsl_importer.get_dsl_content(
                 self.settings.dsl_path)
             self.settings.dsl_importer.parse(self.settings.dsl_content)
             self.settings.deployment_entities = self.settings.dsl_importer.get_app_modules()
@@ -188,6 +193,28 @@ class MatchCli:
         except Exception as e:
             click.echo(e, err=True)
             exit(1)
+
+    def _ask_setting_options(self, config):
+
+        _config = config
+        for setting in _config.get_settings():
+            click.echo('Configure {}:\n'.format(setting.name))
+            _options = setting.get_options()
+            for key, option in enumerate(_options):
+                click.echo('[{}] {} - {}'.format(key,
+                                                 click.style(
+                                                     option.value, fg='blue'),
+                                                 option.description))
+
+            _list_of_options = list(range(len(_options)))
+            _list_of_options = ListValidator.list_items_to_str(
+                _list_of_options)
+
+            option_completer = WordCompleter(_list_of_options)
+            _option_choice = prompt('\nWhich config option do you choose: ',
+                                    completer=option_completer, validator=ListValidator(_list_of_options))
+
+            setting.set_value(_options[int(_option_choice)])
 
     def on_enter_input_resources(self):
 
@@ -210,14 +237,21 @@ class MatchCli:
         # sys.stdout = sys.__stdout__
         # click.echo_via_pager(_stdout.getvalue())
 
-        self.ask_dsl_type()
+        self.configure_dsl()
 
-    def on_enter_dsl_type(self):
+    def on_enter_config_dsl(self):
         click.echo('\n')
         html_completer = WordCompleter(['helm'])
         _dsl_type = prompt(self._TEXT_ASKDSLTYPE,
                            completer=html_completer, validator=DSLValidator())
         self.settings.dsl_type = _dsl_type
+
+        if self.settings.dsl_type == 'helm':
+            self.settings.dsl_importer = Helm()
+
+        _config = self.settings.dsl_importer.get_config()
+        self._ask_setting_options(_config)
+
         self.ask_dsl()
 
     def on_enter_input_dsl(self):
@@ -226,11 +260,6 @@ class MatchCli:
         if self.settings.dsl_path is None:
             # resources path not already set via CLI param
             self.settings.dsl_path = UI.prompt_std(self._TEXT_ASKDSL)
-
-        if self.settings.dsl_type == 'helm':
-            self.settings.dsl_importer = Helm()
-        else:
-            raise NotImplementedError
 
         self._read_dsl()
 

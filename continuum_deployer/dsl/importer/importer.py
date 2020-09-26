@@ -1,6 +1,7 @@
 import click
 
 from continuum_deployer.resources.deployment import DeploymentEntity
+from continuum_deployer.utils.config import Config, Setting, SettingValue
 
 
 class Importer:
@@ -9,13 +10,24 @@ class Importer:
     def __init__(self):
         self.app_modules = []
 
+        self.config = self._gen_config()
+
+    def _gen_config(self):
+        return Config([])
+
     def parse(self, dsl_input):
         """Handles actual parsing of DSL to internal data structures. Needs to be implemented by child."""
+        raise NotImplementedError
+
+    def get_dsl_content(self, dsl_path):
         raise NotImplementedError
 
     def get_app_modules(self):
         """Getter method for application modules"""
         return self.app_modules
+
+    def get_config(self):
+        return self.config
 
     def reset_app_modules(self):
         """Delete already parsed app modules"""

@@ -120,7 +120,7 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Run CLI interactively less-input",
+            "name": "Run CLI interactively less-input yaml",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/continuum_deployer/app.py",
@@ -130,6 +130,20 @@
                 "resources/default.yaml",
                 "-d",
                 "charts/sample_multi.yaml"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Run CLI interactively less-input archive",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "match",
+                "-r",
+                "resources/default.yaml",
+                "-d",
+                "charts/wordpress/wordpress-9.6.2.tgz"
             ],
             "console": "integratedTerminal"
         },
