@@ -95,11 +95,14 @@ class MatchCli:
     ]
 
     _TEXT_ASKRESOURCES = 'Enter path to resources file'
+    _TEXT_ASKRESHEADLINE = 'Parsed resources: '
     _TEXT_ASKDSL = 'Enter path to DSL file'
     _TEXT_ASKDSLTYPE = 'Enter DSL type: '
+    _TEXT_ASKDEPLOYHEADLINE = 'Parsed workloads: '
     _TEXT_ASKSOLVERTYPE = 'Enter Solver type: '
     _TEXT_ASKEXPORTPATH = 'Enter path to results file: '
     _TEXT_ASKSTARTMATCHING = 'Do you want to start matching?'
+    _TEXT_ASKMATCHINGRESHEADLINE = 'Matching results:'
     _TEXT_ASKPLACEMENTOK = 'Is placement satisfying (otherwise you are able to alter the input)?'
     _TEXT_ASKALTERRESOURCES = 'Do you want to alter your resources definition?'
     _TEXT_ASKALTERWORKLOADS = 'Do you want to alter your deployment definition?'
@@ -247,6 +250,7 @@ class MatchCli:
         # implementation of output via pager - https://stackoverflow.com/a/1218951
         # sys.stdout = _stdout = StringIO()
 
+        click.secho(self._TEXT_ASKRESHEADLINE, fg='cyan', bold=True)
         click.echo('\n')
         for r in self.settings.resources:
             r.print()
@@ -266,6 +270,7 @@ class MatchCli:
         if self.settings.dsl_type == 'helm':
             self.settings.dsl_importer = Helm()
 
+        click.echo('\n')
         _config = self.settings.dsl_importer.get_config()
         self._ask_setting_options(_config)
 
@@ -281,6 +286,8 @@ class MatchCli:
         self._read_dsl()
         self._parse_dsl()
 
+        click.echo('\n')
+        click.secho(self._TEXT_ASKDEPLOYHEADLINE, fg='cyan', bold=True)
         click.echo('\n')
         for d in self.settings.deployment_entities:
             d.print()
@@ -353,6 +360,9 @@ class MatchCli:
         if _start_matching:
             self.settings.solver.match()
             _matched_resources = self.settings.solver.get_resources()
+            click.echo('\n')
+            click.secho(self._TEXT_ASKMATCHINGRESHEADLINE,
+                        fg='cyan', bold=True)
             click.echo('\n')
             for r in _matched_resources:
                 r.print()
