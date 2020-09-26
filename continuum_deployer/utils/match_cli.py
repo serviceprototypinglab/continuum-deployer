@@ -89,9 +89,9 @@ class ListValidator(Validator):
 class MatchCli:
 
     STATES = [
-        'startup', 'input_resources', 'input_dsl', 'dsl_type', 'config_dsl',
+        'start', 'input_resources', 'input_dsl', 'dsl_type', 'config_dsl',
         'solver_type', 'config_solver', 'matching', 'check_results', 'alter_definitions',
-        'export'
+        'export', 'init'
     ]
 
     _TEXT_ASKRESOURCES = 'Enter path to resources file'
@@ -118,11 +118,13 @@ class MatchCli:
 
         # initialize the state machine
         self.machine = Machine(
-            model=self, states=MatchCli.STATES, initial='startup')
+            model=self, states=MatchCli.STATES, initial='init')
 
         # add transitions
         self.machine.add_transition(
-            trigger='ask_resources', source=['startup', 'input_resources'], dest='input_resources')
+            trigger='start', source=['init'], dest='start')
+        self.machine.add_transition(
+            trigger='ask_resources', source=['start', 'input_resources'], dest='input_resources')
         self.machine.add_transition(
             trigger='ask_dsl_type', source=['input_resources', 'dsl_type'], dest='dsl_type')
         self.machine.add_transition(
@@ -169,9 +171,11 @@ class MatchCli:
 
         except FileNotFoundError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
+            self.settings.resources_path = None
             self.ask_resources()
         except IsADirectoryError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
+            self.settings.resources_path = None
             self.ask_resources()
         except Exception as e:
             click.echo(e, err=True)
@@ -186,13 +190,15 @@ class MatchCli:
 
         except FileNotFoundError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
+            self.settings.dsl_path = None
             self.ask_dsl()
         except IsADirectoryError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
+            self.settings.dsl_path = None
             self.ask_dsl()
-        except Exception as e:
-            click.echo(e, err=True)
-            exit(1)
+        # except Exception as e:
+        #     click.echo(e, err=True)
+        #     exit(1)
 
     def _ask_setting_options(self, config):
 
@@ -216,12 +222,16 @@ class MatchCli:
 
             setting.set_value(_options[int(_option_choice)])
 
+    def on_enter_start(self):
+        click.echo(click.style(UI.CLI_BANNER.format(
+            continuum_deployer.app_version), fg='blue'), err=False)
+
+        self.ask_resources()
+
     def on_enter_input_resources(self):
 
         if self.settings.resources_path is None:
             # resources path not already set via CLI param
-            click.echo(click.style(UI.CLI_BANNER.format(
-                continuum_deployer.app_version), fg='blue'), err=False)
             self.settings.resources_path = UI.prompt_std(
                 self._TEXT_ASKRESOURCES)
 

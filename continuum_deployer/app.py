@@ -110,7 +110,7 @@ def match(resources, deployment, type, solver, output_path):
     """
 
     match_cli = MatchCli(resources, deployment)
-    match_cli.ask_resources()
+    match_cli.start()
 
 
 if __name__ == "__main__":
