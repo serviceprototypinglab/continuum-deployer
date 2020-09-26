@@ -68,15 +68,24 @@ class Matcher():
             raise Exception
 
     @staticmethod
-    def _tokenize_label(label: dict):
-        _first_key = list(label)[0]
-        return '{}-{}'.format(_first_key, label.get(_first_key))
+    def _tokenize_labels(labels: dict):
+        # hash dict of labels to make grouping easier
+        _result = hash(frozenset(labels.items()))
+        return _result
 
     @staticmethod
     def _token_exists_or_create(data, token):
         if token not in data:
             data[token] = []
         return data
+
+    def _get_suitable_resources(self, resources, labels):
+        _suitable_resources = []
+        for resource in resources:
+            if resource.labels is not None:
+                if labels.items() <= resource.labels.items():
+                    _suitable_resources.append(resource)
+        return _suitable_resources
 
     def group(self, entities):
         _grouping = dict()
@@ -90,8 +99,7 @@ class Matcher():
             else:
                 # entity is labeled
                 _first_key = list(entity.labels)[0]
-                _token = Matcher._tokenize_label(
-                    {_first_key: entity.labels[_first_key]})
+                _token = Matcher._tokenize_labels(entity.labels)
                 _grouping = Matcher._token_exists_or_create(_grouping, _token)
                 _grouping[_token].append(entity)
         return _grouping
@@ -121,9 +129,14 @@ class Matcher():
                 self.UNLABELED_TOKEN)
 
         for token in sorted(self.grouped_deployments.keys()):
+            # get group labels in dict form, first can be taken as they are equal throwout a group
+            _group_labels = self.grouped_deployments[token][0].labels
+
+            _suitable_resources = self._get_suitable_resources(
+                self.resources, _group_labels)
+
             self.do_matching(
-                self.grouped_deployments[token], self.grouped_resources[token])
-            _leftover_resources.extend(self.grouped_resources[token])
+                self.grouped_deployments[token], _suitable_resources)
 
         self.do_matching(
             _unlabeled_deployments, _leftover_resources)
