@@ -1,3 +1,4 @@
+import os
 import copy
 import yaml
 import json
@@ -5,6 +6,7 @@ import click
 import tempfile
 import shutil
 import subprocess
+import filetype
 from bitmath import KiB, MiB, GiB, TiB, PiB, EiB, kB, MB, GB, TB, PB, EB
 from progress.spinner import Spinner
 
@@ -12,7 +14,7 @@ from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.utils.config import Config, Setting, SettingValue
 from continuum_deployer.utils.file_handling import FileHandling
-from continuum_deployer.utils.exceptions import RequirementsError
+from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSupported
 
 
 class Helm(Importer):
@@ -119,6 +121,14 @@ class Helm(Importer):
         ])
 
     def template_chart_archive(self, archive_path):
+
+        if os.path.isfile(archive_path):
+            _file_type = filetype.guess(archive_path)
+            if _file_type is None:
+                raise FileTypeNotSupported("File type is not supported")
+            elif _file_type.MIME != 'application/gzip':
+                raise FileTypeNotSupported(
+                    "File type {} is not supported".format(_file_type.MIME))
 
         _helm = shutil.which("helm")
         if _helm == '':

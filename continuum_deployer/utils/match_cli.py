@@ -15,7 +15,7 @@ import click
 
 import continuum_deployer
 from continuum_deployer.utils.ui import UI
-from continuum_deployer.utils.exceptions import RequirementsError
+from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSupported
 from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.matching.greedy import Greedy
@@ -203,6 +203,10 @@ class MatchCli:
             self.ask_dsl()
         except IsADirectoryError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
+            self.settings.dsl_path = None
+            self.ask_dsl()
+        except FileTypeNotSupported as e:
+            click.echo(click.style(e.message, fg='red'), err=True)
             self.settings.dsl_path = None
             self.ask_dsl()
 
