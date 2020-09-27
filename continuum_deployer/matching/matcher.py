@@ -119,6 +119,9 @@ class Matcher():
         self.grouped_deployments = self.group(self.deployment_entities)
         self.grouped_resources = self.group(self.resources)
 
+        _unlabeled_deployments = []
+        _unlabeled_resources = []
+
         if self.UNLABELED_TOKEN in self.grouped_deployments:
             _unlabeled_deployments = self.grouped_deployments.pop(
                 self.UNLABELED_TOKEN)
