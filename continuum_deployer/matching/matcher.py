@@ -120,13 +120,9 @@ class Matcher():
         self.grouped_resources = self.group(self.resources)
 
         _unlabeled_deployments = []
-        _unlabeled_resources = []
 
         if self.UNLABELED_TOKEN in self.grouped_deployments:
             _unlabeled_deployments = self.grouped_deployments.pop(
-                self.UNLABELED_TOKEN)
-        if self.UNLABELED_TOKEN in self.grouped_resources:
-            _unlabeled_resources = self.grouped_resources.pop(
                 self.UNLABELED_TOKEN)
 
         for token in sorted(self.grouped_deployments.keys()):
@@ -141,7 +137,7 @@ class Matcher():
 
         # match unlabeled deployments
         self.do_matching(
-            _unlabeled_deployments, _unlabeled_resources)
+            _unlabeled_deployments, self.resources)
 
     def reset_matching(self):
         """Reset matching state of matcher
