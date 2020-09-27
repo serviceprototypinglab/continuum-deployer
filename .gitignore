@@ -177,3 +177,4 @@ venv.bak/
 
 output_local
 continuum_deployer/utils/dummy.py
+charts/

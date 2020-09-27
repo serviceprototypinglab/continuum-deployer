@@ -14,7 +14,7 @@ from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.utils.config import Config, Setting, SettingValue
 from continuum_deployer.utils.file_handling import FileHandling
-from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSupported
+from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSupported, ImporterError
 
 
 class Helm(Importer):
@@ -114,16 +114,16 @@ class Helm(Importer):
         return Config([
             Setting('chart_origin', [
                 SettingValue(
-                    'archive', description='Takes a local helm chart archive as input'),
+                    'chart', description='Takes a local helm chart or archive as input'),
                 SettingValue(
                     'yaml', 'Reads an already templated YAML file', default=True),
             ])
         ])
 
-    def template_chart_archive(self, archive_path):
+    def template_chart_archive(self, helm_path):
 
-        if os.path.isfile(archive_path):
-            _file_type = filetype.guess(archive_path)
+        if os.path.isfile(helm_path):
+            _file_type = filetype.guess(helm_path)
             if _file_type is None:
                 raise FileTypeNotSupported("File type is not supported")
             elif _file_type.MIME != 'application/gzip':
@@ -131,16 +131,16 @@ class Helm(Importer):
                     "File type {} is not supported".format(_file_type.MIME))
 
         _helm = shutil.which("helm")
-        if _helm == '':
-            # handle helm not installed
-            pass
         _command = [
             _helm,
             'template',
-            archive_path
+            helm_path
         ]
         _templated_yaml = subprocess.run(
             _command, capture_output=True, text=True)
+
+        if _templated_yaml.returncode != 0:
+            raise ImporterError(_templated_yaml.stderr)
 
         return _templated_yaml.stdout
 
