@@ -150,7 +150,7 @@ class Helm(Importer):
             'chart_origin').get_value().value
         if _chart_origin == 'yaml':
             return FileHandling.get_file_content(dsl_path)
-        elif _chart_origin == 'archive':
+        elif _chart_origin == 'chart':
             return self.template_chart_archive(dsl_path)
         else:
             raise NotImplementedError
