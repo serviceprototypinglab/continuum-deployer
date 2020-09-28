@@ -7,6 +7,8 @@ from continuum_deployer.utils.config import Config, Setting, SettingValue
 class Importer:
     """Interface that defines interaction with several DSL specific extractor implementations."""
 
+    DSL_TYPES = ['helm']
+
     def __init__(self):
         self.app_modules = []
 

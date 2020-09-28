@@ -3,6 +3,7 @@
 import click
 import yaml
 
+from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.matching.matcher import Matcher
@@ -27,8 +28,8 @@ def cli():
 
 @cli.command()
 @click.option('-f', '--file', required=True, help=_HELPTEXT_DSL)
-@click.option('-t', '--type', type=click.Choice(['helm']), default='helm', help=_HELPTEXT_TYPE)
-def print_resources(file, type):
+@click.option('-t', '--type', type=click.Choice(Importer.DSL_TYPES), default='helm', help=_HELPTEXT_TYPE)
+def print_deployments(file, type):
 
     stream = open(file, 'r')
 
@@ -42,8 +43,8 @@ def print_resources(file, type):
 
 @cli.command()
 @click.option('-f', '--file', required=True, help=_HELPTEXT_RESOURCES)
-def parse_resources(file):
-    """Parses the resources YAML and prints all extracted resource entities"""
+def print_resources(file):
+    """Parses the resources YAML and prints result"""
 
     stream = open(file, 'r')
     resources = Resources()
@@ -54,7 +55,7 @@ def parse_resources(file):
 @cli.command()
 @click.option('-r', '--resources', required=True, help=_HELPTEXT_RESOURCES)
 @click.option('-d', '--deployment', required=True, help=_HELPTEXT_DSL)
-@click.option('-t', '--type', type=click.Choice(['helm']), default='helm', show_default=True, help=_HELPTEXT_TYPE)
+@click.option('-t', '--type', type=click.Choice(Importer.DSL_TYPES), default='helm', show_default=True, help=_HELPTEXT_TYPE)
 @click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat', show_default=True, help=_HELPTEXT_SOLVER)
 @click.option('-o', '--output', 'output_path', type=str, help=_HELPTEXT_OUTPUT)
 def nonint_match(resources, deployment, type, solver, output_path):
@@ -102,9 +103,7 @@ def nonint_match(resources, deployment, type, solver, output_path):
 @cli.command()
 @click.option('-r', '--resources', required=False, default=None, help=_HELPTEXT_RESOURCES)
 @click.option('-d', '--deployment', required=False, default=None, help=_HELPTEXT_DSL)
-@click.option('-t', '--type', type=click.Choice(['helm']), default=None, show_default=True, help=_HELPTEXT_TYPE)
-@click.option('-s', '--solver', type=click.Choice(['sat', 'greedy']), default='sat', show_default=True, help=_HELPTEXT_SOLVER)
-@click.option('-o', '--output', 'output_path', type=str, help=_HELPTEXT_OUTPUT)
+@click.option('-t', '--type', type=click.Choice(Importer.DSL_TYPES), default=None, show_default=True, help=_HELPTEXT_TYPE)
 def match(resources, deployment, type, solver, output_path):
     """
     Matches the given deployments with the available resources

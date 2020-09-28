@@ -16,6 +16,7 @@ import click
 import continuum_deployer
 from continuum_deployer.utils.ui import UI
 from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSupported, ImporterError
+from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.matching.greedy import Greedy
@@ -70,8 +71,6 @@ class MatchCli:
         'solver_type', 'config_solver', 'matching', 'check_results', 'alter_definitions',
         'export', 'init'
     ]
-
-    DSL_TYPES = ['helm']
 
     _TEXT_ASKRESOURCES = 'Enter path to resources file'
     _TEXT_ASKRESHEADLINE = 'Parsed resources: '
@@ -252,9 +251,9 @@ class MatchCli:
         click.echo('\n')
 
         if self.settings.dsl_type is None:
-            html_completer = WordCompleter(self.DSL_TYPES)
+            html_completer = WordCompleter(Importer.DSL_TYPES)
             _dsl_type = prompt(self._TEXT_ASKDSLTYPE,
-                            completer=html_completer, validator=ListValidator(self.DSL_TYPES))
+                               completer=html_completer, validator=ListValidator(Importer.DSL_TYPES))
             self.settings.dsl_type = _dsl_type
 
         try:
