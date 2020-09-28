@@ -104,7 +104,7 @@ def nonint_match(resources, deployment, type, solver, output_path):
 @click.option('-r', '--resources', required=False, default=None, help=_HELPTEXT_RESOURCES)
 @click.option('-d', '--deployment', required=False, default=None, help=_HELPTEXT_DSL)
 @click.option('-t', '--type', type=click.Choice(Importer.DSL_TYPES), default=None, show_default=True, help=_HELPTEXT_TYPE)
-def match(resources, deployment, type, solver, output_path):
+def match(resources, deployment, type):
     """
     Matches the given deployments with the available resources
     interactively using the specified solver.
