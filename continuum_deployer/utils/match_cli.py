@@ -43,30 +43,6 @@ class Settings:
     solver: object = field(default=None)
 
 
-class DSLValidator(Validator):
-
-    DSL_TYPES = ['helm']
-
-    def validate(self, document):
-        text = document.text
-
-        if text not in self.DSL_TYPES:
-            raise ValidationError(
-                message='DSL type {} not supported, must be one of: {}'.format(text, self.DSL_TYPES))
-
-
-class SolverValidator(Validator):
-
-    SOLVER_TYPES = ['1', '2']
-
-    def validate(self, document):
-        text = document.text
-
-        if text not in self.SOLVER_TYPES:
-            raise ValidationError(
-                message='Solver type {} not supported, must be one of: {}'.format(text, self.SOLVER_TYPES))
-
-
 class ListValidator(Validator):
 
     def __init__(self, list: list):
@@ -95,6 +71,8 @@ class MatchCli:
         'export', 'init'
     ]
 
+    DSL_TYPES = ['helm']
+
     _TEXT_ASKRESOURCES = 'Enter path to resources file'
     _TEXT_ASKRESHEADLINE = 'Parsed resources: '
     _TEXT_ASKDSL = 'Enter path to DSL file'
@@ -112,13 +90,14 @@ class MatchCli:
 
     INTERACTIVE_TIMEOUT = 1.5
 
-    def __init__(self, resources_path, dsl_path):
+    def __init__(self, resources_path, dsl_path, dsl_type):
 
         self.resources = None
 
         self.settings = Settings()
         self.settings.resources_path = resources_path
         self.settings.dsl_path = dsl_path
+        self.settings.dsl_type = dsl_type
 
         # initialize the state machine
         self.machine = Machine(
@@ -271,10 +250,12 @@ class MatchCli:
 
     def on_enter_config_dsl(self):
         click.echo('\n')
-        html_completer = WordCompleter(['helm'])
-        _dsl_type = prompt(self._TEXT_ASKDSLTYPE,
-                           completer=html_completer, validator=DSLValidator())
-        self.settings.dsl_type = _dsl_type
+
+        if self.settings.dsl_type is None:
+            html_completer = WordCompleter(self.DSL_TYPES)
+            _dsl_type = prompt(self._TEXT_ASKDSLTYPE,
+                            completer=html_completer, validator=ListValidator(self.DSL_TYPES))
+            self.settings.dsl_type = _dsl_type
 
         try:
             if self.settings.dsl_type == 'helm':
@@ -318,9 +299,11 @@ class MatchCli:
 \t - <b>SAT Solver</b> (offers various options for mathematical optimal placements) \t[2]
 '''))
 
-        html_completer = WordCompleter(['1', '2'])
+        _options = ['1', '2']
+
+        html_completer = WordCompleter(_options)
         _solver_type = prompt(self._TEXT_ASKSOLVERTYPE,
-                              completer=html_completer, validator=SolverValidator())
+                              completer=html_completer, validator=ListValidator(_options))
         self.settings.solver_type = _solver_type
 
         _solver = None
@@ -440,3 +423,5 @@ class MatchCli:
             except Exception as e:
                 click.echo(click.style(e.strerror, fg='red'), err=True)
                 self.export()
+        else:
+            exit(0)
