@@ -22,7 +22,10 @@ _HELPTEXT_OUTPUT = 'Path to output file'
 
 @click.group()
 def cli():
-    """Prototypical Continuum Computing Deployer"""
+    """
+    Prototypical Continuum Computing Deployer\n
+    Authors: Daniel Hass
+    """
     pass
 
 
@@ -30,6 +33,7 @@ def cli():
 @click.option('-f', '--file', required=True, help=_HELPTEXT_DSL)
 @click.option('-t', '--type', type=click.Choice(Importer.DSL_TYPES), default='helm', help=_HELPTEXT_TYPE)
 def print_deployments(file, type):
+    """Parses deployments and prints result"""
 
     stream = open(file, 'r')
 
@@ -44,7 +48,7 @@ def print_deployments(file, type):
 @cli.command()
 @click.option('-f', '--file', required=True, help=_HELPTEXT_RESOURCES)
 def print_resources(file):
-    """Parses the resources YAML and prints result"""
+    """Parses resources YAML and prints result"""
 
     stream = open(file, 'r')
     resources = Resources()
@@ -60,8 +64,7 @@ def print_resources(file):
 @click.option('-o', '--output', 'output_path', type=str, help=_HELPTEXT_OUTPUT)
 def nonint_match(resources, deployment, type, solver, output_path):
     """
-        Matches the given deployments with the available resources
-        non-interactively using the specified solver.
+        Match deployments non-interactively using cli parameters
     """
 
     _deployment_file = open(deployment, 'r')
@@ -106,8 +109,7 @@ def nonint_match(resources, deployment, type, solver, output_path):
 @click.option('-t', '--type', type=click.Choice(Importer.DSL_TYPES), default=None, show_default=True, help=_HELPTEXT_TYPE)
 def match(resources, deployment, type):
     """
-    Matches the given deployments with the available resources
-    interactively using the specified solver.
+    Match deployments interactively
     """
 
     match_cli = MatchCli(resources, deployment, type)
