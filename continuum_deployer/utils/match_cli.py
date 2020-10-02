@@ -14,6 +14,7 @@ from prompt_toolkit.shortcuts import confirm
 import click
 
 import continuum_deployer
+from continuum_deployer import plugins
 from continuum_deployer.utils.ui import UI
 from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSupported, ImporterError
 from continuum_deployer.dsl.importer.importer import Importer
@@ -218,6 +219,13 @@ class MatchCli:
 
             setting.set_value(_options[int(_option_choice)])
 
+    @staticmethod
+    def _options_array_to_number_choices(options):
+        _options_length = len(options)
+        _result = list(range(_options_length))
+        _result = [format(x, 'd') for x in _result]
+        return _result
+
     def on_enter_start(self):
         click.echo(click.style(UI.CLI_BANNER.format(
             continuum_deployer.app_version), fg='blue'), err=False)
@@ -289,33 +297,38 @@ class MatchCli:
         self.ask_solver_type()
 
     def on_enter_solver_type(self):
+
+        global plugins
+
         click.echo('\n')
 
-        # TODO maybe read solvers dynamically
-        print_formatted_text(HTML('''
+        solver_chooser_text = '''
 <b>Choose a solver for the workload placement:</b>
-\t - <b>Greedy Solver</b> (sorts workloads and fills targets in a greedy fashion) \t[1]
-\t - <b>SAT Solver</b> (offers various options for mathematical optimal placements) \t[2]
-'''))
+\t [0] <b>Greedy Solver</b> (sorts workloads and fills targets in a greedy fashion)
+\t [1] <b>SAT Solver</b> (offers various options for mathematical optimal placements)
+'''
 
-        _options = ['1', '2']
+        _solvers = [Greedy, SAT]
 
-        html_completer = WordCompleter(_options)
-        _solver_type = prompt(self._TEXT_ASKSOLVERTYPE,
-                              completer=html_completer, validator=ListValidator(_options))
-        self.settings.solver_type = _solver_type
+        for plugin in plugins.getPluginsOfCategory("Solver"):
+            _solvers.append(plugin.plugin_object)
+            new_solver_option = '\t [{}] <b>{}</b> ({})'.format(
+                len(_solvers)-1, plugin.name, plugin.description)
+            solver_chooser_text='{}{}\n'.format(
+                solver_chooser_text, new_solver_option)
 
-        _solver = None
+        print_formatted_text(HTML(solver_chooser_text))
 
-        if self.settings.solver_type == '1':
-            _solver = Greedy
-        elif self.settings.solver_type == '2':
-            _solver = SAT
-        else:
-            # should never be reached due to SolverValidator
-            raise Exception("Solver type not supported")
+        _options=MatchCli._options_array_to_number_choices(_solvers)
 
-        self.settings.solver = _solver(
+        html_completer=WordCompleter(_options)
+        _solver_type=prompt(self._TEXT_ASKSOLVERTYPE,
+                              completer = html_completer, validator = ListValidator(_options))
+        self.settings.solver_type=_solver_type
+
+        _solver=_solvers[int(self.settings.solver_type)]
+
+        self.settings.solver=_solver(
             self.settings.deployment_entities, self.settings.resources)
 
         self.configure_solver()
@@ -324,23 +337,23 @@ class MatchCli:
         click.echo('\n')
         click.echo('Configure solver settings:\n')
 
-        _config = self.settings.solver.get_config()
+        _config=self.settings.solver.get_config()
         for setting in _config.get_settings():
             click.echo('Configure {}:\n'.format(setting.name))
-            _options = setting.get_options()
+            _options=setting.get_options()
             for key, option in enumerate(_options):
                 click.echo('[{}] {} - {}'.format(key,
                                                  click.style(
                                                      option.value, fg='blue'),
                                                  option.description))
 
-            _list_of_options = list(range(len(_options)))
-            _list_of_options = ListValidator.list_items_to_str(
+            _list_of_options=list(range(len(_options)))
+            _list_of_options=ListValidator.list_items_to_str(
                 _list_of_options)
 
-            option_completer = WordCompleter(_list_of_options)
-            _option_choice = prompt('\nWhich config option do you choose: ',
-                                    completer=option_completer, validator=ListValidator(_list_of_options))
+            option_completer=WordCompleter(_list_of_options)
+            _option_choice=prompt('\nWhich config option do you choose: ',
+                                    completer = option_completer, validator = ListValidator(_list_of_options))
 
             setting.set_value(_options[int(_option_choice)])
 
@@ -348,14 +361,14 @@ class MatchCli:
 
     def on_enter_matching(self):
         click.echo('\n')
-        _start_matching = confirm(self._TEXT_ASKSTARTMATCHING)
+        _start_matching=confirm(self._TEXT_ASKSTARTMATCHING)
 
         # clear already matched resources (necessary for rerun)
         self.settings.solver.reset_matching()
 
         if _start_matching:
             self.settings.solver.match()
-            _matched_resources = self.settings.solver.get_resources()
+            _matched_resources=self.settings.solver.get_resources()
             click.echo('\n')
             click.secho(self._TEXT_ASKMATCHINGRESHEADLINE,
                         fg='cyan', bold=True)

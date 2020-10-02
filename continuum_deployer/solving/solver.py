@@ -1,12 +1,14 @@
 import click
 import sys
 
+from yapsy.IPlugin import IPlugin
+
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
 from continuum_deployer.utils.config import Config, Setting, SettingValue
 
 
-class Solver():
+class Solver(IPlugin):
 
     UNLABELED_TOKEN = 'unlabeled'
 

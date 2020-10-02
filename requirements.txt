@@ -6,3 +6,4 @@ bitmath
 transitions
 prompt_toolkit
 filetype
+Yapsy
