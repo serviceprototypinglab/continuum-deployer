@@ -6,13 +6,14 @@ from continuum_deployer.solving.solver import Solver
 
 class PluginLoader:
 
-    def __init__(self):
+    def __init__(self, add_default_path=True):
 
         self.plugins_paths = []
 
         # add default plugins path
-        _cp_module_path = os.path.realpath(__file__).split('/utils')
-        self.add_plugins_path('{}/plugins'.format(_cp_module_path[0]))
+        if add_default_path:
+            _cp_module_path = os.path.realpath(__file__).split('/utils')
+            self.add_plugins_path('{}/plugins'.format(_cp_module_path[0]))
 
         # Build the manager
         self.plugin_manager = CDPluginManager()

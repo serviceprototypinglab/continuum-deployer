@@ -1,0 +1,6 @@
+[Core]
+Name = Demo Solver
+Module = demo_solver
+
+[Documentation]
+Description = This is a demo solver

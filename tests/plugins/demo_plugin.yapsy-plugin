@@ -1,0 +1,6 @@
+[Core]
+Name = Demo Plugin
+Module = demo_plugin
+
+[Documentation]
+Description = This plugin should be in the default category
