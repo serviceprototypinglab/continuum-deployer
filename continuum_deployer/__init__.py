@@ -1,6 +1,6 @@
 from continuum_deployer.utils.plugin_loader import PluginLoader
 
-app_version = "v0.11.0-dev0"
+app_version = "v0.11.0"
 
 global plugins
 
