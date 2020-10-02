@@ -59,6 +59,11 @@ Options:
   --help                     Show this message and exit.
 ```
 
+## Limitations
+
+### Helm
+- Kubernetes Resources Limits are parsed and available in via the internal deployment object structure but are currently not considered by the included solvers 
+
 ## Authors
 
 - @hassdan1 - Daniel Haß
