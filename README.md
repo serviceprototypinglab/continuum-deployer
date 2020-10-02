@@ -96,6 +96,8 @@ from continuum_deployer.solving.solver import Solver
 
 Trough the interactive CLI the different loaded plugins are frictionless displayed for selection at the appropriate process step.
 
+An example for a prototypical plugin implementation can be found in the examples directory under `examples/plugins`.
+
 ## Limitations
 
 ### Helm
