@@ -40,7 +40,6 @@ def test_replicas_extract(extractor):
 
 
 def test_k8s_memory_calc(extractor):
-    # TODO Do we need support for memory values < 1MB and float memory values
     _memory_values = [
         ['18M', 18],
         ['12Ki', 0],

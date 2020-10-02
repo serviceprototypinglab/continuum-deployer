@@ -62,7 +62,8 @@ Options:
 ## Limitations
 
 ### Helm
-- Kubernetes Resources Limits are parsed and available in via the internal deployment object structure but are currently not considered by the included solvers 
+- Kubernetes Resources Limits are parsed and available in via the internal deployment object structure but are currently not considered by the included solvers
+- Memory requirements for a single deployment that are smaller than 1 MB are currently replaced by 0 and placed without size considerations by the solvers
 
 ## Authors
 
