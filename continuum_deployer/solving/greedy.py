@@ -1,11 +1,11 @@
 import click
 
 from continuum_deployer.resources.resource_entity import ResourceEntity
-from continuum_deployer.matching.matcher import Matcher
+from continuum_deployer.solving.solver import Solver
 from continuum_deployer.utils.config import Config, Setting, SettingValue
 
 
-class Greedy(Matcher):
+class Greedy(Solver):
 
     @staticmethod
     def sort_by_attr(items, attr):

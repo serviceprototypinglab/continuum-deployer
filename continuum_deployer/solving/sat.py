@@ -4,13 +4,13 @@ from continuum_deployer.resources.resource_entity import ResourceEntity
 from ortools.sat.python import cp_model
 
 
-from continuum_deployer.matching.matcher import Matcher
+from continuum_deployer.solving.solver import Solver
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
 from continuum_deployer.utils.config import Config, Setting, SettingValue
 
 
-class SAT(Matcher):
+class SAT(Solver):
 
     CPU_SCALE_FACTOR = 10e2
 

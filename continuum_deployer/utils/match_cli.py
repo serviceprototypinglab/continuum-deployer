@@ -19,8 +19,8 @@ from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSu
 from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
-from continuum_deployer.matching.greedy import Greedy
-from continuum_deployer.matching.sat import SAT
+from continuum_deployer.solving.greedy import Greedy
+from continuum_deployer.solving.sat import SAT
 from continuum_deployer.dsl.exporter.exporter import Exporter
 
 

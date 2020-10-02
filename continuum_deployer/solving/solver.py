@@ -6,7 +6,7 @@ from continuum_deployer.resources.resources import Resources, ResourceEntity
 from continuum_deployer.utils.config import Config, Setting, SettingValue
 
 
-class Matcher():
+class Solver():
 
     UNLABELED_TOKEN = 'unlabeled'
 
@@ -93,14 +93,14 @@ class Matcher():
         for entity in entities:
             if entity.labels is None:
                 # entity is unlabeled
-                _grouping = Matcher._token_exists_or_create(
+                _grouping = Solver._token_exists_or_create(
                     _grouping, self.UNLABELED_TOKEN)
                 _grouping[self.UNLABELED_TOKEN].append(entity)
             else:
                 # entity is labeled
                 _first_key = list(entity.labels)[0]
-                _token = Matcher._tokenize_labels(entity.labels)
-                _grouping = Matcher._token_exists_or_create(_grouping, _token)
+                _token = Solver._tokenize_labels(entity.labels)
+                _grouping = Solver._token_exists_or_create(_grouping, _token)
                 _grouping[_token].append(entity)
         return _grouping
 
