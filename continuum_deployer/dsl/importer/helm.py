@@ -44,8 +44,6 @@ class Helm(Importer):
         # https://medium.com/@betz.mark/understanding-resource-limits-in-kubernetes-memory-6b41e9a955f9
         _K8S_MEMORY_SUFFIXES_FIXED = ['E', 'P', 'T', 'G', 'M', 'K']
         _K8S_MEMORY_SUFFIXES_POWER = ['Ei', 'Pi', 'Ti', 'Gi', 'Mi', 'Ki']
-        _K8S_MEMORY_SUFFIXES = \
-            ['e'], _K8S_MEMORY_SUFFIXES_FIXED, _K8S_MEMORY_SUFFIXES_POWER
 
         if type(memory_value) is str:
             # exponential notation e.g. 3e2 = 300

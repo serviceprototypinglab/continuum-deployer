@@ -100,7 +100,6 @@ class Solver(IPlugin):
                 _grouping[self.UNLABELED_TOKEN].append(entity)
             else:
                 # entity is labeled
-                _first_key = list(entity.labels)[0]
                 _token = Solver._tokenize_labels(entity.labels)
                 _grouping = Solver._token_exists_or_create(_grouping, _token)
                 _grouping[_token].append(entity)

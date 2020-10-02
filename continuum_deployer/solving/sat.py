@@ -123,7 +123,6 @@ class SAT(Solver):
                     if solver.Value(x[i][j]) == 1:
                         res.add_deployment(dep)
         elif status == cp_model.INFEASIBLE:
-            _names = SAT.get_deployment_names(deployment_entities)
             self.placement_errors = deployment_entities
 
         print(solver.ResponseStats())
