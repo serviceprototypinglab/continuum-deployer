@@ -1,10 +1,12 @@
 import click
 
+from yapsy.IPlugin import IPlugin
+
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.utils.config import Config, Setting, SettingValue
 
 
-class Importer:
+class Importer(IPlugin):
     """Interface that defines interaction with several DSL specific extractor implementations."""
 
     DSL_TYPES = ['helm']

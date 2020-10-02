@@ -2,6 +2,7 @@ import os
 
 from continuum_deployer.utils.plugin_manager import CDPluginManager
 from continuum_deployer.solving.solver import Solver
+from continuum_deployer.dsl.importer.importer import Importer
 
 
 class PluginLoader:
@@ -23,6 +24,7 @@ class PluginLoader:
         # kinds of plugins you have defined
         self.plugin_manager.setCategoriesFilter({
             "Solver": Solver,
+            "Importer": Importer,
         })
 
     def add_plugins_path(self, path):

@@ -258,15 +258,24 @@ class MatchCli:
     def on_enter_config_dsl(self):
         click.echo('\n')
 
+        _importer = {
+            'helm': Helm,
+        }
+
+        for plugin in plugins.plugin_manager.getPluginsOfCategory("Importer"):
+            _name = plugin.name.lower()
+            _importer[_name] = plugin.plugin_object
+
+        _options = list(_importer.keys())
+
         if self.settings.dsl_type is None:
-            html_completer = WordCompleter(Importer.DSL_TYPES)
+            html_completer = WordCompleter(_options)
             _dsl_type = prompt(self._TEXT_ASKDSLTYPE,
-                               completer=html_completer, validator=ListValidator(Importer.DSL_TYPES))
+                               completer=html_completer, validator=ListValidator(_options))
             self.settings.dsl_type = _dsl_type
 
         try:
-            if self.settings.dsl_type == 'helm':
-                self.settings.dsl_importer = Helm()
+            self.settings.dsl_importer = _importer[self.settings.dsl_type]()
         except RequirementsError as e:
             click.echo(click.style(
                 '\n[Error] {} '.format(e.message), fg='red'), err=True)
@@ -314,21 +323,21 @@ class MatchCli:
             _solvers.append(plugin.plugin_object)
             new_solver_option = '\t [{}] <b>{}</b> ({})'.format(
                 len(_solvers)-1, plugin.name, plugin.description)
-            solver_chooser_text='{}{}\n'.format(
+            solver_chooser_text = '{}{}\n'.format(
                 solver_chooser_text, new_solver_option)
 
         print_formatted_text(HTML(solver_chooser_text))
 
-        _options=MatchCli._options_array_to_number_choices(_solvers)
+        _options = MatchCli._options_array_to_number_choices(_solvers)
 
-        html_completer=WordCompleter(_options)
-        _solver_type=prompt(self._TEXT_ASKSOLVERTYPE,
-                              completer = html_completer, validator = ListValidator(_options))
-        self.settings.solver_type=_solver_type
+        html_completer = WordCompleter(_options)
+        _solver_type = prompt(self._TEXT_ASKSOLVERTYPE,
+                              completer=html_completer, validator=ListValidator(_options))
+        self.settings.solver_type = _solver_type
 
-        _solver=_solvers[int(self.settings.solver_type)]
+        _solver = _solvers[int(self.settings.solver_type)]
 
-        self.settings.solver=_solver(
+        self.settings.solver = _solver(
             self.settings.deployment_entities, self.settings.resources)
 
         self.configure_solver()
@@ -337,23 +346,23 @@ class MatchCli:
         click.echo('\n')
         click.echo('Configure solver settings:\n')
 
-        _config=self.settings.solver.get_config()
+        _config = self.settings.solver.get_config()
         for setting in _config.get_settings():
             click.echo('Configure {}:\n'.format(setting.name))
-            _options=setting.get_options()
+            _options = setting.get_options()
             for key, option in enumerate(_options):
                 click.echo('[{}] {} - {}'.format(key,
                                                  click.style(
                                                      option.value, fg='blue'),
                                                  option.description))
 
-            _list_of_options=list(range(len(_options)))
-            _list_of_options=ListValidator.list_items_to_str(
+            _list_of_options = list(range(len(_options)))
+            _list_of_options = ListValidator.list_items_to_str(
                 _list_of_options)
 
-            option_completer=WordCompleter(_list_of_options)
-            _option_choice=prompt('\nWhich config option do you choose: ',
-                                    completer = option_completer, validator = ListValidator(_list_of_options))
+            option_completer = WordCompleter(_list_of_options)
+            _option_choice = prompt('\nWhich config option do you choose: ',
+                                    completer=option_completer, validator=ListValidator(_list_of_options))
 
             setting.set_value(_options[int(_option_choice)])
 
@@ -361,14 +370,14 @@ class MatchCli:
 
     def on_enter_matching(self):
         click.echo('\n')
-        _start_matching=confirm(self._TEXT_ASKSTARTMATCHING)
+        _start_matching = confirm(self._TEXT_ASKSTARTMATCHING)
 
         # clear already matched resources (necessary for rerun)
         self.settings.solver.reset_matching()
 
         if _start_matching:
             self.settings.solver.match()
-            _matched_resources=self.settings.solver.get_resources()
+            _matched_resources = self.settings.solver.get_resources()
             click.echo('\n')
             click.secho(self._TEXT_ASKMATCHINGRESHEADLINE,
                         fg='cyan', bold=True)
