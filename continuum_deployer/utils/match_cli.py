@@ -23,6 +23,7 @@ from continuum_deployer.resources.resources import Resources
 from continuum_deployer.solving.greedy import Greedy
 from continuum_deployer.solving.sat import SAT
 from continuum_deployer.dsl.exporter.exporter import Exporter
+from continuum_deployer.dsl.exporter.kubernetes import Kubernetes
 
 
 @dataclass
@@ -43,6 +44,9 @@ class Settings:
     # solver options
     solver_type: int = field(default=None)
     solver: object = field(default=None)
+    # exporter options
+    exporter_type: int = field(default=None)
+    exporter: object = field(default=None)
 
 
 class ListValidator(Validator):
@@ -87,6 +91,7 @@ class MatchCli:
     _TEXT_ASKALTERWORKLOADS = 'Do you want to alter your deployment definition?'
     _TEXT_ASKSAVERESULTS = 'Do you want to save the results to a file?'
     _TEXT_ERRORPLACEMENTS = 'The following workloads could not be scheduled'
+    _TEXT_ASKEXPORTERTYPE = 'Enter Exporter type: '
 
     INTERACTIVE_TIMEOUT = 1.5
 
@@ -434,12 +439,31 @@ class MatchCli:
     def on_enter_export(self):
         click.echo('\n')
 
+        _importer = {
+            'kubernetes': Kubernetes,
+        }
+
+        for plugin in plugins.plugin_manager.getPluginsOfCategory("Exporter"):
+            _name = plugin.name.lower()
+            _importer[_name] = plugin.plugin_object
+
+        _options = list(_importer.keys())
+
+        if self.settings.exporter_type is None:
+            html_completer = WordCompleter(_options)
+            _exporter_type = prompt(self._TEXT_ASKEXPORTERTYPE,
+                                    completer=html_completer, validator=ListValidator(_options))
+            self.settings.exporter_type = _exporter_type
+
+        self.settings.exporter = _importer[self.settings.exporter_type]
+
+        click.echo('\n')
         _save_results = confirm(self._TEXT_ASKSAVERESULTS)
         if _save_results:
             _export_path = UI.prompt_std(self._TEXT_ASKEXPORTPATH)
             try:
                 with open(_export_path, 'w') as file:
-                    exporter = Exporter(output_stream=file)
+                    exporter = self.settings.exporter(output_stream=file)
                     exporter.export(self.settings.resources)
             except Exception as e:
                 click.echo(click.style(e.strerror, fg='red'), err=True)
