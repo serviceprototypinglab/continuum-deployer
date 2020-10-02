@@ -310,7 +310,7 @@ class MatchCli:
 
         _solvers = [Greedy, SAT]
 
-        for plugin in plugins.getPluginsOfCategory("Solver"):
+        for plugin in plugins.plugin_manager.getPluginsOfCategory("Solver"):
             _solvers.append(plugin.plugin_object)
             new_solver_option = '\t [{}] <b>{}</b> ({})'.format(
                 len(_solvers)-1, plugin.name, plugin.description)

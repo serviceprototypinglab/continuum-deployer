@@ -7,9 +7,9 @@ global plugins
 
 def init_plugins():
     global plugins
-    pm = PluginLoader()
-    pm.load_plugins()
-    plugins = pm.get_plugin_manager()
+    pl = PluginLoader()
+    pl.load_plugins()
+    plugins = pl
 
 
 init_plugins()
