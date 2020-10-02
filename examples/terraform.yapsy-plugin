@@ -1,0 +1,6 @@
+[Core]
+Name = Genetic
+Module = genetic
+
+[Documentation]
+Description = Uses genetic algorithms to find an optimal workload placement
