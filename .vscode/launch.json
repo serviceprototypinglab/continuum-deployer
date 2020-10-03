@@ -134,6 +134,22 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Run CLI interactively less-input yaml plugin",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "match",
+                "-r",
+                "examples/resources/default.yaml",
+                "-d",
+                "examples/charts/sample_multi.yaml",
+                "-p",
+                "examples/plugins"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Run CLI interactively less-input archive",
             "type": "python",
             "request": "launch",
