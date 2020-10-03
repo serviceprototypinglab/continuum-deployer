@@ -31,7 +31,7 @@
             "args": [
                 "parse-resources",
                 "--file",
-                "./resources/default.yaml"
+                "./examples/resources/default.yaml"
             ],
             "console": "integratedTerminal"
         },
@@ -49,7 +49,7 @@
             "args": [
                 "nonint-match",
                 "-r",
-                "./resources/default.yaml",
+                "./examples/resources/default.yaml",
                 "-d",
                 "./charts/sample_multi.yaml",
                 "-s",
@@ -65,7 +65,7 @@
             "args": [
                 "nonint-match",
                 "-r",
-                "./resources/default.yaml",
+                "./examples/resources/default.yaml",
                 "-d",
                 "./charts/sample_multi.yaml",
                 "-s",
@@ -83,7 +83,7 @@
             "args": [
                 "nonint-match",
                 "-r",
-                "./resources/default.yaml",
+                "./examples/resources/default.yaml",
                 "-d",
                 "./charts/sample_multi.yaml",
                 "-s",
@@ -99,7 +99,7 @@
             "args": [
                 "nonint-match",
                 "-r",
-                "./resources/default.yaml",
+                "./examples/resources/default.yaml",
                 "-d",
                 "./charts/gitlab/gitlab_edited.yaml",
                 "-s",
@@ -127,7 +127,7 @@
             "args": [
                 "match",
                 "-r",
-                "resources/default.yaml",
+                "examples/resources/default.yaml",
                 "-d",
                 "charts/sample_multi.yaml"
             ],
@@ -141,7 +141,7 @@
             "args": [
                 "match",
                 "-r",
-                "resources/default.yaml",
+                "examples/resources/default.yaml",
                 "-d",
                 "charts/wordpress/wordpress.tgz"
             ],

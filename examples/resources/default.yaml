@@ -1,16 +1,17 @@
 # name: String - Name of node
 # cpu: int or float - Number of CPUs
 # memory: int - Memory size in Megabyte (smallest node size support 1MB)
+# labels: List - List of labels that are attached to the node
 
 resources:
   - name: node-1
     cpu: 2
-    memory: 8000
+    memory: 8192
   - name: node-2
     cpu: 3
-    memory: 3000
+    memory: 2048
   - name: node-3
     cpu: 4
-    memory: 4000
+    memory: 4096
     labels:
       cloud: public

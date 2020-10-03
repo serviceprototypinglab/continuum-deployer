@@ -60,7 +60,7 @@ make clean-build
 
 The Continuum Deployer digests a simple non-standard resources definition file as input for the matchmaking process.
 
-Please find below an example for a simple resource file:
+Please find below an example for a simple resource file, which can also be found under `examples/resources/default.yaml`:
 ```
 # name: String - Name of node
 # cpu: int or float - Number of CPUs
@@ -70,13 +70,13 @@ Please find below an example for a simple resource file:
 resources:
   - name: node-1
     cpu: 2
-    memory: 8000
+    memory: 8192
   - name: node-2
     cpu: 3
-    memory: 3000
+    memory: 2048
   - name: node-3
     cpu: 4
-    memory: 4000
+    memory: 4096
     labels:
       cloud: public
 ```
