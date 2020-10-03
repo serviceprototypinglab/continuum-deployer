@@ -6,7 +6,7 @@ The Continuum Deployer is a prototypical implementation of a resource matching s
 
 The Continuum Deployer supports the digestion of local, templated or packaged Helm Charts out-of-the box. Additionally two solvers are shipped within the module (Greedy and SAT solver). The final resource placement can be viewed interactively but also exported trough the built-in Kubernetes exporter to a deployable Kubernetes manifest.
 
-To extent and adopt the Deployer the module offers a rich plugin interface that allows users to add custom version of the previously mentioned components in order do get even better results with regard to their infrastructure and requirements. Please find details in the [Plugins](#Plugins) section.
+To extent and adopt the Deployer the module offers a rich plugin interface that allows users to add custom version of the previously mentioned components in order do get even better results with regard to their infrastructure and requirements. Please find details in the [Plugins](#plugins) section.
 
 ## Screenshots
 
@@ -186,7 +186,7 @@ Description of the interfaces that can be used to alter the Continuum Deployer v
 
 ### Match CLI
 
-The `MatchCli` class is the main controller of the interactive user experience and takes care of the plumbing necessary for the [General Matchmaking Flow](#General%20Matchmaking%20Flow). It used the Python library `transitions` to build a state machine to handle the actual control flow of a CLI invocation.
+The `MatchCli` class is the main controller of the interactive user experience and takes care of the plumbing necessary for the [General Matchmaking Flow](#general-matchmaking-flow). It used the Python library `transitions` to build a state machine to handle the actual control flow of a CLI invocation.
 
 ## Authors
 
