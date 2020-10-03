@@ -86,6 +86,9 @@ resources:
 Labels are the central mean within the Continuum Deployer for the user to express certain constraints with regard to the deployment placement. Each `node` and `workload` can be assigned with zero to as many labels as the user desires. A suitable `node` must possess all of the `workloads` labels or more to be considered for a deployment. Unlabeled `workloads` are able to run on any of the available nodes.
 
 ### Matching
+
+The main CLI interface of the Continuum Deployer can be invoked by the `match` command. All CLI parameter options are optional and are available for ease of use to make it possible for the user to skip some of the interactive steps trough preset parameters (e.g. on multiple consecutive invocations).
+
 ```
 Usage: app.py match [OPTIONS]
 
@@ -140,11 +143,18 @@ An example for a prototypical plugin implementation can be found in the examples
 
 ## Limitations
 
-### Helm
-- `Kubernetes Resources Limits` are parsed and available in via the internal deployment object structure but are currently not considered by the included solvers
-- `Memory requirements` for a single deployment that are smaller than 1 MB are currently replaced by 0 and placed without size considerations by the solvers
-- `Standalone Pods` are currently not supported by the Helm DSL importer
+### Helm/Kubernetes
+- `Kubernetes Resources Limits` are parsed and available in via the internal deployment object structure but are currently not considered by the included solvers.
+- `Memory requirements` for a single deployment that are smaller than 1 MB are currently replaced by 0 and placed without size considerations by the solvers.
+- `Standalone Pods` are currently not supported by the Helm DSL importer.
 - `DaemonSets` are currently not supported in their intended way (see [Kubernetes docs](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) for details). Currently the Continuum Deployer handles DaemonSets in a standalone fashion as single deployable unit.
+- `Cluster awareness` is currently not implemented in the resource representation, solving and export functionality. But you are able to work around this with a set of properly labeled resources and deployments.
+- [`NodeSelector`](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) annotations are used to enforce a certain resource placement. This is suboptimal as it works around the existing Kubernetes Scheduling intelligence, but necessary in order to facilitate the demo purpose of this tool. One idea to work around this limitation is the implementation of cluster awareness and ingesting whole Kubernetes clusters as resources instead of single nodes.
+- `Non deployable Kubernetes API objects` are currently ignored by the Continuum Deployer which meight results in actually unusable deployments (e.g. due to missing objects like `Services` or `ConfigMaps`). At the current state of the tool this is somewhat intended as the actually deployment of the resources is currently not in the focus of the toolchain. Currently the Continuum Deployer focuses on the interactive resource matching and dynamic interaction with the scheduling process. The support for any/all Kubernetes API objects is left for an upcoming iteration of the tool.
+  - Currently supported Kubernetes API objects: `Deployment`, `ReplicaSet`, `StatefulSet`, `DaemonSet`, `Jobs`, `CronJob`, `DaemonSet` (partially, see above)
+
+### Resources
+- Currently the only two resources considered for the placement are `CPU` and `Memory` requirements of the deployments. This can be enlarged in the future to other resources types like e.g. `Bandwidth` or `Cost` to make the placement even more precise.
 
 ## Internal Architecture
 
