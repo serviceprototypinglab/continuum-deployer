@@ -16,7 +16,7 @@ import click
 import continuum_deployer
 from continuum_deployer import plugins
 from continuum_deployer.utils.ui import UI
-from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSupported, ImporterError
+from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSupported, ImporterError, SolverError
 from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
@@ -126,7 +126,7 @@ class MatchCli:
         self.machine.add_transition(
             trigger='start_matching', source=['alter_definitions', 'config_solver'], dest='matching')
         self.machine.add_transition(
-            trigger='ask_alter', source=['check_results'], dest='alter_definitions')
+            trigger='ask_alter', source=['check_results', 'matching'], dest='alter_definitions')
         self.machine.add_transition(
             trigger='check_results', source=['matching'], dest='check_results')
         self.machine.add_transition(
@@ -381,7 +381,12 @@ class MatchCli:
         self.settings.solver.reset_matching()
 
         if _start_matching:
-            self.settings.solver.match()
+            try:
+                self.settings.solver.match()
+            except SolverError as e:
+                click.echo(click.style(e.message, fg='red'), err=True)
+                self.ask_alter()
+
             _matched_resources = self.settings.solver.get_resources()
             click.echo('\n')
             click.secho(self._TEXT_ASKMATCHINGRESHEADLINE,

@@ -6,6 +6,7 @@ from yapsy.IPlugin import IPlugin
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
 from continuum_deployer.utils.config import Config, Setting, SettingValue
+from continuum_deployer.utils.exceptions import SolverError
 
 
 class Solver(IPlugin):
@@ -53,21 +54,19 @@ class Solver(IPlugin):
 
         # check if max memory entity fits available resources
         if _max_memory_offer < _max_memory_request:
-            click.echo(click.style(
-                '[Error] Smallest deployable unit memory request ({}) '
-                'exceeds largest target size ({}).'.format(
-                    _max_memory_request, _max_memory_offer),
-                fg='red'), err=True)
-            raise Exception
+            _error_msg = ('[Error] Smallest deployable unit memory request ({}) '
+                          'exceeds largest target size ({}).').format(
+                _max_memory_request, _max_memory_offer
+            )
+            raise SolverError(message=_error_msg)
 
         # check if max cpu fits available resources
         if _max_cpu_offer < _max_cpu_request:
-            click.echo(click.style(
-                '[Error] Smallest deployable unit cpu request ({}) '
-                'exceeds largest target size ({}).'.format(
-                    _max_cpu_request, _max_cpu_offer),
-                fg='red'), err=True)
-            raise Exception
+            _error_msg = ('[Error] Smallest deployable unit cpu request ({}) '
+                          'exceeds largest target size ({}).').format(
+                _max_cpu_request, _max_cpu_offer
+            )
+            raise SolverError(message=_error_msg)
 
     @staticmethod
     def _tokenize_labels(labels: dict):
