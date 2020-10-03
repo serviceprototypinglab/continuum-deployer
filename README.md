@@ -1,5 +1,7 @@
 # Continuum Deployer
 
+> This prototypical tool was initially written as part of the EVA 2 (Erweiterte Vertiefungsarbeit | extended specialization work) during the studies to receive the scientific degree _Master of Science_.
+
 ## General
 
 The Continuum Deployer is a prototypical implementation of a resource matching system that allows a user to interactively participate in the resource placement process. The user is able to change and adopt the placement and options interactively during the matchmaking process.
@@ -200,4 +202,4 @@ The `MatchCli` class is the main controller of the interactive user experience a
 
 ## Authors
 
-- @hassdan1 - Daniel Haß
+- @hassdan1 - Daniel Haß ([GitHub](https://github.com/danielhass), [GitLab](https://gitlab.com/danielhass))
