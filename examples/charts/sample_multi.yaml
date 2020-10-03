@@ -3,8 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment-1
-  labels:
-    cloud: public
 spec:
   replicas: 3
   template:
@@ -21,6 +19,8 @@ spec:
             requests:
               cpu: 400m
               memory: 512M
+      nodeSelector:
+        cloud: public
 ---
 apiVersion: apps/v1
 kind: Deployment
