@@ -144,6 +144,7 @@ An example for a prototypical plugin implementation can be found in the examples
 - `Kubernetes Resources Limits` are parsed and available in via the internal deployment object structure but are currently not considered by the included solvers
 - `Memory requirements` for a single deployment that are smaller than 1 MB are currently replaced by 0 and placed without size considerations by the solvers
 - `Standalone Pods` are currently not supported by the Helm DSL importer
+- `DaemonSets` are currently not supported in their intended way (see [Kubernetes docs](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) for details). Currently the Continuum Deployer handles DaemonSets in a standalone fashion as single deployable unit.
 
 ## Authors
 

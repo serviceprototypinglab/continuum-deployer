@@ -19,7 +19,6 @@ from continuum_deployer.utils.exceptions import RequirementsError, FileTypeNotSu
 
 class Helm(Importer):
 
-    # TODO add support for plain Pods - requires change in parse()
     K8S_OBJECTS = ['Deployment', 'ReplicaSet',
                    'StatefulSet', 'DaemonSet', 'Jobs', 'CronJob']
     K8S_SCALE_CONTROLLER = ['Deployment', 'ReplicaSet', 'StatefulSet']
@@ -169,7 +168,6 @@ class Helm(Importer):
                 continue
             if doc['kind'] in self.K8S_OBJECTS:
 
-                # TODO Do we need support for DaemonSets?
                 deployment = DeploymentEntity()
                 # save YAML doc representation
                 deployment.yaml = doc
