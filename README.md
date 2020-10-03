@@ -91,6 +91,8 @@ Labels are the central mean within the Continuum Deployer for the user to expres
 
 The main CLI interface of the Continuum Deployer can be invoked by the `match` command. All CLI parameter options are optional and are available for ease of use to make it possible for the user to skip some of the interactive steps trough preset parameters (e.g. on multiple consecutive invocations).
 
+After inspection of the matching results the Continuum Deployer allows the user to alter the input specifications if desired so. The changes to the resources file will be written back to the input file and therefore are persistent. The changes to the DSL are only happening in-memory as the tool supports multiple input formats (e.g. archives) that are not easy to change on-the-fly.
+
 ```
 Usage: app.py match [OPTIONS]
 
