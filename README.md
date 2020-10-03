@@ -146,6 +146,48 @@ An example for a prototypical plugin implementation can be found in the examples
 - `Standalone Pods` are currently not supported by the Helm DSL importer
 - `DaemonSets` are currently not supported in their intended way (see [Kubernetes docs](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) for details). Currently the Continuum Deployer handles DaemonSets in a standalone fashion as single deployable unit.
 
+## Internal Architecture
+
+### General Matchmaking Flow
+
+A general an full invocation of the Continuum Deployer traverses the following three stages to come up with a deployment proposal:
+1. `Importer` - the selected `Importer` takes care of parsing the input DSL definition to the standardized Continuum Deployer internal object-based resource representation. These objects and their encoded information are the base for the following two stages. The output of the importer are propagated instances of the `DeploymentEntity` dataclass that holds the parsed values for the further processing.
+- Target resources or nodes that should hold the deployments entities later on, are parsed by the non-pluggable `Resources` class
+2. `Solver` - the selected `Solver` takes care of the actual decision making on which deployment will reside on which target resource. A `Matcher` run is invoked with list of `DeploymentEntity` and `ResourceEntity` objects that should get placed in this run. The `Matcher` requires the initialization with the full list of `DeploymentEntity` and `ResourceEntity` only for some pre-flight checks. To keep the actual solver implementation simple the handling of label constraints is currently externalized to the general `Matcher` class. The `Matcher` takes care of resources and deployment grouping with respect to the defined labels and calls the actual `Matcher`-implementation multiple times with different sets of deployments and resources.
+3. `Exporter` - the selected `Exporter` takes care of writing the Continuum Deployer internal resources representation back to the desired and deployable output format. With the currently build-in Kubernetes manifest exporter the deployments will be exported and labeled with a specific `nodeSelector` (see [Kubernetes docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) for more information) that corresponds to the result of the matchmaking process.
+
+### Pluggable Interfaces
+
+Description of the interfaces that can be used to alter the Continuum Deployer via the plugin framework. The following classes should be inherited from and implement at minimum the described methods.
+
+#### `Importer` - `from continuum_deployer.dsl.importer.importer import Importer`
+
+- `_check_requirements(self)` - Can be implemented and used to check for external dependencies before the actual invocation
+  - should raise a `continuum_deployer.utils.exceptions.RequirementsError` if requirements are violated
+- `_gen_config(self)` - Can be implemented to define settings that can be altered by the user during runtime
+  - should return a `continuum_deployer.utils.config.Config` object filled with the desired `SettingValues`
+- `get_dsl_content(self, dsl_path)` - Must be implemented and return the plain string representation of the DSL resource
+  - is used in order to be able to support different DSL formats like files, archives etc.
+- `parse(self, dsl_input)` - Must be implemented and takes the formerly by `get_dsl_content` read DSL content and parses it to the object mapping
+  - should return a list of `DeploymentEntity` objects
+
+#### `Solver` - `from continuum_deployer.solving.solver import Solver`
+
+- `_gen_config(self)` - Can be implemented to define settings that can be altered by the user during runtime
+  - should return a `continuum_deployer.utils.config.Config` object filled with the desired `SettingValues`
+- `do_matching(self, deployment_entities, resources)` - Must be implemented and takes a list of `DeploymentEntity` and `ResourceEntity` objects to match
+  - should propagate the inherited attribute (list of `ResourceEntity` objects) with the `DeploymentEntity` objects
+- some of the general matchmaking functions is generalized to the parent `Matcher` class. Many of the functions there can be overwritten to alter this default behavior.
+
+#### `Exporter` - `from continuum_deployer.dsl.exporter.exporter import Exporter`
+
+- `export(self, matched_resources)` - Must be implemented and takes a list of `ResourceEntity` objects that are propagated with `DeploymentEntity` objects
+  - should output the results to the `output_stream` given to the `Expoter` during object initialization
+
+### Match CLI
+
+The `MatchCli` class is the main controller of the interactive user experience and takes care of the plumbing necessary for the [General Matchmaking Flow](#General%20Matchmaking%20Flow). It used the Python library `transitions` to build a state machine to handle the actual control flow of a CLI invocation.
+
 ## Authors
 
 - @hassdan1 - Daniel Haß
