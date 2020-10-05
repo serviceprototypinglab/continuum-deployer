@@ -3,6 +3,7 @@ from continuum_deployer.solving.solver import Solver
 from continuum_deployer.solving.greedy import Greedy
 from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resource_entity import ResourceEntity
+from continuum_deployer.utils.exceptions import SolverError
 
 
 def test_upper_bound_cpu_detection():
@@ -11,9 +12,9 @@ def test_upper_bound_cpu_detection():
         [ResourceEntity(name='test-node', memory=512, cpu=1)]
     )
 
-    with pytest.raises(Exception) as e:
+    with pytest.raises(SolverError) as e:
         matcher.match()
-    assert e.type == Exception
+    assert e.type == SolverError
     #assert e.value.code == 1
 
 
@@ -23,9 +24,9 @@ def test_upper_bound_memory_detection():
         [ResourceEntity(name='test-node', memory=1024, cpu=2)]
     )
 
-    with pytest.raises(Exception) as e:
+    with pytest.raises(SolverError) as e:
         matcher.match()
-    assert e.type == Exception
+    assert e.type == SolverError
     #assert e.value.code == 1
 
 
