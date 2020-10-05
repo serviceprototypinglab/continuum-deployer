@@ -11,7 +11,7 @@ with open('requirements.txt') as f:
     requires = f.read().splitlines()
 
 with open('requirements-dev.txt') as f:
-    requires = f.read().splitlines()
+    requires_dev = f.read().splitlines()
 
 version = {}
 with open("continuum_deployer/__init__.py") as fp:
