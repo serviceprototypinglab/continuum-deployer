@@ -117,8 +117,6 @@ class SAT(Solver):
         status = solver.Solve(_model)
 
         if status == cp_model.OPTIMAL:
-            print('Total idle resources = %i' % solver.ObjectiveValue())
-
             for i, res in enumerate(resources):
                 for j, dep in enumerate(deployment_entities):
                     if solver.Value(x[i][j]) == 1:
