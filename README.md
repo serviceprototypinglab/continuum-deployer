@@ -87,6 +87,8 @@ resources:
 
 Labels are the central mean within the Continuum Deployer for the user to express certain constraints with regard to the deployment placement. Each `node` and `workload` can be assigned with zero to as many labels as the user desires. A suitable `node` must possess all of the `workloads` labels or more to be considered for a deployment. Unlabeled `workloads` are able to run on any of the available nodes.
 
+> Remark for the built-in Helm importer: this importer uses the [`NodeSelector`](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) values as sources for the deployment labels as the often refered Kubernetes [Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) are not a fit for our purposes, as they often are populated with many default information which do not reflect the use case for labeling in the Continuum Deployer.
+
 ### Matching
 
 The main CLI interface of the Continuum Deployer can be invoked by the `match` command. All CLI parameter options are optional and are available for ease of use to make it possible for the user to skip some of the interactive steps trough preset parameters (e.g. on multiple consecutive invocations).
@@ -105,6 +107,30 @@ Options:
   -p, --plugins TEXT     Additional plugins directory path
   --help                 Show this message and exit.
 ```
+
+### Built-in Solvers
+
+#### Greedy
+
+The built-in greedy solver asks the solver for a single optimization target. The options are as follows:
+- CPU: sorts resources and workloads by the size of their CPU attribute for greedy matching
+- Memory: sorts resources and workloads by the size of their memory attribute for greedy matching
+
+The actual matching is carried out in a greedy matching: the largest workloads are probed for placement on a sorted list of resources. In this list resources appear in descending order based on the selected optimization target.
+
+#### SAT (CP-SAT Solver using constraint programming)
+
+The built-in CP-SAT solver offers multiple options with regard to the optimization target (in future version this options could be enhanced way further):
+- Maximize idle CPU: solver tries to maximize idle cpu resources
+- Maximize idle Memory: solver tries to maximize idle memory resources
+- Minimize idle CPU: solver tries to minimize idle cpu resources
+- Minimize idle Memory: solver tries to minimize idle memory resources
+- Minimize idle Resources: solver tries to minimize idle resources (CPU+Memory)
+- Maximize idle Resources: solver tries to maximize idle resources (CPU+Memory)
+
+This solver uses constrained programming to define rules and constrains that describe the resource matching problem in mathematical terms. Afterwards this optimization is solved as optimal as possible.
+
+The results of this solver differ from the greedy ones: if this solver cannot come up with an optimal solution the run will fail and all resources are displayed as unschedulable. This feasibility constraint is enforced on each label group (if labels are defined).
 
 ## Plugins
 
