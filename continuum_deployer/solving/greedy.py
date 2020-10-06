@@ -9,10 +9,29 @@ class Greedy(Solver):
 
     @staticmethod
     def sort_by_attr(items, attr):
+        """Helper function that sorts list of items based on configurable attribute
+
+        :param items: items to sort
+        :type items: list
+        :param attr: name of the attribute the sorting should be carried out with
+        :type attr: str
+        :return: list of sorted items
+        :rtype: list
+        """
         return sorted(items, key=lambda x: getattr(x, attr), reverse=True)
 
     @staticmethod
-    def deploy_iterate(entity, resources: ResourceEntity):
+    def deploy_iterate(entity, resources):
+        """Helper that traverses a list of resources and tries to place the given
+        deploment entity on one of the resources.
+
+        :param entity: deployment entity that should be placed
+        :type entity: :class:`continuum_deployer.resources.deployment.DeploymentEntity`
+        :param resources: list of resource entities that are valid targets
+        :type resources: list
+        :return: boolean flag representing the success of the placement attempt
+        :rtype: bool
+        """
         for resource in resources:
             if resource.add_deployment(entity):
                 return True
@@ -37,10 +56,7 @@ class Greedy(Solver):
                 self.placement_errors.append(entity)
 
     def do_matching(self, deployment_entities, resources):
-        """
-        Does actual deployment to resource matching
-
-        :return matched resources with assigned deployments
+        """Does actual deployment to resource matching
         """
 
         self.greedy_attr(

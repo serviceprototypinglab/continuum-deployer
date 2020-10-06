@@ -25,6 +25,8 @@ class DeploymentEntity:
     labels: dict = field(default=None)
 
     def print(self):
+        """Helper that prints values of current deployment to stdout"""
+
         click.echo(click.style("Name: {}".format(self.name), fg='bright_blue'))
         click.echo(click.style("CPU: {} \t MEMORY: {} MB".format(
             self.cpu, self.memory

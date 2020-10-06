@@ -25,6 +25,13 @@ class Helm(Importer):
 
     @staticmethod
     def parse_k8s_cpu_value(cpu_value):
+        """Parse and convert Kubernetes specific CPU value
+
+        :param cpu_value: CPU value from Kubernetes manifest
+        :type cpu_value: str
+        :return: CPU value as floating point value
+        :rtype: float
+        """
 
         if cpu_value is None:
             return None
@@ -39,6 +46,15 @@ class Helm(Importer):
 
     @staticmethod
     def parse_k8s_memory_value(memory_value):
+        """Parse and convert Kubernetes specific memory value
+
+        :param memory_value: memory value from Kubernetes manifest
+        :type memory_value: str
+        :raises NotImplementedError: raised if value postfix is unknown
+        :return: parsed memory value
+        :rtype: int
+        """
+
         # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
         # https://medium.com/@betz.mark/understanding-resource-limits-in-kubernetes-memory-6b41e9a955f9
         _K8S_MEMORY_SUFFIXES_FIXED = ['E', 'P', 'T', 'G', 'M', 'K']
@@ -118,6 +134,15 @@ class Helm(Importer):
         ])
 
     def template_chart_archive(self, helm_path):
+        """Templates given Helm chart to YAML
+
+        :param helm_path: filesystem path to the helm chart or archive
+        :type helm_path: str
+        :raises FileTypeNotSupported: raised if filetype found at path not supported
+        :raises ImporterError: raised if helm tamplate had an error, most likely due to error in given chart
+        :return: templated yaml definition
+        :rtype: str
+        """
 
         if os.path.isfile(helm_path):
             _file_type = filetype.guess(helm_path)
@@ -142,6 +167,14 @@ class Helm(Importer):
         return _templated_yaml.stdout
 
     def get_dsl_content(self, dsl_path):
+        """Read content from different Helm input types
+
+        :param dsl_path: filesystem path to the Helm resource
+        :type dsl_path: str
+        :raises NotImplementedError: raised if current config is not supported
+        :return: content of given DSL resource
+        :rtype: str
+        """
 
         _chart_origin = self.config.get_setting(
             'chart_origin').get_value().value
@@ -153,6 +186,11 @@ class Helm(Importer):
             raise NotImplementedError
 
     def parse(self, dsl_input):
+        """Does the actual parsing of the provided DSL input
+
+        :param dsl_input: already parsed plain DSL input
+        :type dsl_input: str
+        """
 
         # see default loader deprecation
         # https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation

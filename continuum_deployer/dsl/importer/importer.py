@@ -36,6 +36,11 @@ class Importer(IPlugin):
         return self.app_modules
 
     def get_config(self):
+        """Getter for current exporter config
+
+        :return: current exporter config object
+        :rtype: :class:`continuum_deployer.utils.config.Config`
+        """
         return self.config
 
     def reset_app_modules(self):

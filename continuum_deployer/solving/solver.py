@@ -25,15 +25,40 @@ class Solver(IPlugin):
         self.config = self._gen_config()
 
     def _gen_config(self):
+        """Generates the default configuration for the solver
+
+        :return: generated default config
+        :rtype: :class:`continuum_deployer.utils.config.Config`
+        """
         return Config([])
 
     def get_config(self):
+        """Getter for current solver config
+
+        :return: current solver config
+        :rtype: :class:`continuum_deployer.utils.config.Config`
+        """
         return self.config
 
     def set_config_value(self, value):
+        """Setter that overwrites or adds a specific solver config value
+
+        :param value: setting to change or overwrite
+        :type value: :class:`continuum_deployer.utils.config.Setting`
+        """
         self.config.add_setting(value)
 
     def check_upper_bound(self, entities, resources):
+        """Helper that iterates all deployment and resources entities to check
+        if a certain deployment exceeds the largest available resource.
+
+        :param entities: list of deployment entities
+        :type entities: list
+        :param resources: list of resource entities
+        :type resources: list
+        :raises SolverError: raised if largest deployment exceeds available resources
+        """
+
         # find max of resource requests on deployment entities
         _max_memory_request = 0
         _max_cpu_request = 0
@@ -70,17 +95,42 @@ class Solver(IPlugin):
 
     @staticmethod
     def _tokenize_labels(labels: dict):
+        """Helper function that hashes a dict of labels
+
+        :param labels: labels that should be hashed
+        :type labels: dict
+        :return: hashed labels
+        :rtype: str
+        """
         # hash dict of labels to make grouping easier
         _result = hash(frozenset(labels.items()))
         return _result
 
     @staticmethod
     def _token_exists_or_create(data, token):
+        """Helper function that initializes key in dict with empty array if it doesn't exist
+
+        :param data: dict to work on
+        :type data: dict
+        :param token: key to initialize if not existing
+        :type token: str
+        :return: altered dict
+        :rtype: dict
+        """
         if token not in data:
             data[token] = []
         return data
 
     def _get_suitable_resources(self, resources, labels):
+        """Helper function that returns resources that have all of the given resources
+
+        :param resources: list of resources to filter or check against labels
+        :type resources: list
+        :param labels: labels that are base for the filtering
+        :type labels: dict
+        :return: list of resources that have all given labels assigned to them
+        :rtype: list
+        """
         _suitable_resources = []
         for resource in resources:
             if resource.labels is not None:
@@ -89,6 +139,14 @@ class Solver(IPlugin):
         return _suitable_resources
 
     def group(self, entities):
+        """Helper function that creates a dict datastructure containing
+        groups of elements that have the same labels assigned
+
+        :param entities: list of items to group
+        :type entities: list
+        :return: grouped dict datastructure, keys are based on label hashes
+        :rtype: dict
+        """
         _grouping = dict()
 
         for entity in entities:
@@ -105,17 +163,21 @@ class Solver(IPlugin):
         return _grouping
 
     def do_matching(self, deployment_entities, resources):
-        """
-        Does actual deployment to resource matching
+        """Does actual deployment to resource matching
         """
         raise NotImplementedError
 
     def match(self):
-        """Main matcher method"""
+        """Main matcher method that invokes some preflight checks
+        and starts the label based grouped matching
+        """
         self.check_upper_bound(self.deployment_entities, self.resources)
         self.match_labeled()
 
     def match_labeled(self):
+        """Handles group based label matching. Functions calls actual solver implementation do_matching()
+        multiple times and takes care of the deployment constrains enforced by the assigned labels.
+        """
         self.grouped_deployments = self.group(self.deployment_entities)
         self.grouped_resources = self.group(self.resources)
 
@@ -140,7 +202,7 @@ class Solver(IPlugin):
             _unlabeled_deployments, self.resources)
 
     def reset_matching(self):
-        """Reset matching state of matcher
+        """Resets current matching state of solver
         """
 
         for resource in self.resources:

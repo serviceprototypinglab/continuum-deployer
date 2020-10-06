@@ -30,11 +30,24 @@ class PluginLoader:
         })
 
     def add_plugins_path(self, path):
+        """Adds an additional path to the loader where plugins
+        might be placed. A reload is not done automatically.
+
+        :param path: filesystem path where the loader should search for plugins
+        :type path: str
+        """
         self.plugins_paths.append(path)
 
     def get_plugin_manager(self):
+        """Getter for the plugin manager
+
+        :return: the current instance of the plugin manager
+        :rtype: :class:`continuum_deployer.utils.plugin_manager.CDPluginManager`
+        """
         return self.plugin_manager
 
     def load_plugins(self):
+        """Triggers the actual plugin loading.
+        """
         # Load all plugins
         self.plugin_manager.collectPlugins()

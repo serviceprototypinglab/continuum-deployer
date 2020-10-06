@@ -21,6 +21,16 @@ class SAT(Solver):
 
     @staticmethod
     def scale_cpu_values(entities, idle=False):
+        """Helper function that scales cpu values to integers.
+        Necessary for the digestion trough the CP-SAT solver.
+
+        :param entities: list of entities with cpu values that should be scaled
+        :type entities: list
+        :param idle: flag to decided if entities idle cpu should be scaled, defaults to False
+        :type idle: bool, optional
+        :return: list of scaled cpu values
+        :rtype: list
+        """
         result = list()
         for entity in entities:
             if idle:
@@ -56,6 +66,14 @@ class SAT(Solver):
         ])
 
     def do_matching(self, deployment_entities, resources):
+        """Actual solver implementation. Uses constraint programming to find an optimal solution
+        for the deployment placing task.
+
+        :param deployment_entities: list of :class:`continuum_deployer.resources.deployment.DeploymentEntity` objects to place
+        :type deployment_entities: list
+        :param resources: list of :class:`continuum_deployer.resources.resource_entity.ResourceEntity` object to fill with deployments
+        :type resources: list
+        """
 
         _model = cp_model.CpModel()
 

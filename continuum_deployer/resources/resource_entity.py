@@ -17,6 +17,14 @@ class ResourceEntity:
     labels: dict = field(default=None)
 
     def check_resources_fit(self, entity):
+        """Idempotent helper method that checks if given deployment entity 
+        can be added to the resource without exceeding the limits.
+
+        :param entity: deployment entity whose fit should be tested
+        :type entity: :class:`continuum_deployer.resources.deployment.DeploymentEntity`
+        :return: Check result if deployment entity cloud be placed as boolean
+        :rtype: bool
+        """
         available_cpu = self.cpu
         available_memory = self.memory
         deployments_proposal = self.deployments + [entity]
@@ -30,6 +38,13 @@ class ResourceEntity:
             return False
 
     def add_deployment(self, entity):
+        """Add new deployment entity to current resource.
+
+        :param entity: deployment entity that should be added
+        :type entity: :class:`continuum_deployer.resources.deployment.DeploymentEntity`
+        :return: result of add operation
+        :rtype: bool
+        """
         if self.check_resources_fit(entity):
             self.deployments.append(entity)
             return True
@@ -37,6 +52,9 @@ class ResourceEntity:
             return False
 
     def print(self):
+        """Helper method that prints resource entity parameters and current deployments to stdout
+        """
+
         click.echo(click.style("Name: {}".format(self.name), fg='bright_blue'))
         click.echo(click.style("CPU: {} \t MEMORY: {} MB".format(
             self.cpu, self.memory
