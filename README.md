@@ -10,6 +10,8 @@ The Continuum Deployer supports the digestion of local, templated or packaged He
 
 To extent and adopt the Deployer the module offers a rich plugin interface that allows users to add custom version of the previously mentioned components in order do get even better results with regard to their infrastructure and requirements. Please find details in the [Plugins](#plugins) section.
 
+You can find python related documentation under [docs](docs/_build/html).
+
 ## Screenshots
 
 To give potential users an idea of how the interactive process looks like you can find a collection of screenshots below:
@@ -40,8 +42,16 @@ pytest
 ```
 
 ## Release
-Build python package 
-
+- set version in `continuum_deployer/__init__.py`
+- rebuild sphinx docs
+```shell
+# in ./docs
+sphinx-apidoc -o ./source ../continuum_deployer/
+make html
+# or
+make docs
+```
+- Build python package 
 ```shell
 python setup.py bdist_wheel
 # or
