@@ -1,0 +1,507 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>continuum_deployer.utils package &#8212; Continuum Deployer v0.13.0-dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="continuum-deployer-utils-package">
+<h1>continuum_deployer.utils package<a class="headerlink" href="#continuum-deployer-utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-continuum_deployer.utils.config">
+<span id="continuum-deployer-utils-config-module"></span><h2>continuum_deployer.utils.config module<a class="headerlink" href="#module-continuum_deployer.utils.config" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.utils.config.Config">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.config.</code><code class="sig-name descname">Config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">settings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="continuum_deployer.utils.config.Config.add_setting">
+<code class="sig-name descname">add_setting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">setting</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#continuum_deployer.utils.config.Setting" title="continuum_deployer.utils.config.Setting">continuum_deployer.utils.config.Setting</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.Config.add_setting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.config.Config.get_setting">
+<code class="sig-name descname">get_setting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.Config.get_setting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.config.Config.get_settings">
+<code class="sig-name descname">get_settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.Config.get_settings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="continuum_deployer.utils.config.Setting">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.config.</code><code class="sig-name descname">Setting</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">options</span></em>, <em class="sig-param"><span class="n">value</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.Setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="continuum_deployer.utils.config.Setting.get_default">
+<code class="sig-name descname">get_default</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.Setting.get_default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.config.Setting.get_options">
+<code class="sig-name descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.Setting.get_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.config.Setting.get_value">
+<code class="sig-name descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.Setting.get_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.config.Setting.set_value">
+<code class="sig-name descname">set_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#continuum_deployer.utils.config.SettingValue" title="continuum_deployer.utils.config.SettingValue">continuum_deployer.utils.config.SettingValue</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.Setting.set_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="continuum_deployer.utils.config.SettingValue">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.config.</code><code class="sig-name descname">SettingValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">default</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.config.SettingValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.utils.dummy">
+<span id="continuum-deployer-utils-dummy-module"></span><h2>continuum_deployer.utils.dummy module<a class="headerlink" href="#module-continuum_deployer.utils.dummy" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="continuum_deployer.utils.dummy.main">
+<code class="sig-prename descclassname">continuum_deployer.utils.dummy.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.dummy.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.utils.exceptions">
+<span id="continuum-deployer-utils-exceptions-module"></span><h2>continuum_deployer.utils.exceptions module<a class="headerlink" href="#module-continuum_deployer.utils.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="continuum_deployer.utils.exceptions.FileTypeNotSupported">
+<em class="property">exception </em><code class="sig-prename descclassname">continuum_deployer.utils.exceptions.</code><code class="sig-name descname">FileTypeNotSupported</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.exceptions.FileTypeNotSupported" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>The filetype of the given file is not supported by the
+application module that tries to work with it.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="continuum_deployer.utils.exceptions.ImporterError">
+<em class="property">exception </em><code class="sig-prename descclassname">continuum_deployer.utils.exceptions.</code><code class="sig-name descname">ImporterError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.exceptions.ImporterError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>ImporterError is trough on a group of errors that can
+occur during the Importers import process.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="continuum_deployer.utils.exceptions.RequirementsError">
+<em class="property">exception </em><code class="sig-prename descclassname">continuum_deployer.utils.exceptions.</code><code class="sig-name descname">RequirementsError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.exceptions.RequirementsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>An external requirement of a certain application component
+is not satisfied.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="continuum_deployer.utils.exceptions.SolverError">
+<em class="property">exception </em><code class="sig-prename descclassname">continuum_deployer.utils.exceptions.</code><code class="sig-name descname">SolverError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.exceptions.SolverError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>SolverError is trough on a group of errors that can
+occur during the solvers matchmaking process.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.utils.file_handling">
+<span id="continuum-deployer-utils-file-handling-module"></span><h2>continuum_deployer.utils.file_handling module<a class="headerlink" href="#module-continuum_deployer.utils.file_handling" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.utils.file_handling.FileHandling">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.file_handling.</code><code class="sig-name descname">FileHandling</code><a class="headerlink" href="#continuum_deployer.utils.file_handling.FileHandling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="continuum_deployer.utils.file_handling.FileHandling.get_file_content">
+<em class="property">static </em><code class="sig-name descname">get_file_content</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.file_handling.FileHandling.get_file_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that returns the str content of
+the file at the given path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – path to the file to read</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>content of the file as plain str</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.utils.match_cli">
+<span id="continuum-deployer-utils-match-cli-module"></span><h2>continuum_deployer.utils.match_cli module<a class="headerlink" href="#module-continuum_deployer.utils.match_cli" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.utils.match_cli.ListValidator">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.match_cli.</code><code class="sig-name descname">ListValidator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list</span><span class="p">:</span> <span class="n">list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.ListValidator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">prompt_toolkit.validation.Validator</span></code></p>
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.ListValidator.list_items_to_str">
+<em class="property">static </em><code class="sig-name descname">list_items_to_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.ListValidator.list_items_to_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.ListValidator.validate">
+<code class="sig-name descname">validate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.ListValidator.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the input.
+If invalid, this should raise a <code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationError</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>document</strong> – <code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code> instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="continuum_deployer.utils.match_cli.MatchCli">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.match_cli.</code><code class="sig-name descname">MatchCli</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resources_path</span></em>, <em class="sig-param"><span class="n">dsl_path</span></em>, <em class="sig-param"><span class="n">dsl_type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.CLICK_PROMPT_FG_COLOR">
+<code class="sig-name descname">CLICK_PROMPT_FG_COLOR</code><em class="property"> = 'bright_blue'</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.CLICK_PROMPT_FG_COLOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.INTERACTIVE_TIMEOUT">
+<code class="sig-name descname">INTERACTIVE_TIMEOUT</code><em class="property"> = 1.5</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.INTERACTIVE_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.STATES">
+<code class="sig-name descname">STATES</code><em class="property"> = ['start', 'input_resources', 'input_dsl', 'dsl_type', 'config_dsl', 'solver_type', 'config_solver', 'matching', 'check_results', 'alter_definitions', 'export', 'init']</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.STATES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_alter_definitions">
+<code class="sig-name descname">on_enter_alter_definitions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_alter_definitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_check_results">
+<code class="sig-name descname">on_enter_check_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_check_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_config_dsl">
+<code class="sig-name descname">on_enter_config_dsl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_config_dsl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_config_solver">
+<code class="sig-name descname">on_enter_config_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_config_solver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_export">
+<code class="sig-name descname">on_enter_export</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_export" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_input_dsl">
+<code class="sig-name descname">on_enter_input_dsl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_input_dsl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_input_resources">
+<code class="sig-name descname">on_enter_input_resources</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_input_resources" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_matching">
+<code class="sig-name descname">on_enter_matching</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_matching" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_solver_type">
+<code class="sig-name descname">on_enter_solver_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_solver_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.match_cli.MatchCli.on_enter_start">
+<code class="sig-name descname">on_enter_start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.MatchCli.on_enter_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="continuum_deployer.utils.match_cli.Settings">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.match_cli.</code><code class="sig-name descname">Settings</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resources_path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">resources_content</span><span class="p">:</span> <span class="n">object</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">resources</span><span class="p">:</span> <span class="n">object</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dsl_path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dsl_content</span><span class="p">:</span> <span class="n">object</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dsl_type</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dsl_importer</span><span class="p">:</span> <span class="n">object</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">deployment_entities</span><span class="p">:</span> <span class="n">object</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">solver_type</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">solver</span><span class="p">:</span> <span class="n">object</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exporter_type</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exporter</span><span class="p">:</span> <span class="n">object</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data Class that holds settings for interactive CLI.</p>
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.deployment_entities">
+<code class="sig-name descname">deployment_entities</code><em class="property">: object</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.deployment_entities" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.dsl_content">
+<code class="sig-name descname">dsl_content</code><em class="property">: object</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.dsl_content" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.dsl_importer">
+<code class="sig-name descname">dsl_importer</code><em class="property">: object</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.dsl_importer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.dsl_path">
+<code class="sig-name descname">dsl_path</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.dsl_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.dsl_type">
+<code class="sig-name descname">dsl_type</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.dsl_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.exporter">
+<code class="sig-name descname">exporter</code><em class="property">: object</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.exporter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.exporter_type">
+<code class="sig-name descname">exporter_type</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.exporter_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.resources">
+<code class="sig-name descname">resources</code><em class="property">: object</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.resources" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.resources_content">
+<code class="sig-name descname">resources_content</code><em class="property">: object</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.resources_content" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.resources_path">
+<code class="sig-name descname">resources_path</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.resources_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.solver">
+<code class="sig-name descname">solver</code><em class="property">: object</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.solver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.match_cli.Settings.solver_type">
+<code class="sig-name descname">solver_type</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.utils.match_cli.Settings.solver_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.utils.plugin_loader">
+<span id="continuum-deployer-utils-plugin-loader-module"></span><h2>continuum_deployer.utils.plugin_loader module<a class="headerlink" href="#module-continuum_deployer.utils.plugin_loader" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.utils.plugin_loader.PluginLoader">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.plugin_loader.</code><code class="sig-name descname">PluginLoader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">add_default_path</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.plugin_loader.PluginLoader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="continuum_deployer.utils.plugin_loader.PluginLoader.add_plugins_path">
+<code class="sig-name descname">add_plugins_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.plugin_loader.PluginLoader.add_plugins_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an additional path to the loader where plugins
+might be placed. A reload is not done automatically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – filesystem path where the loader should search for plugins</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.plugin_loader.PluginLoader.get_plugin_manager">
+<code class="sig-name descname">get_plugin_manager</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.plugin_loader.PluginLoader.get_plugin_manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the plugin manager</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the current instance of the plugin manager</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#continuum_deployer.utils.plugin_manager.CDPluginManager" title="continuum_deployer.utils.plugin_manager.CDPluginManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">continuum_deployer.utils.plugin_manager.CDPluginManager</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.plugin_loader.PluginLoader.load_plugins">
+<code class="sig-name descname">load_plugins</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.plugin_loader.PluginLoader.load_plugins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Triggers the actual plugin loading.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.utils.plugin_manager">
+<span id="continuum-deployer-utils-plugin-manager-module"></span><h2>continuum_deployer.utils.plugin_manager module<a class="headerlink" href="#module-continuum_deployer.utils.plugin_manager" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.utils.plugin_manager.CDPluginManager">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.plugin_manager.</code><code class="sig-name descname">CDPluginManager</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">categories_filter</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directories_list</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plugin_info_ext</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plugin_locator</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.plugin_manager.CDPluginManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">yapsy.PluginManager.PluginManager</span></code></p>
+<dl class="py method">
+<dt id="continuum_deployer.utils.plugin_manager.CDPluginManager.instanciateElement">
+<code class="sig-name descname">instanciateElement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">element</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.plugin_manager.CDPluginManager.instanciateElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED(&gt;1.11): reimplement instead <code class="docutils literal notranslate"><span class="pre">instanciateElementWithImportInfo</span></code> !</p>
+<p>Override this method to customize how plugins are instanciated.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method is called only if
+<code class="docutils literal notranslate"><span class="pre">instanciateElementWithImportInfo</span></code> has not been reimplemented !</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.utils.ui">
+<span id="continuum-deployer-utils-ui-module"></span><h2>continuum_deployer.utils.ui module<a class="headerlink" href="#module-continuum_deployer.utils.ui" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.utils.ui.UI">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.utils.ui.</code><code class="sig-name descname">UI</code><a class="headerlink" href="#continuum_deployer.utils.ui.UI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Helper class that bundels UI related helpers</p>
+<dl class="py attribute">
+<dt id="continuum_deployer.utils.ui.UI.CLI_BANNER">
+<code class="sig-name descname">CLI_BANNER</code><em class="property"> = &quot;\n   ____            _   _                               ____             _                       \n  / ___|___  _ __ | |_(_)_ __  _   _ _   _ _ __ ___   |  _ \\  ___ _ __ | | ___  _   _  ___ _ __ \n | |   / _ \\| '_ \\| __| | '_ \\| | | | | | | '_ ` _ \\  | | | |/ _ \\ '_ \\| |/ _ \\| | | |/ _ \\ '__|\n | |__| (_) | | | | |_| | | | | |_| | |_| | | | | | | | |_| |  __/ |_) | | (_) | |_| |  __/ |   \n  \\____\\___/|_| |_|\\__|_|_| |_|\\__,_|\\__,_|_| |_| |_| |____/ \\___| .__/|_|\\___/ \\__, |\\___|_|   \n                                                                 |_|            |___/           \n   {} - Author: Daniel Hass\n&quot;</em><a class="headerlink" href="#continuum_deployer.utils.ui.UI.CLI_BANNER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.ui.UI.page">
+<em class="property">static </em><code class="sig-name descname">page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.ui.UI.page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.ui.UI.pretty_label_string">
+<em class="property">static </em><code class="sig-name descname">pretty_label_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">labels</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.ui.UI.pretty_label_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert label to string</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>labels (dict): labels to convert</p>
+</dd>
+<dt>Returns:</dt><dd><p>str: comma seperated list of labels (key:label,..)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.ui.UI.print_percent_bar">
+<em class="property">static </em><code class="sig-name descname">print_percent_bar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prefix</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">percent</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.ui.UI.print_percent_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a progress bar to stdout</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>prefix (str): Label infront of progress bar
+percent (int): Percentage representing the progress</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.utils.ui.UI.prompt_std">
+<em class="property">static </em><code class="sig-name descname">prompt_std</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.utils.ui.UI.prompt_std" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-continuum_deployer.utils" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Continuum Deployer</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Daniel Hass.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/continuum_deployer.utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>continuum_deployer.resources package &#8212; Continuum Deployer v0.13.0-dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="continuum-deployer-resources-package">
+<h1>continuum_deployer.resources package<a class="headerlink" href="#continuum-deployer-resources-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-continuum_deployer.resources.deployment">
+<span id="continuum-deployer-resources-deployment-module"></span><h2>continuum_deployer.resources.deployment module<a class="headerlink" href="#module-continuum_deployer.resources.deployment" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.resources.deployment.DeploymentEntity">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.resources.deployment.</code><code class="sig-name descname">DeploymentEntity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">memory</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">memory_limit</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">cpu</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">cpu_limit</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">yaml</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">labels</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.deployment.DeploymentEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data Class that holds extracted values for deployments.</p>
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.deployment.DeploymentEntity.cpu">
+<code class="sig-name descname">cpu</code><em class="property">: float</em><em class="property"> = 0</em><a class="headerlink" href="#continuum_deployer.resources.deployment.DeploymentEntity.cpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.deployment.DeploymentEntity.cpu_limit">
+<code class="sig-name descname">cpu_limit</code><em class="property">: float</em><em class="property"> = 0</em><a class="headerlink" href="#continuum_deployer.resources.deployment.DeploymentEntity.cpu_limit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.deployment.DeploymentEntity.labels">
+<code class="sig-name descname">labels</code><em class="property">: dict</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.resources.deployment.DeploymentEntity.labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.deployment.DeploymentEntity.memory">
+<code class="sig-name descname">memory</code><em class="property">: int</em><em class="property"> = 0</em><a class="headerlink" href="#continuum_deployer.resources.deployment.DeploymentEntity.memory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.deployment.DeploymentEntity.memory_limit">
+<code class="sig-name descname">memory_limit</code><em class="property">: int</em><em class="property"> = 0</em><a class="headerlink" href="#continuum_deployer.resources.deployment.DeploymentEntity.memory_limit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.deployment.DeploymentEntity.name">
+<code class="sig-name descname">name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.resources.deployment.DeploymentEntity.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.deployment.DeploymentEntity.print">
+<code class="sig-name descname">print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.deployment.DeploymentEntity.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper that prints values of current deployment to stdout</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.deployment.DeploymentEntity.yaml">
+<code class="sig-name descname">yaml</code><em class="property">: dict</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.resources.deployment.DeploymentEntity.yaml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.resources.resource_entity">
+<span id="continuum-deployer-resources-resource-entity-module"></span><h2>continuum_deployer.resources.resource_entity module<a class="headerlink" href="#module-continuum_deployer.resources.resource_entity" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.resources.resource_entity.</code><code class="sig-name descname">ResourceEntity</code><span class="sig-paren">(</span><em class="sig-param">name: str = None</em>, <em class="sig-param">memory: float = None</em>, <em class="sig-param">cpu: float = None</em>, <em class="sig-param">deployments: List[continuum_deployer.resources.deployment.DeploymentEntity] = &lt;factory&gt;</em>, <em class="sig-param">labels: dict = None</em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Data Class that hold extracted values for resources.</p>
+<dl class="py method">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.add_deployment">
+<code class="sig-name descname">add_deployment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.add_deployment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add new deployment entity to current resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entity</strong> (<a class="reference internal" href="#continuum_deployer.resources.deployment.DeploymentEntity" title="continuum_deployer.resources.deployment.DeploymentEntity"><code class="xref py py-class docutils literal notranslate"><span class="pre">continuum_deployer.resources.deployment.DeploymentEntity</span></code></a>) – deployment entity that should be added</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>result of add operation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.check_resources_fit">
+<code class="sig-name descname">check_resources_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.check_resources_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Idempotent helper method that checks if given deployment entity 
+can be added to the resource without exceeding the limits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entity</strong> (<a class="reference internal" href="#continuum_deployer.resources.deployment.DeploymentEntity" title="continuum_deployer.resources.deployment.DeploymentEntity"><code class="xref py py-class docutils literal notranslate"><span class="pre">continuum_deployer.resources.deployment.DeploymentEntity</span></code></a>) – deployment entity whose fit should be tested</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Check result if deployment entity cloud be placed as boolean</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.clear_deployments">
+<code class="sig-name descname">clear_deployments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.clear_deployments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all placed deployments</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.cpu">
+<code class="sig-name descname">cpu</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.cpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.deployments">
+<code class="sig-name descname">deployments</code><em class="property">: List<span class="p">[</span><a class="reference internal" href="#continuum_deployer.resources.deployment.DeploymentEntity" title="continuum_deployer.resources.deployment.DeploymentEntity">continuum_deployer.resources.deployment.DeploymentEntity</a><span class="p">]</span></em><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.deployments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.get_deployments">
+<code class="sig-name descname">get_deployments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.get_deployments" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.get_idle_cpu">
+<code class="sig-name descname">get_idle_cpu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.get_idle_cpu" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.get_idle_memory">
+<code class="sig-name descname">get_idle_memory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.get_idle_memory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.labels">
+<code class="sig-name descname">labels</code><em class="property">: dict</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.memory">
+<code class="sig-name descname">memory</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.memory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.name">
+<code class="sig-name descname">name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resource_entity.ResourceEntity.print">
+<code class="sig-name descname">print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resource_entity.ResourceEntity.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method that prints resource entity parameters and current deployments to stdout</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.resources.resources">
+<span id="continuum-deployer-resources-resources-module"></span><h2>continuum_deployer.resources.resources module<a class="headerlink" href="#module-continuum_deployer.resources.resources" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.resources.resources.Resources">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.resources.resources.</code><code class="sig-name descname">Resources</code><a class="headerlink" href="#continuum_deployer.resources.resources.Resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="continuum_deployer.resources.resources.Resources.MANDATORY_FIELDS">
+<code class="sig-name descname">MANDATORY_FIELDS</code><em class="property"> = ['name', 'cpu', 'memory']</em><a class="headerlink" href="#continuum_deployer.resources.resources.Resources.MANDATORY_FIELDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resources.Resources.check_mandatory_fields">
+<code class="sig-name descname">check_mandatory_fields</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resources.Resources.check_mandatory_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if all mandatory resource entity fields are set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> (<a class="reference internal" href="#continuum_deployer.resources.resource_entity.ResourceEntity" title="continuum_deployer.resources.resource_entity.ResourceEntity"><code class="xref py py-class docutils literal notranslate"><span class="pre">continuum_deployer.resources.resource_entity.ResourceEntity</span></code></a>) – resource entity to check</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resources.Resources.get_resources">
+<code class="sig-name descname">get_resources</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resources.Resources.get_resources" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resources.Resources.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">definition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resources.Resources.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the given resource definitions to the internal object structure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>definition</strong> (<em>str</em>) – str with plain YAML resource definitions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.resources.resources.Resources.print_resources">
+<code class="sig-name descname">print_resources</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.resources.resources.Resources.print_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that prints each resource to stdout 
+using the resource entity print() function</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.resources">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-continuum_deployer.resources" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Continuum Deployer</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Daniel Hass.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/continuum_deployer.resources.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

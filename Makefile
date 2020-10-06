@@ -1,5 +1,7 @@
 PKGNAME='splab-continuum-deployer'
 
+.PHONY: clean-pyc clean-build dist install uninstall install-req docs
+
 clean-pyc:
 	find . -name '*.pyc' -exec rm --force {} +
 	find . -name '*.pyo' -exec rm --force {} +
@@ -21,3 +23,8 @@ uninstall:
 install-req:
 	pip3 install --user -r requirements.txt
 	pip3 install --user -r requirements-dev.txt
+
+docs:
+	cd ./docs/; \
+	sphinx-apidoc -o ./source ../continuum_deployer/; \
+	make html

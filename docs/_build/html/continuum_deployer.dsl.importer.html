@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>continuum_deployer.dsl.importer package &#8212; Continuum Deployer v0.13.0-dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="continuum-deployer-dsl-importer-package">
+<h1>continuum_deployer.dsl.importer package<a class="headerlink" href="#continuum-deployer-dsl-importer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-continuum_deployer.dsl.importer.helm">
+<span id="continuum-deployer-dsl-importer-helm-module"></span><h2>continuum_deployer.dsl.importer.helm module<a class="headerlink" href="#module-continuum_deployer.dsl.importer.helm" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.dsl.importer.helm.Helm">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.dsl.importer.helm.</code><code class="sig-name descname">Helm</code><a class="headerlink" href="#continuum_deployer.dsl.importer.helm.Helm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#continuum_deployer.dsl.importer.importer.Importer" title="continuum_deployer.dsl.importer.importer.Importer"><code class="xref py py-class docutils literal notranslate"><span class="pre">continuum_deployer.dsl.importer.importer.Importer</span></code></a></p>
+<dl class="py attribute">
+<dt id="continuum_deployer.dsl.importer.helm.Helm.K8S_OBJECTS">
+<code class="sig-name descname">K8S_OBJECTS</code><em class="property"> = ['Deployment', 'ReplicaSet', 'StatefulSet', 'DaemonSet', 'Jobs', 'CronJob']</em><a class="headerlink" href="#continuum_deployer.dsl.importer.helm.Helm.K8S_OBJECTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="continuum_deployer.dsl.importer.helm.Helm.K8S_SCALE_CONTROLLER">
+<code class="sig-name descname">K8S_SCALE_CONTROLLER</code><em class="property"> = ['Deployment', 'ReplicaSet', 'StatefulSet']</em><a class="headerlink" href="#continuum_deployer.dsl.importer.helm.Helm.K8S_SCALE_CONTROLLER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.helm.Helm.get_dsl_content">
+<code class="sig-name descname">get_dsl_content</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dsl_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.helm.Helm.get_dsl_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read content from different Helm input types</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dsl_path</strong> (<em>str</em>) – filesystem path to the Helm resource</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – raised if current config is not supported</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>content of given DSL resource</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.helm.Helm.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dsl_input</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.helm.Helm.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does the actual parsing of the provided DSL input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dsl_input</strong> (<em>str</em>) – already parsed plain DSL input</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.helm.Helm.parse_k8s_cpu_value">
+<em class="property">static </em><code class="sig-name descname">parse_k8s_cpu_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cpu_value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.helm.Helm.parse_k8s_cpu_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse and convert Kubernetes specific CPU value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cpu_value</strong> (<em>str</em>) – CPU value from Kubernetes manifest</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>CPU value as floating point value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.helm.Helm.parse_k8s_memory_value">
+<em class="property">static </em><code class="sig-name descname">parse_k8s_memory_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">memory_value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.helm.Helm.parse_k8s_memory_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse and convert Kubernetes specific memory value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>memory_value</strong> (<em>str</em>) – memory value from Kubernetes manifest</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – raised if value postfix is unknown</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>parsed memory value</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.helm.Helm.template_chart_archive">
+<code class="sig-name descname">template_chart_archive</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">helm_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.helm.Helm.template_chart_archive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Templates given Helm chart to YAML</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>helm_path</strong> (<em>str</em>) – filesystem path to the helm chart or archive</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="continuum_deployer.utils.html#continuum_deployer.utils.exceptions.FileTypeNotSupported" title="continuum_deployer.utils.exceptions.FileTypeNotSupported"><strong>FileTypeNotSupported</strong></a> – raised if filetype found at path not supported</p></li>
+<li><p><a class="reference internal" href="continuum_deployer.utils.html#continuum_deployer.utils.exceptions.ImporterError" title="continuum_deployer.utils.exceptions.ImporterError"><strong>ImporterError</strong></a> – raised if helm tamplate had an error, most likely due to error in given chart</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>templated yaml definition</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.dsl.importer.importer">
+<span id="continuum-deployer-dsl-importer-importer-module"></span><h2>continuum_deployer.dsl.importer.importer module<a class="headerlink" href="#module-continuum_deployer.dsl.importer.importer" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="continuum_deployer.dsl.importer.importer.Importer">
+<em class="property">class </em><code class="sig-prename descclassname">continuum_deployer.dsl.importer.importer.</code><code class="sig-name descname">Importer</code><a class="headerlink" href="#continuum_deployer.dsl.importer.importer.Importer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">yapsy.IPlugin.IPlugin</span></code></p>
+<p>Interface that defines interaction with several DSL specific extractor implementations.</p>
+<dl class="py attribute">
+<dt id="continuum_deployer.dsl.importer.importer.Importer.DSL_TYPES">
+<code class="sig-name descname">DSL_TYPES</code><em class="property"> = ['helm']</em><a class="headerlink" href="#continuum_deployer.dsl.importer.importer.Importer.DSL_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.importer.Importer.get_app_modules">
+<code class="sig-name descname">get_app_modules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.importer.Importer.get_app_modules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter method for application modules</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.importer.Importer.get_config">
+<code class="sig-name descname">get_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.importer.Importer.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for current exporter config</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>current exporter config object</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="continuum_deployer.utils.html#continuum_deployer.utils.config.Config" title="continuum_deployer.utils.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">continuum_deployer.utils.config.Config</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.importer.Importer.get_dsl_content">
+<code class="sig-name descname">get_dsl_content</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dsl_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.importer.Importer.get_dsl_content" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.importer.Importer.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dsl_input</span></em><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.importer.Importer.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles actual parsing of DSL to internal data structures. Needs to be implemented by child.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.importer.Importer.print_app_modules">
+<code class="sig-name descname">print_app_modules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.importer.Importer.print_app_modules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience helper that prints object representation of application modules</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="continuum_deployer.dsl.importer.importer.Importer.reset_app_modules">
+<code class="sig-name descname">reset_app_modules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#continuum_deployer.dsl.importer.importer.Importer.reset_app_modules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete already parsed app modules</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-continuum_deployer.dsl.importer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-continuum_deployer.dsl.importer" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Continuum Deployer</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Daniel Hass.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/continuum_deployer.dsl.importer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
