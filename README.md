@@ -89,6 +89,26 @@ Labels are the central mean within the Continuum Deployer for the user to expres
 
 > Remark for the built-in Helm importer: this importer uses the [`NodeSelector`](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) values as sources for the deployment labels as the often refered Kubernetes [Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) are not a fit for our purposes, as they often are populated with many default information which do not reflect the use case for labeling in the Continuum Deployer.
 
+### CLI Entrypoint
+
+```
+Usage: app.py [OPTIONS] COMMAND [ARGS]...
+
+  Prototypical Continuum Computing Deployer
+
+  Authors: Daniel Hass
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  match            Match deployments interactively
+  parse-helm       Parses helm deployment definitions and prints result
+  parse-resources  Parses resources YAML and prints result
+```
+
+Above you can find the top level CLI entrypoint of the Continuum Deployer. The main command is `match`, which starts the main interactive part of the application. The two additional commands are more suitable for development and debugging purposes during the creation and parsing of resource or deployment definitions.
+
 ### Matching
 
 The main CLI interface of the Continuum Deployer can be invoked by the `match` command. All CLI parameter options are optional and are available for ease of use to make it possible for the user to skip some of the interactive steps trough preset parameters (e.g. on multiple consecutive invocations).
@@ -185,6 +205,10 @@ An example for a prototypical plugin implementation can be found in the examples
 
 ### Resources
 - Currently the only two resources considered for the placement are `CPU` and `Memory` requirements of the deployments. This can be enlarged in the future to other resources types like e.g. `Bandwidth` or `Cost` to make the placement even more precise.
+
+### Terminal requirements
+- The current implementation uses the python library [`Prompt Toolkit`](https://python-prompt-toolkit.readthedocs.io/en/master/) for its interactive CLI features. This library has some requirements with regards to the terminal emulator it runs in. It works best in a well-known fully fledged linux terminal emulator. Tested emulators with known-problems:
+  - Spyder IDE integrated terminal
 
 ## Internal Architecture
 
