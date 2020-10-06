@@ -44,6 +44,7 @@ class Importer(IPlugin):
 
     def print_app_modules(self):
         """Convenience helper that prints object representation of application modules"""
-        click.echo(click.style("List of Deployments extracted:", fg='blue'))
+        click.echo(click.style(
+            "\nList of Deployments extracted:", fg='bright_blue'))
         for module in self.app_modules:
             click.echo(str(module))
