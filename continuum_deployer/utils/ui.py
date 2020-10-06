@@ -47,7 +47,7 @@ class UI():
 
     @staticmethod
     def prompt_std(text):
-        return click.prompt(click.style(text, fg='blue'), type=str)
+        return click.prompt(click.style(text, fg='bright_blue'), type=str)
 
     @staticmethod
     def page(text):

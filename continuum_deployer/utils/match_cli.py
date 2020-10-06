@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from prompt_toolkit import prompt
 from prompt_toolkit.validation import Validator, ValidationError
 from prompt_toolkit.completion import WordCompleter
-from prompt_toolkit import print_formatted_text, HTML
+from prompt_toolkit import print_formatted_text, HTML, ANSI
 from prompt_toolkit.shortcuts import confirm
 import click
 
@@ -83,7 +83,7 @@ class MatchCli:
     _TEXT_ASKDSLTYPE = 'Enter DSL type: '
     _TEXT_ASKDEPLOYHEADLINE = 'Parsed workloads: '
     _TEXT_ASKSOLVERTYPE = 'Enter Solver type: '
-    _TEXT_ASKEXPORTPATH = 'Enter path to results file: '
+    _TEXT_ASKEXPORTPATH = 'Enter path to results file'
     _TEXT_ASKSTARTMATCHING = 'Do you want to start matching?'
     _TEXT_ASKMATCHINGRESHEADLINE = 'Matching results:'
     _TEXT_ASKPLACEMENTOK = 'Is placement satisfying (otherwise you are able to alter the input)?'
@@ -94,6 +94,7 @@ class MatchCli:
     _TEXT_ASKEXPORTERTYPE = 'Enter Exporter type: '
 
     INTERACTIVE_TIMEOUT = 1.5
+    CLICK_PROMPT_FG_COLOR = 'bright_blue'
 
     def __init__(self, resources_path, dsl_path, dsl_type):
 
@@ -219,7 +220,7 @@ class MatchCli:
                 _list_of_options)
 
             option_completer = WordCompleter(_list_of_options)
-            _option_choice = prompt('\nWhich config option do you choose: ',
+            _option_choice = prompt(ANSI(click.style('\nWhich config option do you choose: ', fg=self.CLICK_PROMPT_FG_COLOR)),
                                     completer=option_completer, validator=ListValidator(_list_of_options))
 
             setting.set_value(_options[int(_option_choice)])
@@ -243,6 +244,7 @@ class MatchCli:
             # resources path not already set via CLI param
             self.settings.resources_path = UI.prompt_std(
                 self._TEXT_ASKRESOURCES)
+            click.echo('\n')
 
         self._read_resources_file()
         self._parse_resources()
@@ -274,9 +276,9 @@ class MatchCli:
         _options = list(_importer.keys())
 
         if self.settings.dsl_type is None:
-            html_completer = WordCompleter(_options)
-            _dsl_type = prompt(self._TEXT_ASKDSLTYPE,
-                               completer=html_completer, validator=ListValidator(_options))
+            prompt_completer = WordCompleter(_options)
+            _dsl_type = prompt(ANSI(click.style(self._TEXT_ASKDSLTYPE, fg=self.CLICK_PROMPT_FG_COLOR)),
+                               completer=prompt_completer, validator=ListValidator(_options))
             self.settings.dsl_type = _dsl_type
 
         try:
@@ -335,9 +337,9 @@ class MatchCli:
 
         _options = MatchCli._options_array_to_number_choices(_solvers)
 
-        html_completer = WordCompleter(_options)
-        _solver_type = prompt(self._TEXT_ASKSOLVERTYPE,
-                              completer=html_completer, validator=ListValidator(_options))
+        prompt_completer = WordCompleter(_options)
+        _solver_type = prompt(ANSI(click.style(self._TEXT_ASKSOLVERTYPE, fg=self.CLICK_PROMPT_FG_COLOR)),
+                              completer=prompt_completer, validator=ListValidator(_options))
         self.settings.solver_type = _solver_type
 
         _solver = _solvers[int(self.settings.solver_type)]
@@ -366,7 +368,7 @@ class MatchCli:
                 _list_of_options)
 
             option_completer = WordCompleter(_list_of_options)
-            _option_choice = prompt('\nWhich config option do you choose: ',
+            _option_choice = prompt(ANSI(click.style('\nWhich config option do you choose: ', fg=self.CLICK_PROMPT_FG_COLOR)),
                                     completer=option_completer, validator=ListValidator(_list_of_options))
 
             setting.set_value(_options[int(_option_choice)])
@@ -375,7 +377,8 @@ class MatchCli:
 
     def on_enter_matching(self):
         click.echo('\n')
-        _start_matching = confirm(self._TEXT_ASKSTARTMATCHING)
+        _start_matching = confirm(
+            ANSI(click.style(self._TEXT_ASKSTARTMATCHING, fg=self.CLICK_PROMPT_FG_COLOR)))
 
         # clear already matched resources (necessary for rerun)
         self.settings.solver.reset_matching()
@@ -410,9 +413,9 @@ class MatchCli:
             quit()
 
     def on_enter_check_results(self):
-        click.echo('\n')
 
-        _placement_ok = confirm(self._TEXT_ASKPLACEMENTOK)
+        _placement_ok = confirm(
+            ANSI(click.style(self._TEXT_ASKPLACEMENTOK, fg=self.CLICK_PROMPT_FG_COLOR)))
         if _placement_ok:
             self.export()
         else:
@@ -421,7 +424,8 @@ class MatchCli:
     def on_enter_alter_definitions(self):
         click.echo('\n')
 
-        _alter_resources = confirm(self._TEXT_ASKALTERRESOURCES)
+        _alter_resources = confirm(
+            ANSI(click.style(self._TEXT_ASKALTERRESOURCES, fg=self.CLICK_PROMPT_FG_COLOR)))
         if _alter_resources:
             # open editor
             self._edit_file_with_editor(self.settings.resources_path)
@@ -429,7 +433,8 @@ class MatchCli:
             self._parse_resources()
             self.settings.solver.set_resources(self.settings.resources)
 
-        _alter_deployments = confirm(self._TEXT_ASKALTERWORKLOADS)
+        _alter_deployments = confirm(
+            ANSI(click.style(self._TEXT_ASKALTERWORKLOADS, fg=self.CLICK_PROMPT_FG_COLOR)))
         if _alter_deployments:
             # open editor
             self.settings.dsl_content = self._edit_content_with_editor(
@@ -455,16 +460,18 @@ class MatchCli:
         _options = list(_importer.keys())
 
         if self.settings.exporter_type is None:
-            html_completer = WordCompleter(_options)
-            _exporter_type = prompt(self._TEXT_ASKEXPORTERTYPE,
-                                    completer=html_completer, validator=ListValidator(_options))
+            prompt_completer = WordCompleter(_options)
+            _exporter_type = prompt(ANSI(click.style(self._TEXT_ASKEXPORTERTYPE, fg=self.CLICK_PROMPT_FG_COLOR)),
+                                    completer=prompt_completer, validator=ListValidator(_options))
             self.settings.exporter_type = _exporter_type
 
         self.settings.exporter = _importer[self.settings.exporter_type]
 
         click.echo('\n')
-        _save_results = confirm(self._TEXT_ASKSAVERESULTS)
+        _save_results = confirm(
+            ANSI(click.style(self._TEXT_ASKSAVERESULTS, fg=self.CLICK_PROMPT_FG_COLOR)))
         if _save_results:
+            click.echo('\n')
             _export_path = UI.prompt_std(self._TEXT_ASKEXPORTPATH)
             try:
                 with open(_export_path, 'w') as file:
