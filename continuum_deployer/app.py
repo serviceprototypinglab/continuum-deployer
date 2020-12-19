@@ -10,10 +10,13 @@ from continuum_deployer.utils.match_cli import MatchCli
 
 
 _HELPTEXT_TYPE = 'Type of helm definition'
+_HELPTEXT_TYPEDSL = 'Type of DSL definition'
 _HELPTEXT_DSL = 'Path to Helm definition'
 _HELPTEXT_RESOURCES = 'Path to resources file'
 _HELPTEXT_OUTPUT = 'Path to output file'
 _HELPTEXT_PLUGINS = 'Additional plugins directory path'
+_HELPTEXT_SOLVER = 'Type of solver'
+_HELPTEXT_SOLVERMODE = 'Mode (target) of solver'
 
 
 @click.group()
@@ -64,16 +67,20 @@ def parse_resources(file):
 @cli.command()
 @click.option('-r', '--resources', required=False, default=None, help=_HELPTEXT_RESOURCES)
 @click.option('-d', '--deployment', required=False, default=None, help=_HELPTEXT_DSL)
-@click.option('-t', '--type', type=click.Choice(Importer.DSL_TYPES), default=None, show_default=True, help=_HELPTEXT_TYPE)
+@click.option('-T', '--dsltype', type=click.Choice(Importer.DSL_TYPES), default=None, show_default=True, help=_HELPTEXT_TYPEDSL)
+@click.option('-t', '--type', type=click.Choice(['yaml', 'chart']), default=None, help=_HELPTEXT_TYPE)
 @click.option('-p', '--plugins', type=str, default=None, show_default=True, help=_HELPTEXT_PLUGINS)
-def match(resources, deployment, type, plugins):
+@click.option('-s', '--solver', type=click.Choice(['0', '1']), default=None, help=_HELPTEXT_SOLVER)
+@click.option('-m', '--solver-mode', type=click.Choice(['0', '1', '2', '3', '4', '5']), default=None, help=_HELPTEXT_SOLVERMODE)
+def match(resources, deployment, dsltype, type, plugins, solver, solver_mode):
     """Match deployments interactively"""
 
+    # FIXME: -t and -s should be linked to what plugins provide
     if plugins != None:
         plugins_loader.add_plugins_path(plugins)
         plugins_loader.load_plugins()
 
-    match_cli = MatchCli(resources, deployment, type)
+    match_cli = MatchCli(resources, deployment, dsltype, type, solver, solver_mode)
     match_cli.start()
 
 

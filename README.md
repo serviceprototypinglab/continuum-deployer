@@ -8,9 +8,9 @@ The Continuum Deployer is a prototypical implementation of a resource matching s
 
 The Continuum Deployer supports the digestion of local, templated or packaged Helm Charts out-of-the box. Additionally two solvers are shipped within the module (Greedy and SAT solver). The final resource placement can be viewed interactively but also exported trough the built-in Kubernetes exporter to a deployable Kubernetes manifest.
 
-To extent and adopt the Deployer the module offers a rich plugin interface that allows users to add custom version of the previously mentioned components in order do get even better results with regard to their infrastructure and requirements. Please find details in the [Plugins](#plugins) section.
+To extend and adapt the Deployer the module offers a rich plugin interface that allows users to add custom version of the previously mentioned components in order to get even better results with regard to their infrastructure and requirements. Please find details in the [Plugins](#plugins) section.
 
-You can find python related documentation under [docs](docs/_build/html).
+You can find Python-related documentation under [docs](docs/_build/html).
 
 ## Screenshots
 
@@ -137,6 +137,8 @@ Options:
   -p, --plugins TEXT     Additional plugins directory path
   --help                 Show this message and exit.
 ```
+
+Quickstart: `continuum-deployer match -r examples/resources/default.yaml --type helm --deployment examples/charts/wordpress/wordpress.tgz`
 
 ### Built-in Solvers
 

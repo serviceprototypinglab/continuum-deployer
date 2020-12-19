@@ -166,7 +166,7 @@ class Helm(Importer):
 
         return _templated_yaml.stdout
 
-    def get_dsl_content(self, dsl_path):
+    def get_dsl_content(self, dsl_path, helmtype):
         """Read content from different Helm input types
 
         :param dsl_path: filesystem path to the Helm resource
@@ -176,8 +176,11 @@ class Helm(Importer):
         :rtype: str
         """
 
-        _chart_origin = self.config.get_setting(
-            'chart_origin').get_value().value
+        if not helmtype:
+            _chart_origin = self.config.get_setting(
+                'chart_origin').get_value().value
+        else:
+            _chart_origin = helmtype
         if _chart_origin == 'yaml':
             return FileHandling.get_file_content(dsl_path)
         elif _chart_origin == 'chart':

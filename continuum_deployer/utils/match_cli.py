@@ -96,7 +96,7 @@ class MatchCli:
     INTERACTIVE_TIMEOUT = 1.5
     CLICK_PROMPT_FG_COLOR = 'bright_blue'
 
-    def __init__(self, resources_path, dsl_path, dsl_type):
+    def __init__(self, resources_path, dsl_path, dsl_type, helmtype, solver, solvermode):
 
         self.resources = None
 
@@ -104,6 +104,9 @@ class MatchCli:
         self.settings.resources_path = resources_path
         self.settings.dsl_path = dsl_path
         self.settings.dsl_type = dsl_type
+        self.settings.helmtype = helmtype
+        self.settings.solver = solver
+        self.settings.solvermode = solvermode
 
         # initialize the state machine
         self.machine = Machine(
@@ -180,7 +183,7 @@ class MatchCli:
     def _read_dsl(self):
         try:
             self.settings.dsl_content = self.settings.dsl_importer.get_dsl_content(
-                self.settings.dsl_path)
+                self.settings.dsl_path, self.settings.helmtype)
 
         except FileNotFoundError as e:
             click.echo(click.style(e.strerror, fg='red'), err=True)
@@ -290,7 +293,9 @@ class MatchCli:
 
         click.echo('\n')
         _config = self.settings.dsl_importer.get_config()
-        self._ask_setting_options(_config)
+        #print("CONFIG (default)", _config.settings['chart_origin'].get_value().value)
+        if not self.settings.helmtype:
+            self._ask_setting_options(_config)
 
         self.ask_dsl()
 
@@ -333,13 +338,17 @@ class MatchCli:
             solver_chooser_text = '{}{}\n'.format(
                 solver_chooser_text, new_solver_option)
 
-        print_formatted_text(HTML(solver_chooser_text))
+        if not self.settings.solver:
+            print_formatted_text(HTML(solver_chooser_text))
 
-        _options = MatchCli._options_array_to_number_choices(_solvers)
+            _options = MatchCli._options_array_to_number_choices(_solvers)
 
-        prompt_completer = WordCompleter(_options)
-        _solver_type = prompt(ANSI(click.style(self._TEXT_ASKSOLVERTYPE, fg=self.CLICK_PROMPT_FG_COLOR)),
-                              completer=prompt_completer, validator=ListValidator(_options))
+            prompt_completer = WordCompleter(_options)
+            _solver_type = prompt(ANSI(click.style(self._TEXT_ASKSOLVERTYPE, fg=self.CLICK_PROMPT_FG_COLOR)),
+                                  completer=prompt_completer, validator=ListValidator(_options))
+        else:
+            _solver_type = self.settings.solver
+
         self.settings.solver_type = _solver_type
 
         _solver = _solvers[int(self.settings.solver_type)]
@@ -350,10 +359,22 @@ class MatchCli:
         self.configure_solver()
 
     def on_enter_config_solver(self):
+        _config = self.settings.solver.get_config()
+        unset = False
+        for setting in _config.get_settings():
+            if setting.name == "target" and self.settings.solvermode:
+                _options = setting.get_options()
+                setting.set_value(_options[int(self.settings.solvermode)])
+            else:
+                unset = True
+
+        if not unset:
+            self.automatch()
+            return
+
         click.echo('\n')
         click.echo('Configure solver settings:\n')
 
-        _config = self.settings.solver.get_config()
         for setting in _config.get_settings():
             click.echo('Configure {}:\n'.format(setting.name))
             _options = setting.get_options()
@@ -374,6 +395,24 @@ class MatchCli:
             setting.set_value(_options[int(_option_choice)])
 
         self.start_matching()
+
+    def automatch(self):
+        self.settings.solver.reset_matching()
+
+        try:
+            self.settings.solver.match()
+        except SolverError as e:
+            print("ERROR")
+
+        _matched_resources = self.settings.solver.get_resources()
+        for r in _matched_resources:
+            r.print()
+
+        _placement_errors = self.settings.solver.get_placement_errors()
+        if _placement_errors:
+            print("PLACEMENT EROR")
+            for workload in _placement_errors:
+                workload.print()
 
     def on_enter_matching(self):
         click.echo('\n')
