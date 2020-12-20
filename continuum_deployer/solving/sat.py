@@ -9,6 +9,18 @@ from continuum_deployer.resources.deployment import DeploymentEntity
 from continuum_deployer.resources.resources import Resources, ResourceEntity
 from continuum_deployer.utils.config import Config, Setting, SettingValue
 
+class CB(cp_model.CpSolverSolutionCallback):
+    def __init__(self, solver):
+        cp_model.CpSolverSolutionCallback.__init__(self)
+        self.solver = solver
+
+    def on_solution_callback(self):
+        # When this callback is called, the status is either FEASIBLE or OPTIMAL.
+        # Since the status can apparently not be queried from self.solver, we
+        # assume (heuristically) FEASIBLE. If it is OPTIMAL, the code below would
+        # anyway output a status message and we parse OPTIMAL with higher priority
+        # in the log analysis.
+        print("status: LIKELY-FEASIBLE")
 
 class SAT(Solver):
 
@@ -132,7 +144,9 @@ class SAT(Solver):
             _model.Maximize(idle_cpu)
 
         solver = cp_model.CpSolver()
-        status = solver.Solve(_model)
+        #status = solver.Solve(_model)
+        cb = CB(solver)
+        status = solver.SolveWithSolutionCallback(_model, cb)
 
         if status == cp_model.OPTIMAL:
             for i, res in enumerate(resources):
