@@ -2,11 +2,13 @@
 
 import click
 
+import continuum_deployer
 from continuum_deployer import plugins as plugins_loader
 from continuum_deployer.dsl.importer.importer import Importer
 from continuum_deployer.dsl.importer.helm import Helm
 from continuum_deployer.resources.resources import Resources
 from continuum_deployer.utils.match_cli import MatchCli
+from continuum_deployer.utils.ui import UI
 
 
 _HELPTEXT_TYPE = 'Type of helm definition'
@@ -75,6 +77,13 @@ def match(resources, deployment, type, plugins):
 
     match_cli = MatchCli(resources, deployment, type)
     match_cli.start()
+
+
+@cli.command()
+def version():
+    """Prints version information"""
+    click.secho(UI.CLI_BANNER.format(
+        continuum_deployer.app_version), fg='bright_blue', bold=True)
 
 
 if __name__ == "__main__":

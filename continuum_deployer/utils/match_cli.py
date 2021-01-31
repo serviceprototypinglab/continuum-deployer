@@ -480,5 +480,5 @@ class MatchCli:
             except Exception as e:
                 click.echo(click.style(e.strerror, fg='red'), err=True)
                 self.export()
-        else:
-            exit(0)
+
+        exit(0)
