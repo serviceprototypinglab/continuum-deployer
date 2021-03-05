@@ -233,9 +233,9 @@ class Helm(Importer):
                                 'resources', None).get('requests', None)
                             if _request != None:
                                 deployment.memory = Helm.parse_k8s_memory_value(
-                                    _request.get('memory'))
+                                    _request.get('memory', 0))
                                 deployment.cpu = Helm.parse_k8s_cpu_value(
-                                    _request.get('cpu'))
+                                    _request.get('cpu', 0))
                             else:
                                 click.echo(click.style(
                                     ('\n[Warning] No resource request provided for module {}. This can result '
@@ -245,9 +245,9 @@ class Helm(Importer):
                                 'resources', None).get('limits', None)
                             if _limits != None and _limits != {}:
                                 deployment.memory_limit = Helm.parse_k8s_memory_value(
-                                    _limits.get('memory'))
+                                    _limits.get('memory', 0))
                                 deployment.cpu_limit = Helm.parse_k8s_cpu_value(
-                                    _limits.get('cpu'))
+                                    _limits.get('cpu', 0))
                             else:
                                 # as this is not an hard error just pass
                                 pass

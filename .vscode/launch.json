@@ -24,6 +24,16 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Run CLI version",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "version"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Run CLI parse-resources",
             "type": "python",
             "request": "launch",
@@ -62,6 +72,20 @@
                 "examples/resources/default.yaml",
                 "-d",
                 "examples/charts/sample_multi.yaml"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Run CLI interactively less-input yaml demo",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/continuum_deployer/app.py",
+            "args": [
+                "match",
+                "-r",
+                "demo/resources.yaml",
+                "-d",
+                "demo/chart.yaml"
             ],
             "console": "integratedTerminal"
         },

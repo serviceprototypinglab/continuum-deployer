@@ -179,3 +179,4 @@ venv.bak/
 output_local
 continuum_deployer/utils/dummy.py
 _local_plugins
+demo
